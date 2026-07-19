@@ -132,9 +132,7 @@ function LandingPage() {
       <Header />
       <main>
         <Hero />
-        <Marquee />
         <Features />
-        <ShowcaseScreens />
         <Privacy />
         <FAQ />
       </main>
@@ -163,8 +161,8 @@ function Header() {
         <Wordmark />
         <nav aria-label="Primary" className="hidden items-center gap-8 text-sm text-muted-foreground md:flex">
           <a href="#features" className="transition-colors hover:text-foreground">Features</a>
-          <a href="#showcase" className="transition-colors hover:text-foreground">Screens</a>
           <a href="#privacy" className="transition-colors hover:text-foreground">Privacy</a>
+          <a href="/guide" className="transition-colors hover:text-foreground">Guide</a>
           <a href="#faq" className="transition-colors hover:text-foreground">FAQ</a>
         </nav>
         <div className="flex items-center gap-2">
@@ -480,29 +478,6 @@ function TabBar({ active }: { active: string }) {
   );
 }
 
-function Marquee() {
-  const items = [
-    "Encrypted with AES-256-GCM",
-    "Zero network calls",
-    "No accounts, ever",
-    "Built with React Native",
-    "Works in airplane mode",
-    "One-time purchase",
-  ];
-  return (
-    <div className="relative overflow-hidden border-y border-border/60 bg-card/40 py-4">
-      <div className="flex w-max animate-marquee gap-12 px-6 whitespace-nowrap text-sm text-muted-foreground">
-        {[...items, ...items, ...items].map((t, i) => (
-          <span key={i} className="inline-flex items-center gap-2">
-            <span className="h-1 w-1 rounded-full bg-accent-500" />
-            {t}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 function Features() {
   return (
     <section id="features" className="mx-auto max-w-6xl px-6 py-24 lg:py-32">
@@ -535,48 +510,6 @@ function Features() {
           </li>
         ))}
       </ul>
-    </section>
-  );
-}
-
-function ShowcaseScreens() {
-  const screens = [
-    { comp: <ScreenSnapshot />, title: "Snapshot", desc: "A calm home screen. Today, week, month — at a glance." },
-    { comp: <ScreenInsights />, title: "Insights", desc: "Category rings and rankings. Understand your month in seconds." },
-    { comp: <ScreenTimeline />, title: "Timeline", desc: "A running ledger of every entry — searchable, taggable, offline." },
-  ];
-  return (
-    <section id="showcase" className="relative overflow-hidden border-y border-border bg-card">
-      <div aria-hidden className="absolute inset-0 hero-glow opacity-30" />
-      <div className="relative mx-auto max-w-6xl px-6 py-24 lg:py-32">
-        <div className="reveal max-w-2xl">
-          <p className="text-sm font-medium text-accent-500">Every screen, on-device</p>
-          <h2 className="mt-3 font-display text-4xl tracking-tight sm:text-5xl">
-            Three screens. One quiet ritual.
-          </h2>
-          <p className="mt-4 text-muted-foreground">
-            [PLACEHOLDER] Screens are illustrative and rendered from static data. Real app pixels will replace these before launch.
-          </p>
-        </div>
-
-        <div className="mt-16 grid gap-14 lg:grid-cols-3">
-          {screens.map((s, i) => (
-            <figure
-              key={s.title}
-              className="reveal flex flex-col items-center"
-              style={{ transitionDelay: `${i * 120}ms` }}
-            >
-              <div className="animate-float" style={{ animationDelay: `-${i * 2}s` }}>
-                <PhoneFrame>{s.comp}</PhoneFrame>
-              </div>
-              <figcaption className="mt-8 text-center">
-                <h3 className="font-display text-2xl">{s.title}</h3>
-                <p className="mt-2 max-w-xs text-sm text-muted-foreground">{s.desc}</p>
-              </figcaption>
-            </figure>
-          ))}
-        </div>
-      </div>
     </section>
   );
 }
@@ -673,7 +606,7 @@ function Footer() {
             An offline expense tracker for people who like their money — and their data — kept close.
           </p>
         </div>
-        <FooterCol title="Company" links={[["Features", "#features"], ["Screens", "#showcase"], ["Privacy", "#privacy"], ["FAQ", "#faq"]]} />
+        <FooterCol title="Company" links={[["Features", "#features"], ["Guide", "/guide"], ["Privacy", "#privacy"], ["FAQ", "#faq"]]} />
         <FooterCol title="Legal" links={[["Privacy Policy", "/privacy"], ["Terms", "/terms"]]} />
         <div>
           <p className="text-sm font-semibold">Contact</p>
