@@ -3,9 +3,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 export const Route = createFileRoute("/terms")({
   head: () => ({
     meta: [
-      { title: "Terms of Service — Dotzee" },
-      { name: "description", content: "The terms that apply when you use the Dotzee mobile app." },
-      { property: "og:title", content: "Terms of Service — Dotzee" },
+      { title: "Terms of Service — Dotzie" },
+      { name: "description", content: "The terms that apply when you use the Dotzie mobile app." },
+      { property: "og:title", content: "Terms of Service — Dotzie" },
       { property: "og:url", content: "/terms" },
     ],
     links: [{ rel: "canonical", href: "/terms" }],

@@ -12,10 +12,10 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
-const SITE_NAME = "Dotzee";
+const SITE_NAME = "Dotzie";
 const SITE_TAGLINE = "Offline-first, privacy-first expense tracker";
 const SITE_DESC =
-  "Dotzee is an offline-first expense tracker. All your financial data stays encrypted on your device — no cloud, no server, no accounts.";
+  "Dotzie is an offline-first expense tracker. All your financial data stays encrypted on your device — no cloud, no server, no accounts.";
 
 const organizationJsonLd = {
   "@context": "https://schema.org",
