@@ -132,9 +132,7 @@ function LandingPage() {
       <Header />
       <main>
         <Hero />
-        <Marquee />
         <Features />
-        <ShowcaseScreens />
         <Privacy />
         <FAQ />
       </main>
@@ -163,8 +161,8 @@ function Header() {
         <Wordmark />
         <nav aria-label="Primary" className="hidden items-center gap-8 text-sm text-muted-foreground md:flex">
           <a href="#features" className="transition-colors hover:text-foreground">Features</a>
-          <a href="#showcase" className="transition-colors hover:text-foreground">Screens</a>
           <a href="#privacy" className="transition-colors hover:text-foreground">Privacy</a>
+          <a href="/guide" className="transition-colors hover:text-foreground">Guide</a>
           <a href="#faq" className="transition-colors hover:text-foreground">FAQ</a>
         </nav>
         <div className="flex items-center gap-2">
@@ -673,7 +671,7 @@ function Footer() {
             An offline expense tracker for people who like their money — and their data — kept close.
           </p>
         </div>
-        <FooterCol title="Company" links={[["Features", "#features"], ["Screens", "#showcase"], ["Privacy", "#privacy"], ["FAQ", "#faq"]]} />
+        <FooterCol title="Company" links={[["Features", "#features"], ["Guide", "/guide"], ["Privacy", "#privacy"], ["FAQ", "#faq"]]} />
         <FooterCol title="Legal" links={[["Privacy Policy", "/privacy"], ["Terms", "/terms"]]} />
         <div>
           <p className="text-sm font-semibold">Contact</p>
