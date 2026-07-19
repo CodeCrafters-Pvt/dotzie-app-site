@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   Wifi,
@@ -8,6 +9,14 @@ import {
   LayoutGrid,
   ArrowRight,
   QrCode,
+  TrendingDown,
+  TrendingUp,
+  Utensils,
+  Car,
+  ShoppingBag,
+  Coffee,
+  Film,
+  Wallet,
 } from "lucide-react";
 import {
   Accordion,
@@ -16,29 +25,30 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { ThemeToggle } from "@/components/theme-toggle";
+import dotzieLogo from "@/assets/dotzie-icon.png";
 
-const APP_NAME = "Dotzee";
+const APP_NAME = "Dotzie";
 const APP_TAGLINE = "Offline-first, privacy-first expense tracker";
 const APP_DESC =
-  "Dotzee is an offline-first expense tracker. All your financial data stays encrypted on your device — no cloud, no server, no accounts.";
+  "Dotzie is an offline-first expense tracker. All your financial data stays encrypted on your device — no cloud, no server, no accounts.";
 const CANONICAL = "/";
 
 const faqs = [
   {
-    q: "Do I need internet to use Dotzee?",
-    a: "No. Dotzee is fully offline-first. Every feature — adding expenses, viewing reports, exporting backups — works without a network connection. [PLACEHOLDER]",
+    q: "Do I need internet to use Dotzie?",
+    a: "No. Dotzie is fully offline-first. Every feature — adding expenses, viewing reports, exporting backups — works without a network connection. [PLACEHOLDER]",
   },
   {
     q: "Where is my data stored?",
     a: "All entries live in an encrypted database on your device. Nothing is transmitted to a server, and there are no accounts to create. [PLACEHOLDER]",
   },
   {
-    q: "Is Dotzee free?",
+    q: "Is Dotzie free?",
     a: "The core tracker is free. A one-time in-app purchase unlocks advanced reports and custom categories. There is no subscription. [PLACEHOLDER]",
   },
   {
     q: "Which platforms are supported?",
-    a: "Dotzee is available on iOS and Android. It is built with React Native so the experience is consistent across both. [PLACEHOLDER]",
+    a: "Dotzie is available on iOS and Android. It is built with React Native so the experience is consistent across both. [PLACEHOLDER]",
   },
   {
     q: "Is my data backed up?",
@@ -88,45 +98,43 @@ export const Route = createFileRoute("/")({
 });
 
 const features = [
-  {
-    icon: Wifi,
-    title: "Offline-first",
-    desc: "Every tap, chart, and export works with airplane mode on. The network is optional, always.",
-  },
-  {
-    icon: Database,
-    title: "Encrypted local backup",
-    desc: "Portable backup files are sealed with AES-256-GCM and a passphrase only you know.",
-  },
-  {
-    icon: ServerOff,
-    title: "No cloud, no server",
-    desc: "There is no Dotzee account. Nothing to breach, nothing to subpoena, nothing to sync.",
-  },
-  {
-    icon: Zap,
-    title: "Fast and lightweight",
-    desc: "A native React Native build that cold-starts in under a second on modest hardware.",
-  },
-  {
-    icon: Sparkles,
-    title: "Smart categories",
-    desc: "On-device rules learn your habits and pre-fill categories without sending a byte off the phone.",
-  },
-  {
-    icon: LayoutGrid,
-    title: "Clean, calm UI",
-    desc: "A quiet interface designed to fade into your day — not compete with it for attention.",
-  },
+  { icon: Wifi, title: "Offline-first", desc: "Every tap, chart, and export works with airplane mode on. The network is optional, always." },
+  { icon: Database, title: "Encrypted local backup", desc: "Portable backup files are sealed with AES-256-GCM and a passphrase only you know." },
+  { icon: ServerOff, title: "No cloud, no server", desc: "There is no Dotzie account. Nothing to breach, nothing to subpoena, nothing to sync." },
+  { icon: Zap, title: "Fast and lightweight", desc: "A native React Native build that cold-starts in under a second on modest hardware." },
+  { icon: Sparkles, title: "Smart categories", desc: "On-device rules learn your habits and pre-fill categories without sending a byte off the phone." },
+  { icon: LayoutGrid, title: "Clean, calm UI", desc: "A quiet interface designed to fade into your day — not compete with it for attention." },
 ];
 
+function useReveal() {
+  useEffect(() => {
+    const els = document.querySelectorAll<HTMLElement>(".reveal");
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            e.target.classList.add("in");
+            io.unobserve(e.target);
+          }
+        }
+      },
+      { threshold: 0.15 },
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+}
+
 function LandingPage() {
+  useReveal();
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen overflow-x-hidden bg-background text-foreground">
       <Header />
       <main>
         <Hero />
+        <Marquee />
         <Features />
+        <ShowcaseScreens />
         <Privacy />
         <FAQ />
       </main>
@@ -135,15 +143,27 @@ function LandingPage() {
   );
 }
 
+function Wordmark({ className = "" }: { className?: string }) {
+  return (
+    <a href="#top" className={`group inline-flex items-center gap-2.5 ${className}`}>
+      <span className="relative inline-flex h-8 w-8 items-center justify-center overflow-hidden rounded-[9px] shadow-sm transition-transform duration-300 group-hover:scale-105">
+        <img src={dotzieLogo} alt="Dotzie logo" className="h-full w-full object-cover" />
+      </span>
+      <span className="font-display text-xl tracking-tight">
+        Dotzie<span className="text-accent-500">.</span>
+      </span>
+    </a>
+  );
+}
+
 function Header() {
   return (
-    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/70 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-        <a href="#top" className="text-lg font-semibold tracking-tight">
-          Dotzee<span className="text-accent-500">.</span>
-        </a>
+        <Wordmark />
         <nav aria-label="Primary" className="hidden items-center gap-8 text-sm text-muted-foreground md:flex">
           <a href="#features" className="transition-colors hover:text-foreground">Features</a>
+          <a href="#showcase" className="transition-colors hover:text-foreground">Screens</a>
           <a href="#privacy" className="transition-colors hover:text-foreground">Privacy</a>
           <a href="#faq" className="transition-colors hover:text-foreground">FAQ</a>
         </nav>
@@ -151,9 +171,10 @@ function Header() {
           <ThemeToggle />
           <a
             href="#download"
-            className="inline-flex h-9 items-center rounded-full bg-gradient-brand px-4 text-sm font-medium text-white shadow-glow transition-transform hover:scale-[1.02]"
+            className="relative inline-flex h-9 items-center overflow-hidden rounded-full bg-gradient-brand px-4 text-sm font-medium text-white shadow-glow transition-transform hover:scale-[1.03]"
           >
-            Get the app
+            <span className="relative z-10">Get the app</span>
+            <span aria-hidden className="absolute inset-0 -translate-x-full animate-shimmer-text bg-[linear-gradient(110deg,transparent,rgba(255,255,255,0.35),transparent)]" />
           </a>
         </div>
       </div>
@@ -164,100 +185,319 @@ function Header() {
 function Hero() {
   return (
     <section id="top" className="relative overflow-hidden">
-      <div aria-hidden className="absolute inset-x-0 top-0 h-[600px] hero-glow" />
-      <div className="relative mx-auto grid max-w-6xl gap-14 px-6 pt-20 pb-24 lg:grid-cols-[1.15fr_1fr] lg:pt-28 lg:pb-32">
-        <div className="flex flex-col justify-center">
-          <span className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 text-xs text-muted-foreground">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent-500" />
+      {/* animated background blobs */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute -top-24 left-1/2 h-[700px] w-[900px] -translate-x-1/2 hero-glow" />
+        <div className="absolute left-[10%] top-40 h-72 w-72 rounded-full bg-accent-500/40 opacity-60 blur-[80px] animate-blob" />
+        <div className="absolute right-[8%] top-64 h-80 w-80 rounded-full bg-accent-400/40 opacity-60 blur-[80px] animate-blob [animation-delay:-6s]" />
+      </div>
+
+      <div className="relative mx-auto max-w-6xl px-6 pt-20 pb-16 text-center lg:pt-28">
+        <div className="animate-fade-up">
+          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 text-xs text-muted-foreground backdrop-blur">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-accent-500 animate-pulse-ring" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-accent-500" />
+            </span>
             [PLACEHOLDER] Now in private beta
           </span>
-          <h1 className="mt-6 font-display text-5xl leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
-            Track every expense.
-            <br />
-            <span className="text-gradient-brand italic">Trust no server.</span>
-          </h1>
-          <p className="mt-6 max-w-xl text-lg text-muted-foreground">
-            Dotzee is a beautifully quiet expense tracker for iOS and Android. Your money story stays sealed on your phone — encrypted, offline, and entirely yours.
-          </p>
-
-          <div id="download" className="mt-10 flex flex-wrap items-center gap-3">
-            <a
-              href="#"
-              aria-label="Download Dotzee on the App Store (placeholder link)"
-              className="inline-flex items-center gap-3 rounded-2xl bg-foreground px-5 py-3 text-background transition-opacity hover:opacity-90"
-            >
-              <AppleGlyph />
-              <span className="text-left leading-tight">
-                <span className="block text-[10px] uppercase tracking-widest opacity-70">Download on the</span>
-                <span className="block text-base font-semibold">App Store</span>
-              </span>
-            </a>
-            <a
-              href="#"
-              aria-label="Get Dotzee on Google Play (placeholder link)"
-              className="inline-flex items-center gap-3 rounded-2xl border border-border bg-card px-5 py-3 transition-colors hover:bg-elevated"
-            >
-              <PlayGlyph />
-              <span className="text-left leading-tight">
-                <span className="block text-[10px] uppercase tracking-widest text-muted-foreground">Get it on</span>
-                <span className="block text-base font-semibold">Google Play</span>
-              </span>
-            </a>
-            <div
-              aria-label="QR code placeholder to download Dotzee"
-              className="flex h-16 w-16 items-center justify-center rounded-xl border border-dashed border-border bg-card text-muted-foreground"
-              title="[PLACEHOLDER] QR code"
-            >
-              <QrCode className="h-6 w-6" />
-            </div>
-          </div>
-
-          <p className="mt-6 text-xs text-muted-foreground">
-            [PLACEHOLDER] Free to download. No account. No trackers. No ads.
-          </p>
         </div>
 
-        <div className="relative flex items-center justify-center">
-          <PhoneMockup />
+        <h1 className="mx-auto mt-8 max-w-4xl animate-fade-up font-display text-5xl leading-[1.02] tracking-tight [animation-delay:120ms] sm:text-6xl lg:text-[5.5rem]">
+          Track every expense.
+          <br />
+          <span
+            className="animate-shimmer-text bg-clip-text italic text-transparent"
+            style={{
+              backgroundImage:
+                "linear-gradient(110deg, var(--accent-400), var(--accent-600), var(--accent-300), var(--accent-600), var(--accent-400))",
+            }}
+          >
+            Trust no server.
+          </span>
+        </h1>
+
+        <p className="mx-auto mt-6 max-w-2xl animate-fade-up text-lg text-muted-foreground [animation-delay:240ms]">
+          A beautifully quiet expense tracker for iOS and Android. Your money story stays sealed on your phone — encrypted, offline, and entirely yours.
+        </p>
+
+        <div id="download" className="mt-10 flex animate-fade-up flex-wrap items-center justify-center gap-3 [animation-delay:360ms]">
+          <a
+            href="#"
+            aria-label="Download Dotzie on the App Store (placeholder link)"
+            className="group inline-flex items-center gap-3 rounded-2xl bg-foreground px-5 py-3 text-background transition-all hover:-translate-y-0.5 hover:shadow-xl"
+          >
+            <AppleGlyph />
+            <span className="text-left leading-tight">
+              <span className="block text-[10px] uppercase tracking-widest opacity-70">Download on the</span>
+              <span className="block text-base font-semibold">App Store</span>
+            </span>
+          </a>
+          <a
+            href="#"
+            aria-label="Get Dotzie on Google Play (placeholder link)"
+            className="group inline-flex items-center gap-3 rounded-2xl border border-border bg-card px-5 py-3 transition-all hover:-translate-y-0.5 hover:bg-elevated hover:shadow-xl"
+          >
+            <PlayGlyph />
+            <span className="text-left leading-tight">
+              <span className="block text-[10px] uppercase tracking-widest text-muted-foreground">Get it on</span>
+              <span className="block text-base font-semibold">Google Play</span>
+            </span>
+          </a>
+          <div
+            aria-label="QR code placeholder to download Dotzie"
+            title="[PLACEHOLDER] QR code"
+            className="flex h-16 w-16 items-center justify-center rounded-xl border border-dashed border-border bg-card text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <QrCode className="h-6 w-6" />
+          </div>
+        </div>
+
+        <p className="mt-4 animate-fade-up text-xs text-muted-foreground [animation-delay:480ms]">
+          [PLACEHOLDER] Free to download. No account. No trackers. No ads.
+        </p>
+      </div>
+
+      {/* Three phones stage — hero showcase */}
+      <div className="relative mx-auto mt-6 max-w-6xl px-6 pb-24 lg:pb-32">
+        <div className="reveal relative mx-auto flex h-[640px] max-w-5xl items-end justify-center">
+          <div className="absolute left-1/2 top-8 -translate-x-[85%] rotate-[-8deg] animate-float-slow">
+            <PhoneFrame><ScreenInsights /></PhoneFrame>
+          </div>
+          <div className="absolute left-1/2 top-16 translate-x-[-15%] rotate-[-2deg] animate-float [animation-delay:-2s]">
+            <PhoneFrame><ScreenSnapshot /></PhoneFrame>
+          </div>
+          <div className="absolute left-1/2 top-8 translate-x-[55%] rotate-[6deg] animate-float-slow [animation-delay:-4s]">
+            <PhoneFrame><ScreenTimeline /></PhoneFrame>
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-function PhoneMockup() {
+function PhoneFrame({ children }: { children: React.ReactNode }) {
   return (
-    <div className="relative">
-      <div aria-hidden className="absolute -inset-10 -z-10 rounded-[3rem] bg-gradient-brand opacity-30 blur-3xl" />
-      <div
-        role="img"
-        aria-label="[PLACEHOLDER] Screenshot of the Dotzee app showing this month's expenses"
-        className="relative h-[560px] w-[280px] rounded-[2.5rem] border border-border bg-card p-3 shadow-2xl"
-      >
-        <div className="relative h-full w-full overflow-hidden rounded-[2rem] bg-gradient-to-b from-elevated to-card">
-          <div className="mx-auto mt-2 h-1.5 w-20 rounded-full bg-foreground/20" />
-          <div className="p-5">
-            <p className="text-xs uppercase tracking-widest text-muted-foreground">This month</p>
-            <p className="mt-1 font-display text-4xl">$1,284.<span className="text-muted-foreground">40</span></p>
-            <div className="mt-5 h-24 rounded-xl bg-gradient-brand opacity-90" />
-            <ul className="mt-5 space-y-3 text-sm">
-              {[
-                ["Coffee", "$4.20", "Cafés"],
-                ["Groceries", "$62.10", "Food"],
-                ["Metro pass", "$28.00", "Transit"],
-                ["Bookshop", "$19.90", "Leisure"],
-              ].map(([label, amt, cat]) => (
-                <li key={label} className="flex items-center justify-between rounded-lg bg-background/60 px-3 py-2">
-                  <div>
-                    <p className="font-medium">{label}</p>
-                    <p className="text-[11px] text-muted-foreground">{cat}</p>
-                  </div>
-                  <span className="tabular-nums">{amt}</span>
-                </li>
-              ))}
-            </ul>
+    <div className="relative h-[560px] w-[260px] rounded-[2.6rem] border border-border bg-[#0B0B0F] p-2.5 shadow-2xl ring-1 ring-white/5">
+      <div className="absolute left-1/2 top-2 z-10 h-6 w-24 -translate-x-1/2 rounded-full bg-black/90" />
+      <div className="relative h-full w-full overflow-hidden rounded-[2.1rem] bg-[#07070A] text-[#F4F3FA]">
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function StatusBar() {
+  return (
+    <div className="flex items-center justify-between px-5 pt-3 text-[10px] font-medium text-white/80">
+      <span>1:47</span>
+      <span className="flex items-center gap-1">
+        <span className="inline-block h-2 w-3 rounded-sm bg-white/70" />
+        <span className="inline-block h-2 w-3 rounded-sm bg-white/70" />
+      </span>
+    </div>
+  );
+}
+
+function ScreenSnapshot() {
+  return (
+    <div className="flex h-full flex-col">
+      <StatusBar />
+      <div className="mt-3 px-5">
+        <p className="text-[10px] text-white/50">Last synced: never · offline</p>
+        <div className="mt-4 rounded-2xl bg-[#16121F] p-4">
+          <p className="text-[11px] text-white/60">
+            <span aria-hidden>👋</span> Hey Kavi,
+          </p>
+          <p className="mt-1 text-[15px] leading-tight">
+            you spent <span className="font-semibold">$154.20</span> today
+          </p>
+          <div className="mt-4 flex justify-between text-[11px] text-white/70">
+            <div>
+              <p className="flex items-center gap-1"><TrendingDown className="h-3 w-3 text-emerald-400" /> Week <span className="text-emerald-400">-12%</span></p>
+              <p className="mt-1 text-white">$412.35</p>
+            </div>
+            <div className="text-right">
+              <p className="flex items-center gap-1 justify-end"><TrendingUp className="h-3 w-3 text-rose-400" /> Month <span className="text-rose-400">+8%</span></p>
+              <p className="mt-1 text-white">$1,284.40</p>
+            </div>
           </div>
         </div>
+
+        <div className="mt-3 rounded-2xl bg-[#16121F] p-4">
+          <div className="flex items-center gap-2">
+            <Wallet className="h-4 w-4 text-accent-300" />
+            <div>
+              <p className="text-[11px] text-white/50">Everyday wallet</p>
+              <p className="text-[11px] text-white/60">3401 · HNB</p>
+            </div>
+          </div>
+          <p className="mt-2 font-display text-2xl">$2,412.35</p>
+        </div>
+
+        <p className="mt-4 text-[9px] uppercase tracking-widest text-white/40">Top spenders</p>
+        <p className="mt-1 text-[12px]">
+          Where your <span aria-hidden>💸</span> went this month
+        </p>
+        <div className="mt-2 grid grid-cols-2 gap-2">
+          {[
+            { icon: Car, label: "Transport", val: "$48.20" },
+            { icon: Utensils, label: "Dining", val: "$155.00" },
+          ].map(({ icon: Icon, label, val }) => (
+            <div key={label} className="rounded-xl bg-[#16121F] p-3">
+              <Icon className="h-4 w-4 text-accent-300" />
+              <p className="mt-2 text-[11px] text-white/60">{label}</p>
+              <p className="text-[12px] font-medium">{val}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+      <TabBar active="Snapshot" />
+    </div>
+  );
+}
+
+function ScreenInsights() {
+  return (
+    <div className="flex h-full flex-col">
+      <StatusBar />
+      <div className="mt-3 flex items-center justify-between px-5 text-[11px]">
+        <span className="text-white/40">‹</span>
+        <span className="text-white/80">Aug 22 – Sep 21</span>
+        <span className="text-white/40">›</span>
+      </div>
+
+      <div className="relative mx-auto mt-6 h-40 w-40">
+        <svg viewBox="0 0 42 42" className="h-full w-full -rotate-90">
+          <circle cx="21" cy="21" r="15.9155" fill="transparent" stroke="#16121F" strokeWidth="6" />
+          <circle cx="21" cy="21" r="15.9155" fill="transparent" stroke="#8A7EFF" strokeWidth="6" strokeDasharray="52 100" />
+          <circle cx="21" cy="21" r="15.9155" fill="transparent" stroke="#5D50EC" strokeWidth="6" strokeDasharray="26 100" strokeDashoffset="-52" />
+          <circle cx="21" cy="21" r="15.9155" fill="transparent" stroke="#B3ABFF" strokeWidth="6" strokeDasharray="22 100" strokeDashoffset="-78" />
+        </svg>
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+          <p className="text-[9px] uppercase tracking-widest text-white/40">Total</p>
+          <p className="font-display text-lg">$1,284</p>
+        </div>
+        <div className="absolute -right-2 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-accent-500 shadow-lg">
+          <ShoppingBag className="h-4 w-4 text-white" />
+        </div>
+        <div className="absolute -left-2 bottom-4 flex h-8 w-8 items-center justify-center rounded-full bg-accent-300 shadow-lg">
+          <Car className="h-4 w-4 text-accent-700" />
+        </div>
+      </div>
+
+      <div className="mt-6 space-y-2 px-5">
+        {[
+          { icon: Utensils, label: "Dining out", pct: "40% of expenses", amt: "$514.00", w: "w-2/3", tone: "bg-accent-500" },
+          { icon: Car, label: "Transport", pct: "16% of expenses", amt: "$205.40", w: "w-1/3", tone: "bg-accent-300" },
+          { icon: Film, label: "Leisure", pct: "12% of expenses", amt: "$154.20", w: "w-1/4", tone: "bg-accent-400" },
+        ].map((row) => (
+          <div key={row.label} className="rounded-xl bg-[#16121F] p-3">
+            <div className="flex items-center gap-2">
+              <row.icon className="h-4 w-4 text-accent-300" />
+              <div className="flex-1">
+                <p className="text-[12px] font-medium">{row.label}</p>
+                <p className="text-[10px] text-white/50">{row.pct}</p>
+              </div>
+              <p className="text-[11px]">{row.amt}</p>
+            </div>
+            <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-white/10">
+              <div className={`h-full ${row.w} ${row.tone}`} />
+            </div>
+          </div>
+        ))}
+      </div>
+      <TabBar active="Insights" />
+    </div>
+  );
+}
+
+function ScreenTimeline() {
+  const items: Array<{ icon: any; title: string; sub: string; amt: string; time: string; pos?: boolean }> = [
+    { icon: Coffee, title: "Brew 1867", sub: "Cafés", amt: "-$4.20", time: "6:50 PM" },
+    { icon: ShoppingBag, title: "Bookshop", sub: "Leisure", amt: "-$19.90", time: "3:00 PM" },
+    { icon: Car, title: "Uber", sub: "Transit", amt: "-$26.50", time: "10:00 AM" },
+    { icon: Wallet, title: "Payday", sub: "Income", amt: "+$1,250.43", time: "7:50 AM", pos: true },
+  ];
+  return (
+    <div className="flex h-full flex-col">
+      <StatusBar />
+      <div className="mt-3 flex items-center justify-between px-5 text-[11px]">
+        <span className="text-white/40">‹</span>
+        <span className="text-white/80">Aug 22 – Sep 21</span>
+        <span className="text-white/40">›</span>
+      </div>
+
+      <div className="mt-4 grid grid-cols-2 gap-2 px-5">
+        <div className="rounded-xl bg-[#16121F] p-3">
+          <p className="text-[10px] text-white/50">Income</p>
+          <p className="text-[13px] font-semibold text-emerald-400">$1,094.00</p>
+        </div>
+        <div className="rounded-xl bg-[#16121F] p-3">
+          <p className="text-[10px] text-white/50">Expenses</p>
+          <p className="text-[13px] font-semibold text-rose-400">$250.24</p>
+        </div>
+      </div>
+
+      <p className="mx-5 mt-4 flex items-center justify-between text-[10px] text-white/50">
+        <span>Today, 31 October</span>
+        <span>$1,125.00</span>
+      </p>
+
+      <ul className="mt-2 flex-1 space-y-2 overflow-hidden px-5">
+        {items.map((it, i) => (
+          <li key={i} className="flex items-center gap-3 rounded-xl bg-[#16121F] p-2.5">
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5">
+              <it.icon className="h-4 w-4 text-accent-300" />
+            </span>
+            <div className="flex-1">
+              <p className="text-[12px] font-medium">{it.title}</p>
+              <p className="text-[10px] text-white/50">{it.sub}</p>
+            </div>
+            <div className="text-right">
+              <p className={`text-[12px] ${it.pos ? "text-emerald-400" : "text-rose-400"}`}>{it.amt}</p>
+              <p className="text-[9px] text-white/40">{it.time}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <TabBar active="Timeline" />
+    </div>
+  );
+}
+
+function TabBar({ active }: { active: string }) {
+  const tabs = ["Snapshot", "Insights", "Timeline", "Budgets"];
+  return (
+    <nav className="mt-3 flex items-center justify-around border-t border-white/5 py-2.5 text-[9px] text-white/40">
+      {tabs.map((t) => (
+        <span key={t} className={t === active ? "text-white" : ""}>
+          <span className="mx-auto mb-1 block h-3 w-3 rounded-sm bg-current opacity-60" />
+          {t}
+        </span>
+      ))}
+    </nav>
+  );
+}
+
+function Marquee() {
+  const items = [
+    "Encrypted with AES-256-GCM",
+    "Zero network calls",
+    "No accounts, ever",
+    "Built with React Native",
+    "Works in airplane mode",
+    "One-time purchase",
+  ];
+  return (
+    <div className="relative overflow-hidden border-y border-border/60 bg-card/40 py-4">
+      <div className="flex w-max animate-marquee gap-12 px-6 whitespace-nowrap text-sm text-muted-foreground">
+        {[...items, ...items, ...items].map((t, i) => (
+          <span key={i} className="inline-flex items-center gap-2">
+            <span className="h-1 w-1 rounded-full bg-accent-500" />
+            {t}
+          </span>
+        ))}
       </div>
     </div>
   );
@@ -266,22 +506,32 @@ function PhoneMockup() {
 function Features() {
   return (
     <section id="features" className="mx-auto max-w-6xl px-6 py-24 lg:py-32">
-      <div className="max-w-2xl">
+      <div className="reveal max-w-2xl">
         <p className="text-sm font-medium text-accent-500">What's inside</p>
         <h2 className="mt-3 font-display text-4xl tracking-tight sm:text-5xl">
           Every feature built for a phone that trusts itself.
         </h2>
         <p className="mt-4 text-muted-foreground">
-          No dashboards to log into, no companies to trust. Dotzee runs entirely on your device — the app is the product, not the pipeline behind it.
+          No dashboards to log into, no companies to trust. Dotzie runs entirely on your device — the app is the product, not the pipeline behind it.
         </p>
       </div>
 
-      <ul className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
-        {features.map((f) => (
-          <li key={f.title} className="group bg-card p-8 transition-colors hover:bg-elevated">
-            <f.icon className="h-6 w-6 text-accent-500" aria-hidden />
-            <h3 className="mt-6 text-lg font-semibold">{f.title}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{f.desc}</p>
+      <ul className="reveal mt-14 grid gap-px overflow-hidden rounded-3xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
+        {features.map((f, i) => (
+          <li
+            key={f.title}
+            className="group relative overflow-hidden bg-card p-8 transition-all duration-500 hover:bg-elevated"
+            style={{ transitionDelay: `${i * 30}ms` }}
+          >
+            <span
+              aria-hidden
+              className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-accent-500/0 blur-2xl transition-all duration-700 group-hover:bg-accent-500/30"
+            />
+            <span className="relative inline-flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-background transition-transform duration-500 group-hover:-translate-y-1 group-hover:border-accent-500/50">
+              <f.icon className="h-5 w-5 text-accent-500" aria-hidden />
+            </span>
+            <h3 className="relative mt-6 text-lg font-semibold">{f.title}</h3>
+            <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">{f.desc}</p>
           </li>
         ))}
       </ul>
@@ -289,26 +539,84 @@ function Features() {
   );
 }
 
+function ShowcaseScreens() {
+  const screens = [
+    { comp: <ScreenSnapshot />, title: "Snapshot", desc: "A calm home screen. Today, week, month — at a glance." },
+    { comp: <ScreenInsights />, title: "Insights", desc: "Category rings and rankings. Understand your month in seconds." },
+    { comp: <ScreenTimeline />, title: "Timeline", desc: "A running ledger of every entry — searchable, taggable, offline." },
+  ];
+  return (
+    <section id="showcase" className="relative overflow-hidden border-y border-border bg-card">
+      <div aria-hidden className="absolute inset-0 hero-glow opacity-30" />
+      <div className="relative mx-auto max-w-6xl px-6 py-24 lg:py-32">
+        <div className="reveal max-w-2xl">
+          <p className="text-sm font-medium text-accent-500">Every screen, on-device</p>
+          <h2 className="mt-3 font-display text-4xl tracking-tight sm:text-5xl">
+            Three screens. One quiet ritual.
+          </h2>
+          <p className="mt-4 text-muted-foreground">
+            [PLACEHOLDER] Screens are illustrative and rendered from static data. Real app pixels will replace these before launch.
+          </p>
+        </div>
+
+        <div className="mt-16 grid gap-14 lg:grid-cols-3">
+          {screens.map((s, i) => (
+            <figure
+              key={s.title}
+              className="reveal flex flex-col items-center"
+              style={{ transitionDelay: `${i * 120}ms` }}
+            >
+              <div className="animate-float" style={{ animationDelay: `-${i * 2}s` }}>
+                <PhoneFrame>{s.comp}</PhoneFrame>
+              </div>
+              <figcaption className="mt-8 text-center">
+                <h3 className="font-display text-2xl">{s.title}</h3>
+                <p className="mt-2 max-w-xs text-sm text-muted-foreground">{s.desc}</p>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Privacy() {
   return (
-    <section id="privacy" className="relative overflow-hidden border-y border-border bg-card">
-      <div aria-hidden className="absolute inset-0 opacity-40 hero-glow" />
+    <section id="privacy" className="relative overflow-hidden">
+      <div aria-hidden className="absolute inset-0 -z-10">
+        <div className="absolute left-[15%] top-1/3 h-64 w-64 rounded-full bg-accent-500/30 blur-[80px] animate-blob" />
+        <div className="absolute right-[10%] top-1/2 h-72 w-72 rounded-full bg-accent-400/30 blur-[80px] animate-blob [animation-delay:-8s]" />
+      </div>
       <div className="relative mx-auto max-w-4xl px-6 py-24 text-center lg:py-32">
-        <p className="text-sm font-medium text-accent-500">Privacy, plainly</p>
-        <h2 className="mt-4 font-display text-4xl leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-          Your data never leaves your device. <span className="text-gradient-brand italic">Full stop.</span>
+        <p className="reveal text-sm font-medium text-accent-500">Privacy, plainly</p>
+        <h2 className="reveal mt-4 font-display text-4xl leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+          Your data never leaves your device.{" "}
+          <span
+            className="animate-shimmer-text bg-clip-text italic text-transparent"
+            style={{
+              backgroundImage:
+                "linear-gradient(110deg, var(--accent-400), var(--accent-600), var(--accent-300), var(--accent-600), var(--accent-400))",
+            }}
+          >
+            Full stop.
+          </span>
         </h2>
-        <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
-          Every transaction, note, and category you enter is written to an on-device database encrypted with <strong className="text-foreground">AES-256-GCM</strong>. There is no Dotzee server to send it to, and no analytics SDK quietly listening in the background.
+        <p className="reveal mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
+          Every transaction, note, and category you enter is written to an on-device database encrypted with <strong className="text-foreground">AES-256-GCM</strong>. There is no Dotzie server to send it to, and no analytics SDK quietly listening in the background.
         </p>
 
-        <dl className="mx-auto mt-14 grid max-w-3xl gap-6 text-left sm:grid-cols-3">
+        <dl className="reveal mx-auto mt-14 grid max-w-3xl gap-6 text-left sm:grid-cols-3">
           {[
             ["AES-256-GCM", "Authenticated encryption for every record on disk."],
             ["Zero network calls", "The app makes no requests once installed."],
             ["No accounts", "Nothing to sign up for, nothing to leak."],
-          ].map(([k, v]) => (
-            <div key={k} className="rounded-xl border border-border bg-background p-5">
+          ].map(([k, v], i) => (
+            <div
+              key={k}
+              className="rounded-2xl border border-border bg-card p-5 transition-transform duration-500 hover:-translate-y-1 hover:border-accent-500/50"
+              style={{ transitionDelay: `${i * 60}ms` }}
+            >
               <dt className="font-display text-xl">{k}</dt>
               <dd className="mt-2 text-sm text-muted-foreground">{v}</dd>
             </div>
@@ -326,12 +634,12 @@ function Privacy() {
 function FAQ() {
   return (
     <section id="faq" className="mx-auto max-w-3xl px-6 py-24 lg:py-32">
-      <p className="text-sm font-medium text-accent-500">Frequently asked</p>
-      <h2 className="mt-3 font-display text-4xl tracking-tight sm:text-5xl">
+      <p className="reveal text-sm font-medium text-accent-500">Frequently asked</p>
+      <h2 className="reveal mt-3 font-display text-4xl tracking-tight sm:text-5xl">
         Questions, answered.
       </h2>
 
-      <Accordion type="single" collapsible className="mt-10">
+      <Accordion type="single" collapsible className="reveal mt-10">
         {faqs.map((f, i) => (
           <AccordionItem key={i} value={`item-${i}`} className="border-border">
             <AccordionTrigger className="text-left text-base font-medium hover:no-underline">
@@ -342,13 +650,13 @@ function FAQ() {
         ))}
       </Accordion>
 
-      <div className="mt-14 flex items-center justify-between rounded-2xl border border-border bg-card p-6">
+      <div className="reveal mt-14 flex items-center justify-between rounded-2xl border border-border bg-card p-6 transition-colors hover:border-accent-500/40">
         <div>
           <p className="font-semibold">Still curious?</p>
           <p className="text-sm text-muted-foreground">[PLACEHOLDER] Read the technical brief.</p>
         </div>
-        <a href="#" className="inline-flex items-center gap-2 text-sm font-medium text-accent-500 hover:text-accent-400">
-          Read the brief <ArrowRight className="h-4 w-4" />
+        <a href="#" className="group inline-flex items-center gap-2 text-sm font-medium text-accent-500 hover:text-accent-400">
+          Read the brief <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
         </a>
       </div>
     </section>
@@ -360,19 +668,20 @@ function Footer() {
     <footer className="border-t border-border bg-background">
       <div className="mx-auto grid max-w-6xl gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <p className="text-lg font-semibold tracking-tight">
-            Dotzee<span className="text-accent-500">.</span>
-          </p>
-          <p className="mt-2 max-w-xs text-sm text-muted-foreground">
+          <Wordmark />
+          <p className="mt-3 max-w-xs text-sm text-muted-foreground">
             An offline expense tracker for people who like their money — and their data — kept close.
           </p>
         </div>
-        <FooterCol title="Company" links={[["Features", "#features"], ["Privacy", "#privacy"], ["FAQ", "#faq"]]} />
+        <FooterCol title="Company" links={[["Features", "#features"], ["Screens", "#showcase"], ["Privacy", "#privacy"], ["FAQ", "#faq"]]} />
         <FooterCol title="Legal" links={[["Privacy Policy", "/privacy"], ["Terms", "/terms"]]} />
         <div>
           <p className="text-sm font-semibold">Contact</p>
           <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-            <li><a href="mailto:hello@dotzee.app" className="hover:text-foreground">hello@dotzee.app</a> <span className="text-xs">[PLACEHOLDER]</span></li>
+            <li>
+              <a href="mailto:hello@dotzie.app" className="hover:text-foreground">hello@dotzie.app</a>{" "}
+              <span className="text-xs">[PLACEHOLDER]</span>
+            </li>
           </ul>
           <div className="mt-4 flex gap-2" aria-label="Social links">
             {["X", "GH", "IG"].map((s) => (
@@ -380,7 +689,7 @@ function Footer() {
                 key={s}
                 href="#"
                 aria-label={`${s} (placeholder)`}
-                className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border text-xs text-muted-foreground hover:text-foreground"
+                className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border text-xs text-muted-foreground transition-colors hover:border-accent-500/50 hover:text-foreground"
               >
                 {s}
               </a>
@@ -390,7 +699,7 @@ function Footer() {
       </div>
       <div className="border-t border-border">
         <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-2 px-6 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center">
-          <p>© {new Date().getFullYear()} Dotzee. [PLACEHOLDER] All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Dotzie. [PLACEHOLDER] All rights reserved.</p>
           <p>Made offline, on purpose.</p>
         </div>
       </div>
@@ -405,7 +714,7 @@ function FooterCol({ title, links }: { title: string; links: [string, string][] 
       <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
         {links.map(([label, href]) => (
           <li key={label}>
-            <a href={href} className="hover:text-foreground">{label}</a>
+            <a href={href} className="transition-colors hover:text-foreground">{label}</a>
           </li>
         ))}
       </ul>
@@ -424,10 +733,10 @@ function AppleGlyph() {
 function PlayGlyph() {
   return (
     <svg aria-hidden viewBox="0 0 24 24" className="h-6 w-6">
-      <path d="M3.6 2.2C3.2 2.5 3 3 3 3.6v16.8c0 .6.2 1.1.6 1.4l9.8-9.8L3.6 2.2z" fill="#6B5CFF"/>
-      <path d="M17.6 8.4L14.4 6.6 4 1c-.2-.1-.4-.1-.6-.1l10 10L17.6 8.4z" fill="#8A7EFF"/>
-      <path d="M21 10.7l-3.4-1.9-3.2 3.2 3.2 3.2 3.4-1.9c1-.5 1-2.1 0-2.6z" fill="#4A3FCC"/>
-      <path d="M3.4 22.9c.2 0 .4 0 .6-.1l10.4-5.7 3.2-1.8-3.8-3.8L3.4 22.9z" fill="#5D50EC"/>
+      <path d="M3.6 2.2C3.2 2.5 3 3 3 3.6v16.8c0 .6.2 1.1.6 1.4l9.8-9.8L3.6 2.2z" fill="#6B5CFF" />
+      <path d="M17.6 8.4L14.4 6.6 4 1c-.2-.1-.4-.1-.6-.1l10 10L17.6 8.4z" fill="#8A7EFF" />
+      <path d="M21 10.7l-3.4-1.9-3.2 3.2 3.2 3.2 3.4-1.9c1-.5 1-2.1 0-2.6z" fill="#4A3FCC" />
+      <path d="M3.4 22.9c.2 0 .4 0 .6-.1l10.4-5.7 3.2-1.8-3.8-3.8L3.4 22.9z" fill="#5D50EC" />
     </svg>
   );
 }
