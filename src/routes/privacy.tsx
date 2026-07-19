@@ -3,9 +3,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 export const Route = createFileRoute("/privacy")({
   head: () => ({
     meta: [
-      { title: "Privacy Policy — Dotzee" },
-      { name: "description", content: "How Dotzee handles your data — the short version: it doesn't." },
-      { property: "og:title", content: "Privacy Policy — Dotzee" },
+      { title: "Privacy Policy — Dotzie" },
+      { name: "description", content: "How Dotzie handles your data — the short version: it doesn't." },
+      { property: "og:title", content: "Privacy Policy — Dotzie" },
       { property: "og:url", content: "/privacy" },
     ],
     links: [{ rel: "canonical", href: "/privacy" }],
@@ -20,7 +20,7 @@ function PrivacyPage() {
       <h1 className="mt-6 font-display text-5xl tracking-tight">Privacy Policy</h1>
       <p className="mt-4 text-sm text-muted-foreground">[PLACEHOLDER] Last updated: —</p>
       <div className="prose prose-neutral dark:prose-invert mt-10 space-y-4 text-muted-foreground">
-        <p>[PLACEHOLDER] Dotzee is an offline-first application. We do not collect, transmit, or store your data on any server. All content you enter is written to an encrypted database on your device using AES-256-GCM.</p>
+        <p>[PLACEHOLDER] Dotzie is an offline-first application. We do not collect, transmit, or store your data on any server. All content you enter is written to an encrypted database on your device using AES-256-GCM.</p>
         <p>[PLACEHOLDER] Replace this page with real legal copy before public launch.</p>
       </div>
     </div>
