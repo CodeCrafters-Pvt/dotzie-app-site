@@ -478,6 +478,41 @@ function TabBar({ active }: { active: string }) {
   );
 }
 
+function Features() {
+  return (
+    <section id="features" className="mx-auto max-w-6xl px-6 py-24 lg:py-32">
+      <div className="reveal max-w-2xl">
+        <p className="text-sm font-medium text-accent-500">What's inside</p>
+        <h2 className="mt-3 font-display text-4xl tracking-tight sm:text-5xl">
+          Every feature built for a phone that trusts itself.
+        </h2>
+        <p className="mt-4 text-muted-foreground">
+          No dashboards to log into, no companies to trust. Dotzie runs entirely on your device — the app is the product, not the pipeline behind it.
+        </p>
+      </div>
+
+      <ul className="reveal mt-14 grid gap-px overflow-hidden rounded-3xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
+        {features.map((f, i) => (
+          <li
+            key={f.title}
+            className="group relative overflow-hidden bg-card p-8 transition-all duration-500 hover:bg-elevated"
+            style={{ transitionDelay: `${i * 30}ms` }}
+          >
+            <span
+              aria-hidden
+              className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-accent-500/0 blur-2xl transition-all duration-700 group-hover:bg-accent-500/30"
+            />
+            <span className="relative inline-flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-background transition-transform duration-500 group-hover:-translate-y-1 group-hover:border-accent-500/50">
+              <f.icon className="h-5 w-5 text-accent-500" aria-hidden />
+            </span>
+            <h3 className="relative mt-6 text-lg font-semibold">{f.title}</h3>
+            <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">{f.desc}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
 
 function Privacy() {
   return (
