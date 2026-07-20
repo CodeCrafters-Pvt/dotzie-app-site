@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   Wifi,
@@ -8,6 +8,7 @@ import {
   Sparkles,
   LayoutGrid,
   ArrowRight,
+  ArrowLeft,
   QrCode,
   TrendingDown,
   TrendingUp,
@@ -17,6 +18,9 @@ import {
   Coffee,
   Film,
   Wallet,
+  Target,
+  PiggyBank,
+  Plus,
 } from "lucide-react";
 import {
   Accordion,
@@ -25,6 +29,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { AccentSwitcher } from "@/components/accent-switcher";
 import dotzieLogo from "@/assets/dotzie-icon.png";
 
 const APP_NAME = "Dotzie";
