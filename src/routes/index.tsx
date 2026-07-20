@@ -207,8 +207,14 @@ function Hero() {
           </span>
         </div>
 
+        <div className="mt-10 flex flex-col items-center justify-center gap-6 sm:flex-row sm:gap-10">
+          <AnimatedDotzie />
+          <LogoOrbit />
+        </div>
+
         <h1 className="mx-auto mt-8 max-w-4xl animate-fade-up font-display text-5xl leading-[1.02] tracking-tight [animation-delay:120ms] sm:text-6xl lg:text-[5.5rem]">
           Track every expense.
+
           <br />
           <span
             className="animate-shimmer-text bg-clip-text italic text-transparent"
