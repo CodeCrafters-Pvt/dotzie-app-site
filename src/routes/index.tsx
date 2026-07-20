@@ -566,6 +566,144 @@ function ScreenTimeline() {
   );
 }
 
+function ScreenBudgets() {
+  const budgets = [
+    { icon: Utensils, label: "Dining", used: 320, cap: 400, tone: "bg-accent-500" },
+    { icon: Car, label: "Transport", used: 145, cap: 250, tone: "bg-accent-400" },
+    { icon: Film, label: "Leisure", used: 82, cap: 120, tone: "bg-accent-300" },
+    { icon: ShoppingBag, label: "Shopping", used: 210, cap: 200, tone: "bg-rose-500" },
+  ];
+  return (
+    <div className="flex h-full flex-col">
+      <StatusBar />
+      <div className="mt-3 px-5">
+        <p className="text-[10px] uppercase tracking-widest text-white/40">September</p>
+        <p className="mt-1 font-display text-2xl">Budgets</p>
+      </div>
+      <div className="mt-4 space-y-2 px-5">
+        {budgets.map((b) => {
+          const pct = Math.min(100, Math.round((b.used / b.cap) * 100));
+          const over = b.used > b.cap;
+          return (
+            <div key={b.label} className="rounded-xl bg-[#16121F] p-3">
+              <div className="flex items-center gap-2">
+                <b.icon className="h-4 w-4 text-accent-300" />
+                <p className="flex-1 text-[12px] font-medium">{b.label}</p>
+                <p className={`text-[11px] ${over ? "text-rose-400" : "text-white/70"}`}>
+                  ${b.used} / ${b.cap}
+                </p>
+              </div>
+              <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+                <div className={`h-full ${b.tone}`} style={{ width: `${pct}%` }} />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <TabBar active="Budgets" />
+    </div>
+  );
+}
+
+function ScreenGoals() {
+  const goals = [
+    { icon: PiggyBank, label: "Emergency fund", cur: 1840, tgt: 3000 },
+    { icon: Target, label: "Kyoto trip", cur: 720, tgt: 1500 },
+    { icon: Wallet, label: "New laptop", cur: 480, tgt: 1200 },
+  ];
+  return (
+    <div className="flex h-full flex-col">
+      <StatusBar />
+      <div className="mt-3 px-5">
+        <p className="text-[10px] uppercase tracking-widest text-white/40">Saving toward</p>
+        <p className="mt-1 font-display text-2xl">Goals</p>
+      </div>
+      <div className="mt-5 space-y-3 px-5">
+        {goals.map((g) => {
+          const pct = Math.round((g.cur / g.tgt) * 100);
+          return (
+            <div key={g.label} className="rounded-2xl bg-[#16121F] p-4">
+              <div className="flex items-center gap-2">
+                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent-500/20">
+                  <g.icon className="h-4 w-4 text-accent-300" />
+                </span>
+                <div className="flex-1">
+                  <p className="text-[12px] font-medium">{g.label}</p>
+                  <p className="text-[10px] text-white/50">${g.cur} of ${g.tgt}</p>
+                </div>
+                <p className="text-[12px] font-semibold text-accent-300">{pct}%</p>
+              </div>
+              <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+                <div
+                  className="h-full rounded-full"
+                  style={{
+                    width: `${pct}%`,
+                    background: "linear-gradient(90deg, var(--accent-400), var(--accent-600))",
+                  }}
+                />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <TabBar active="Snapshot" />
+    </div>
+  );
+}
+
+function ScreenAdd() {
+  const cats = [
+    { icon: Utensils, label: "Dining" },
+    { icon: Car, label: "Transit" },
+    { icon: Coffee, label: "Coffee" },
+    { icon: ShoppingBag, label: "Shop" },
+    { icon: Film, label: "Leisure" },
+    { icon: Wallet, label: "Bills" },
+  ];
+  return (
+    <div className="flex h-full flex-col">
+      <StatusBar />
+      <div className="mt-3 flex items-center justify-between px-5">
+        <span className="text-[11px] text-white/40">Cancel</span>
+        <span className="text-[11px] font-medium text-accent-300">Save</span>
+      </div>
+      <div className="mt-6 px-5 text-center">
+        <p className="text-[10px] uppercase tracking-widest text-white/40">Amount</p>
+        <p className="mt-1 font-display text-5xl">
+          <span className="text-white/40">$</span>24
+          <span className="text-white/50">.50</span>
+        </p>
+      </div>
+      <div className="mt-5 px-5">
+        <div className="rounded-xl bg-[#16121F] p-3">
+          <p className="text-[10px] text-white/40">Note</p>
+          <p className="mt-1 text-[12px]">Lunch with Sam</p>
+        </div>
+      </div>
+      <p className="mx-5 mt-5 text-[10px] uppercase tracking-widest text-white/40">Category</p>
+      <div className="mx-5 mt-2 grid grid-cols-3 gap-2">
+        {cats.map((c, i) => (
+          <div
+            key={c.label}
+            className={`flex flex-col items-center gap-1 rounded-xl p-3 ${
+              i === 0 ? "bg-accent-500/25 ring-1 ring-accent-400" : "bg-[#16121F]"
+            }`}
+          >
+            <c.icon className="h-4 w-4 text-accent-300" />
+            <span className="text-[10px]">{c.label}</span>
+          </div>
+        ))}
+      </div>
+      <div className="mt-auto flex items-center justify-center pb-5">
+        <span className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-brand shadow-lg">
+          <Plus className="h-5 w-5 text-white" />
+        </span>
+      </div>
+    </div>
+  );
+}
+
+
 function TabBar({ active }: { active: string }) {
   const tabs = ["Snapshot", "Insights", "Timeline", "Budgets"];
   return (
