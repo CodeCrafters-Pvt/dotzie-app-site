@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   Wifi,
@@ -8,6 +8,7 @@ import {
   Sparkles,
   LayoutGrid,
   ArrowRight,
+  ArrowLeft,
   QrCode,
   TrendingDown,
   TrendingUp,
@@ -17,6 +18,9 @@ import {
   Coffee,
   Film,
   Wallet,
+  Target,
+  PiggyBank,
+  Plus,
 } from "lucide-react";
 import {
   Accordion,
@@ -25,6 +29,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { AccentSwitcher } from "@/components/accent-switcher";
 import dotzieLogo from "@/assets/dotzie-icon.png";
 
 const APP_NAME = "Dotzie";
@@ -166,6 +171,7 @@ function Header() {
           <a href="#faq" className="transition-colors hover:text-foreground">FAQ</a>
         </nav>
         <div className="flex items-center gap-2">
+          <AccentSwitcher />
           <ThemeToggle />
           <a
             href="#download"
@@ -256,30 +262,126 @@ function Hero() {
         </p>
       </div>
 
-      {/* Three phones stage — hero showcase */}
-      <div className="relative mx-auto mt-6 max-w-6xl px-6 pb-24 lg:pb-32">
-        <div className="reveal relative mx-auto flex h-[640px] max-w-5xl items-end justify-center">
-          <div className="absolute left-1/2 top-8 -translate-x-[85%] rotate-[-8deg] animate-float-slow">
-            <PhoneFrame><ScreenInsights /></PhoneFrame>
-          </div>
-          <div className="absolute left-1/2 top-16 translate-x-[-15%] rotate-[-2deg] animate-float [animation-delay:-2s]">
-            <PhoneFrame><ScreenSnapshot /></PhoneFrame>
-          </div>
-          <div className="absolute left-1/2 top-8 translate-x-[55%] rotate-[6deg] animate-float-slow [animation-delay:-4s]">
-            <PhoneFrame><ScreenTimeline /></PhoneFrame>
-          </div>
-        </div>
-      </div>
+      {/* Phone carousel — slide-show style */}
+      <PhoneCarousel />
     </section>
   );
 }
 
-function PhoneFrame({ children }: { children: React.ReactNode }) {
+function PhoneCarousel() {
+  const screens: { key: string; label: string; el: React.ReactNode }[] = [
+    { key: "snapshot", label: "Snapshot", el: <ScreenSnapshot /> },
+    { key: "insights", label: "Insights", el: <ScreenInsights /> },
+    { key: "timeline", label: "Timeline", el: <ScreenTimeline /> },
+    { key: "budgets", label: "Budgets", el: <ScreenBudgets /> },
+    { key: "goals", label: "Goals", el: <ScreenGoals /> },
+    { key: "add", label: "Quick add", el: <ScreenAdd /> },
+  ];
+  const n = screens.length;
+  const [active, setActive] = useState(0);
+
+  const go = (dir: number) => setActive((a) => (a + dir + n) % n);
+
   return (
-    <div className="relative h-[560px] w-[260px] rounded-[2.6rem] border border-border bg-[#0B0B0F] p-2.5 shadow-2xl ring-1 ring-white/5">
-      <div className="absolute left-1/2 top-2 z-10 h-6 w-24 -translate-x-1/2 rounded-full bg-black/90" />
-      <div className="relative h-full w-full overflow-hidden rounded-[2.1rem] bg-[#07070A] text-[#F4F3FA]">
-        {children}
+    <div className="relative mx-auto mt-6 max-w-6xl px-4 pb-24 sm:px-6 lg:pb-32">
+      <div className="reveal relative mx-auto h-[560px] w-full max-w-5xl sm:h-[640px]">
+        {/* stage */}
+        <div className="relative h-full w-full [perspective:1400px]">
+          {screens.map((s, i) => {
+            let pos = i - active;
+            if (pos > n / 2) pos -= n;
+            if (pos < -n / 2) pos += n;
+            const abs = Math.abs(pos);
+            const visible = abs <= 2;
+            const scale = pos === 0 ? 1 : abs === 1 ? 0.78 : 0.6;
+            const translateX = pos * 34; // %
+            const translateY = pos === 0 ? 0 : 24;
+            const rotateY = pos === 0 ? 0 : pos > 0 ? -14 : 14;
+            const opacity = !visible ? 0 : pos === 0 ? 1 : abs === 1 ? 0.7 : 0.35;
+            const z = 50 - abs * 10;
+            return (
+              <button
+                type="button"
+                key={s.key}
+                onClick={() => setActive(i)}
+                aria-label={`Show ${s.label} screen`}
+                aria-current={pos === 0}
+                tabIndex={visible ? 0 : -1}
+                className="absolute left-1/2 top-1/2 origin-center transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] focus:outline-none"
+                style={{
+                  transform: `translate(-50%, -50%) translateX(${translateX}%) translateY(${translateY}px) scale(${scale}) rotateY(${rotateY}deg)`,
+                  opacity,
+                  zIndex: z,
+                  pointerEvents: visible ? "auto" : "none",
+                  filter: pos === 0 ? "none" : "blur(0.5px)",
+                }}
+              >
+                <PhoneFrame glow={pos === 0}>{s.el}</PhoneFrame>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* arrows */}
+        <button
+          type="button"
+          onClick={() => go(-1)}
+          aria-label="Previous screen"
+          className="group absolute left-2 top-1/2 z-[60] inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-card/80 text-foreground shadow-lg backdrop-blur-md transition-all hover:-translate-y-1/2 hover:scale-110 hover:border-accent-500/60 hover:text-accent-500 sm:left-4 sm:h-14 sm:w-14"
+        >
+          <ArrowLeft className="h-5 w-5 transition-transform group-hover:-translate-x-0.5" />
+        </button>
+        <button
+          type="button"
+          onClick={() => go(1)}
+          aria-label="Next screen"
+          className="group absolute right-2 top-1/2 z-[60] inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-card/80 text-foreground shadow-lg backdrop-blur-md transition-all hover:-translate-y-1/2 hover:scale-110 hover:border-accent-500/60 hover:text-accent-500 sm:right-4 sm:h-14 sm:w-14"
+        >
+          <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />
+        </button>
+      </div>
+
+      {/* label + dots */}
+      <div className="mt-6 flex flex-col items-center gap-4">
+        <p className="font-display text-lg italic text-muted-foreground">
+          <span className="text-foreground">{screens[active].label}</span>
+          <span className="mx-2 opacity-40">·</span>
+          <span className="tabular-nums text-sm">{active + 1} / {n}</span>
+        </p>
+        <div className="flex items-center gap-2" role="tablist" aria-label="App screens">
+          {screens.map((s, i) => (
+            <button
+              key={s.key}
+              type="button"
+              role="tab"
+              aria-selected={i === active}
+              aria-label={s.label}
+              onClick={() => setActive(i)}
+              className={`h-1.5 rounded-full transition-all ${
+                i === active ? "w-8 bg-accent-500" : "w-1.5 bg-border hover:bg-accent-400/60"
+              }`}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PhoneFrame({ children, glow = false }: { children: React.ReactNode; glow?: boolean }) {
+  return (
+    <div className="relative">
+      {glow ? (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute -inset-8 -z-10 rounded-[3.5rem] bg-accent-500/20 blur-3xl"
+        />
+      ) : null}
+      <div className="relative h-[440px] w-[210px] rounded-[2.2rem] border border-border bg-[#0B0B0F] p-2 shadow-2xl ring-1 ring-white/5 sm:h-[520px] sm:w-[248px] sm:rounded-[2.6rem] sm:p-2.5">
+        <div className="absolute left-1/2 top-2 z-10 h-5 w-20 -translate-x-1/2 rounded-full bg-black/90 sm:h-6 sm:w-24" />
+        <div className="relative h-full w-full overflow-hidden rounded-[1.75rem] bg-[#07070A] text-[#F4F3FA] sm:rounded-[2.1rem]">
+          {children}
+        </div>
       </div>
     </div>
   );
@@ -463,6 +565,144 @@ function ScreenTimeline() {
     </div>
   );
 }
+
+function ScreenBudgets() {
+  const budgets = [
+    { icon: Utensils, label: "Dining", used: 320, cap: 400, tone: "bg-accent-500" },
+    { icon: Car, label: "Transport", used: 145, cap: 250, tone: "bg-accent-400" },
+    { icon: Film, label: "Leisure", used: 82, cap: 120, tone: "bg-accent-300" },
+    { icon: ShoppingBag, label: "Shopping", used: 210, cap: 200, tone: "bg-rose-500" },
+  ];
+  return (
+    <div className="flex h-full flex-col">
+      <StatusBar />
+      <div className="mt-3 px-5">
+        <p className="text-[10px] uppercase tracking-widest text-white/40">September</p>
+        <p className="mt-1 font-display text-2xl">Budgets</p>
+      </div>
+      <div className="mt-4 space-y-2 px-5">
+        {budgets.map((b) => {
+          const pct = Math.min(100, Math.round((b.used / b.cap) * 100));
+          const over = b.used > b.cap;
+          return (
+            <div key={b.label} className="rounded-xl bg-[#16121F] p-3">
+              <div className="flex items-center gap-2">
+                <b.icon className="h-4 w-4 text-accent-300" />
+                <p className="flex-1 text-[12px] font-medium">{b.label}</p>
+                <p className={`text-[11px] ${over ? "text-rose-400" : "text-white/70"}`}>
+                  ${b.used} / ${b.cap}
+                </p>
+              </div>
+              <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+                <div className={`h-full ${b.tone}`} style={{ width: `${pct}%` }} />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <TabBar active="Budgets" />
+    </div>
+  );
+}
+
+function ScreenGoals() {
+  const goals = [
+    { icon: PiggyBank, label: "Emergency fund", cur: 1840, tgt: 3000 },
+    { icon: Target, label: "Kyoto trip", cur: 720, tgt: 1500 },
+    { icon: Wallet, label: "New laptop", cur: 480, tgt: 1200 },
+  ];
+  return (
+    <div className="flex h-full flex-col">
+      <StatusBar />
+      <div className="mt-3 px-5">
+        <p className="text-[10px] uppercase tracking-widest text-white/40">Saving toward</p>
+        <p className="mt-1 font-display text-2xl">Goals</p>
+      </div>
+      <div className="mt-5 space-y-3 px-5">
+        {goals.map((g) => {
+          const pct = Math.round((g.cur / g.tgt) * 100);
+          return (
+            <div key={g.label} className="rounded-2xl bg-[#16121F] p-4">
+              <div className="flex items-center gap-2">
+                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent-500/20">
+                  <g.icon className="h-4 w-4 text-accent-300" />
+                </span>
+                <div className="flex-1">
+                  <p className="text-[12px] font-medium">{g.label}</p>
+                  <p className="text-[10px] text-white/50">${g.cur} of ${g.tgt}</p>
+                </div>
+                <p className="text-[12px] font-semibold text-accent-300">{pct}%</p>
+              </div>
+              <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+                <div
+                  className="h-full rounded-full"
+                  style={{
+                    width: `${pct}%`,
+                    background: "linear-gradient(90deg, var(--accent-400), var(--accent-600))",
+                  }}
+                />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <TabBar active="Snapshot" />
+    </div>
+  );
+}
+
+function ScreenAdd() {
+  const cats = [
+    { icon: Utensils, label: "Dining" },
+    { icon: Car, label: "Transit" },
+    { icon: Coffee, label: "Coffee" },
+    { icon: ShoppingBag, label: "Shop" },
+    { icon: Film, label: "Leisure" },
+    { icon: Wallet, label: "Bills" },
+  ];
+  return (
+    <div className="flex h-full flex-col">
+      <StatusBar />
+      <div className="mt-3 flex items-center justify-between px-5">
+        <span className="text-[11px] text-white/40">Cancel</span>
+        <span className="text-[11px] font-medium text-accent-300">Save</span>
+      </div>
+      <div className="mt-6 px-5 text-center">
+        <p className="text-[10px] uppercase tracking-widest text-white/40">Amount</p>
+        <p className="mt-1 font-display text-5xl">
+          <span className="text-white/40">$</span>24
+          <span className="text-white/50">.50</span>
+        </p>
+      </div>
+      <div className="mt-5 px-5">
+        <div className="rounded-xl bg-[#16121F] p-3">
+          <p className="text-[10px] text-white/40">Note</p>
+          <p className="mt-1 text-[12px]">Lunch with Sam</p>
+        </div>
+      </div>
+      <p className="mx-5 mt-5 text-[10px] uppercase tracking-widest text-white/40">Category</p>
+      <div className="mx-5 mt-2 grid grid-cols-3 gap-2">
+        {cats.map((c, i) => (
+          <div
+            key={c.label}
+            className={`flex flex-col items-center gap-1 rounded-xl p-3 ${
+              i === 0 ? "bg-accent-500/25 ring-1 ring-accent-400" : "bg-[#16121F]"
+            }`}
+          >
+            <c.icon className="h-4 w-4 text-accent-300" />
+            <span className="text-[10px]">{c.label}</span>
+          </div>
+        ))}
+      </div>
+      <div className="mt-auto flex items-center justify-center pb-5">
+        <span className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-brand shadow-lg">
+          <Plus className="h-5 w-5 text-white" />
+        </span>
+      </div>
+    </div>
+  );
+}
+
 
 function TabBar({ active }: { active: string }) {
   const tabs = ["Snapshot", "Insights", "Timeline", "Budgets"];
