@@ -171,6 +171,7 @@ function Header() {
           <a href="#faq" className="transition-colors hover:text-foreground">FAQ</a>
         </nav>
         <div className="flex items-center gap-2">
+          <AccentSwitcher />
           <ThemeToggle />
           <a
             href="#download"
