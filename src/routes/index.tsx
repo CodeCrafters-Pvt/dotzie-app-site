@@ -368,12 +368,20 @@ function PhoneCarousel() {
   );
 }
 
-function PhoneFrame({ children }: { children: React.ReactNode }) {
+function PhoneFrame({ children, glow = false }: { children: React.ReactNode; glow?: boolean }) {
   return (
-    <div className="relative h-[560px] w-[260px] rounded-[2.6rem] border border-border bg-[#0B0B0F] p-2.5 shadow-2xl ring-1 ring-white/5">
-      <div className="absolute left-1/2 top-2 z-10 h-6 w-24 -translate-x-1/2 rounded-full bg-black/90" />
-      <div className="relative h-full w-full overflow-hidden rounded-[2.1rem] bg-[#07070A] text-[#F4F3FA]">
-        {children}
+    <div className="relative">
+      {glow ? (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute -inset-8 -z-10 rounded-[3.5rem] bg-accent-500/20 blur-3xl"
+        />
+      ) : null}
+      <div className="relative h-[440px] w-[210px] rounded-[2.2rem] border border-border bg-[#0B0B0F] p-2 shadow-2xl ring-1 ring-white/5 sm:h-[520px] sm:w-[248px] sm:rounded-[2.6rem] sm:p-2.5">
+        <div className="absolute left-1/2 top-2 z-10 h-5 w-20 -translate-x-1/2 rounded-full bg-black/90 sm:h-6 sm:w-24" />
+        <div className="relative h-full w-full overflow-hidden rounded-[1.75rem] bg-[#07070A] text-[#F4F3FA] sm:rounded-[2.1rem]">
+          {children}
+        </div>
       </div>
     </div>
   );
