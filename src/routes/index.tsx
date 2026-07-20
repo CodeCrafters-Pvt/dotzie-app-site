@@ -443,6 +443,12 @@ function PhoneCarousel() {
 }
 
 function PhoneFrame({ children, glow = false }: { children: React.ReactNode; glow?: boolean }) {
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    setLoading(true);
+    const t = setTimeout(() => setLoading(false), 650);
+    return () => clearTimeout(t);
+  }, [children]);
   return (
     <div className="relative">
       {glow ? (
@@ -454,12 +460,38 @@ function PhoneFrame({ children, glow = false }: { children: React.ReactNode; glo
       <div className="relative h-[440px] w-[210px] rounded-[2.2rem] border border-border bg-[#0B0B0F] p-2 shadow-2xl ring-1 ring-white/5 sm:h-[520px] sm:w-[248px] sm:rounded-[2.6rem] sm:p-2.5">
         <div className="absolute left-1/2 top-2 z-10 h-5 w-20 -translate-x-1/2 rounded-full bg-black/90 sm:h-6 sm:w-24" />
         <div className="relative h-full w-full overflow-hidden rounded-[1.75rem] bg-[#07070A] text-[#F4F3FA] sm:rounded-[2.1rem]">
-          {children}
+          <div
+            className={`h-full w-full transition-opacity duration-500 ${loading ? "opacity-0" : "opacity-100"}`}
+          >
+            {children}
+          </div>
+          {loading ? <PhoneSkeleton /> : null}
         </div>
       </div>
     </div>
   );
 }
+
+function PhoneSkeleton() {
+  return (
+    <div className="absolute inset-0 flex flex-col gap-3 px-5 pt-8 animate-fade-up">
+      <div className="flex items-center justify-between">
+        <div className="h-2.5 w-10 rounded-full animate-skeleton" />
+        <div className="h-2.5 w-8 rounded-full animate-skeleton" />
+      </div>
+      <div className="mt-2 h-20 w-full rounded-2xl animate-skeleton" />
+      <div className="h-14 w-full rounded-2xl animate-skeleton" />
+      <div className="mt-1 h-2 w-24 rounded-full animate-skeleton" />
+      <div className="grid grid-cols-2 gap-2">
+        <div className="h-16 rounded-xl animate-skeleton" />
+        <div className="h-16 rounded-xl animate-skeleton" />
+      </div>
+      <div className="h-10 w-full rounded-xl animate-skeleton" />
+      <div className="h-10 w-full rounded-xl animate-skeleton" />
+    </div>
+  );
+}
+
 
 function StatusBar() {
   return (
