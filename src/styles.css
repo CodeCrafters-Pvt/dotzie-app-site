@@ -99,6 +99,36 @@
   --ring: var(--accent-400);
 }
 
+/* Accent color themes — set via data-accent on <html> */
+:root[data-accent="red"] {
+  --accent-300: #FCA5A5;
+  --accent-400: #F87171;
+  --accent-500: #EF4444;
+  --accent-600: #DC2626;
+  --accent-700: #B91C1C;
+}
+:root[data-accent="jungle"] {
+  --accent-300: #86EFAC;
+  --accent-400: #4ADE80;
+  --accent-500: #22C55E;
+  --accent-600: #16A34A;
+  --accent-700: #15803D;
+}
+:root[data-accent="blue"] {
+  --accent-300: #93C5FD;
+  --accent-400: #60A5FA;
+  --accent-500: #3B82F6;
+  --accent-600: #2563EB;
+  --accent-700: #1D4ED8;
+}
+:root[data-accent="teal"] {
+  --accent-300: #5EEAD4;
+  --accent-400: #2DD4BF;
+  --accent-500: #14B8A6;
+  --accent-600: #0D9488;
+  --accent-700: #0F766E;
+}
+
 @layer base {
   * {
     border-color: var(--color-border);
