@@ -274,7 +274,75 @@ function Hero() {
   );
 }
 
+function AnimatedDotzie() {
+  const letters = "Dotzie".split("");
+  return (
+    <div className="group relative select-none" aria-label="Dotzie">
+      <span
+        aria-hidden
+        className="pointer-events-none absolute -inset-x-6 -inset-y-3 -z-10 rounded-full bg-accent-500/10 blur-2xl transition-opacity duration-500 group-hover:opacity-100 opacity-70"
+      />
+      <span className="flex items-baseline font-display text-6xl italic tracking-tight sm:text-7xl lg:text-[6.5rem]">
+        {letters.map((ch, i) => (
+          <span
+            key={i}
+            className="inline-block animate-letter-drop bg-clip-text text-transparent"
+            style={{
+              animationDelay: `${180 + i * 90}ms`,
+              backgroundImage:
+                "linear-gradient(180deg, var(--foreground) 0%, var(--foreground) 55%, color-mix(in oklab, var(--accent-500) 80%, var(--foreground)) 100%)",
+            }}
+          >
+            <span
+              className="inline-block animate-letter-wave"
+              style={{ animationDelay: `${i * 220}ms` }}
+            >
+              {ch}
+            </span>
+          </span>
+        ))}
+        <span
+          className="ml-1 inline-block h-3 w-3 translate-y-[-0.1em] animate-letter-drop rounded-full bg-accent-500 shadow-glow sm:h-3.5 sm:w-3.5"
+          style={{ animationDelay: `${180 + letters.length * 90}ms` }}
+        />
+      </span>
+    </div>
+  );
+}
+
+function LogoOrbit() {
+  return (
+    <div className="relative h-28 w-28 shrink-0 sm:h-32 sm:w-32">
+      {/* outer ring */}
+      <span
+        aria-hidden
+        className="absolute inset-0 rounded-full border border-dashed border-accent-500/40 animate-spin-slow"
+      >
+        <span className="absolute left-1/2 top-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent-400 shadow-glow" />
+        <span className="absolute right-0 top-1/2 h-1.5 w-1.5 -translate-y-1/2 translate-x-1/2 rounded-full bg-accent-300" />
+      </span>
+      {/* inner ring */}
+      <span
+        aria-hidden
+        className="absolute inset-3 rounded-full border border-accent-400/30 animate-spin-reverse"
+      >
+        <span className="absolute left-0 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent-500" />
+      </span>
+      {/* glow pulse */}
+      <span
+        aria-hidden
+        className="absolute inset-6 rounded-full bg-accent-500/25 blur-xl animate-pulse-ring"
+      />
+      {/* logo */}
+      <span className="absolute inset-5 overflow-hidden rounded-2xl shadow-glow ring-1 ring-white/10 animate-float">
+        <img src={dotzieLogo} alt="Dotzie logo" className="h-full w-full object-cover" />
+      </span>
+    </div>
+  );
+}
+
 function PhoneCarousel() {
+
   const screens: { key: string; label: string; el: React.ReactNode }[] = [
     { key: "snapshot", label: "Snapshot", el: <ScreenSnapshot /> },
     { key: "insights", label: "Insights", el: <ScreenInsights /> },
