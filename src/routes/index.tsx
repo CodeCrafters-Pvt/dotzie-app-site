@@ -262,21 +262,109 @@ function Hero() {
         </p>
       </div>
 
-      {/* Three phones stage — hero showcase */}
-      <div className="relative mx-auto mt-6 max-w-6xl px-6 pb-24 lg:pb-32">
-        <div className="reveal relative mx-auto flex h-[640px] max-w-5xl items-end justify-center">
-          <div className="absolute left-1/2 top-8 -translate-x-[85%] rotate-[-8deg] animate-float-slow">
-            <PhoneFrame><ScreenInsights /></PhoneFrame>
-          </div>
-          <div className="absolute left-1/2 top-16 translate-x-[-15%] rotate-[-2deg] animate-float [animation-delay:-2s]">
-            <PhoneFrame><ScreenSnapshot /></PhoneFrame>
-          </div>
-          <div className="absolute left-1/2 top-8 translate-x-[55%] rotate-[6deg] animate-float-slow [animation-delay:-4s]">
-            <PhoneFrame><ScreenTimeline /></PhoneFrame>
-          </div>
+      {/* Phone carousel — slide-show style */}
+      <PhoneCarousel />
+    </section>
+  );
+}
+
+function PhoneCarousel() {
+  const screens: { key: string; label: string; el: React.ReactNode }[] = [
+    { key: "snapshot", label: "Snapshot", el: <ScreenSnapshot /> },
+    { key: "insights", label: "Insights", el: <ScreenInsights /> },
+    { key: "timeline", label: "Timeline", el: <ScreenTimeline /> },
+    { key: "budgets", label: "Budgets", el: <ScreenBudgets /> },
+    { key: "goals", label: "Goals", el: <ScreenGoals /> },
+    { key: "add", label: "Quick add", el: <ScreenAdd /> },
+  ];
+  const n = screens.length;
+  const [active, setActive] = useState(0);
+
+  const go = (dir: number) => setActive((a) => (a + dir + n) % n);
+
+  return (
+    <div className="relative mx-auto mt-6 max-w-6xl px-4 pb-24 sm:px-6 lg:pb-32">
+      <div className="reveal relative mx-auto h-[560px] w-full max-w-5xl sm:h-[640px]">
+        {/* stage */}
+        <div className="relative h-full w-full [perspective:1400px]">
+          {screens.map((s, i) => {
+            let pos = i - active;
+            if (pos > n / 2) pos -= n;
+            if (pos < -n / 2) pos += n;
+            const abs = Math.abs(pos);
+            const visible = abs <= 2;
+            const scale = pos === 0 ? 1 : abs === 1 ? 0.78 : 0.6;
+            const translateX = pos * 34; // %
+            const translateY = pos === 0 ? 0 : 24;
+            const rotateY = pos === 0 ? 0 : pos > 0 ? -14 : 14;
+            const opacity = !visible ? 0 : pos === 0 ? 1 : abs === 1 ? 0.7 : 0.35;
+            const z = 50 - abs * 10;
+            return (
+              <button
+                type="button"
+                key={s.key}
+                onClick={() => setActive(i)}
+                aria-label={`Show ${s.label} screen`}
+                aria-current={pos === 0}
+                tabIndex={visible ? 0 : -1}
+                className="absolute left-1/2 top-1/2 origin-center transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] focus:outline-none"
+                style={{
+                  transform: `translate(-50%, -50%) translateX(${translateX}%) translateY(${translateY}px) scale(${scale}) rotateY(${rotateY}deg)`,
+                  opacity,
+                  zIndex: z,
+                  pointerEvents: visible ? "auto" : "none",
+                  filter: pos === 0 ? "none" : "blur(0.5px)",
+                }}
+              >
+                <PhoneFrame glow={pos === 0}>{s.el}</PhoneFrame>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* arrows */}
+        <button
+          type="button"
+          onClick={() => go(-1)}
+          aria-label="Previous screen"
+          className="group absolute left-2 top-1/2 z-[60] inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-card/80 text-foreground shadow-lg backdrop-blur-md transition-all hover:-translate-y-1/2 hover:scale-110 hover:border-accent-500/60 hover:text-accent-500 sm:left-4 sm:h-14 sm:w-14"
+        >
+          <ArrowLeft className="h-5 w-5 transition-transform group-hover:-translate-x-0.5" />
+        </button>
+        <button
+          type="button"
+          onClick={() => go(1)}
+          aria-label="Next screen"
+          className="group absolute right-2 top-1/2 z-[60] inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-card/80 text-foreground shadow-lg backdrop-blur-md transition-all hover:-translate-y-1/2 hover:scale-110 hover:border-accent-500/60 hover:text-accent-500 sm:right-4 sm:h-14 sm:w-14"
+        >
+          <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />
+        </button>
+      </div>
+
+      {/* label + dots */}
+      <div className="mt-6 flex flex-col items-center gap-4">
+        <p className="font-display text-lg italic text-muted-foreground">
+          <span className="text-foreground">{screens[active].label}</span>
+          <span className="mx-2 opacity-40">·</span>
+          <span className="tabular-nums text-sm">{active + 1} / {n}</span>
+        </p>
+        <div className="flex items-center gap-2" role="tablist" aria-label="App screens">
+          {screens.map((s, i) => (
+            <button
+              key={s.key}
+              type="button"
+              role="tab"
+              aria-selected={i === active}
+              aria-label={s.label}
+              onClick={() => setActive(i)}
+              className={`h-1.5 rounded-full transition-all ${
+                i === active ? "w-8 bg-accent-500" : "w-1.5 bg-border hover:bg-accent-400/60"
+              }`}
+            />
+          ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 
