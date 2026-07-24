@@ -149,8 +149,8 @@ function LandingPage() {
 function Wordmark({ className = "" }: { className?: string }) {
   return (
     <a href="#top" className={`group inline-flex items-center gap-2.5 ${className}`}>
-      <span className="relative inline-flex h-8 w-8 items-center justify-center overflow-hidden rounded-[9px] shadow-sm transition-transform duration-300 group-hover:scale-105">
-        <img src={dotzieLogo} alt="Dotzie logo" className="h-full w-full object-cover" />
+      <span className="relative inline-flex h-8 w-8 items-center justify-center overflow-hidden rounded-[9px] bg-gradient-brand shadow-sm ring-1 ring-white/10 transition-transform duration-300 group-hover:scale-105">
+        <span className="font-display text-lg italic leading-none text-white">d</span>
       </span>
       <span className="font-display text-xl tracking-tight">
         Dotzie<span className="text-accent-500">.</span>
