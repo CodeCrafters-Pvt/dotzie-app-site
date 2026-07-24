@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/accordion";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { AccentSwitcher } from "@/components/accent-switcher";
-import dotzieLogo from "@/assets/dotzie-icon.png";
+import { Twitter, Instagram, Github, Linkedin } from "lucide-react";
 
 const APP_NAME = "Dotzie";
 const APP_TAGLINE = "Offline-first, privacy-first expense tracker";
@@ -207,9 +207,8 @@ function Hero() {
           </span>
         </div>
 
-        <div className="mt-10 flex flex-col items-center justify-center gap-6 sm:flex-row sm:gap-10">
+        <div className="mt-10 flex justify-center">
           <AnimatedDotzie />
-          <LogoOrbit />
         </div>
 
         <h1 className="mx-auto mt-8 max-w-4xl animate-fade-up font-display text-5xl leading-[1.02] tracking-tight [animation-delay:120ms] sm:text-6xl lg:text-[5.5rem]">
@@ -310,36 +309,8 @@ function AnimatedDotzie() {
   );
 }
 
-function LogoOrbit() {
-  return (
-    <div className="relative h-28 w-28 shrink-0 sm:h-32 sm:w-32">
-      {/* outer ring */}
-      <span
-        aria-hidden
-        className="absolute inset-0 rounded-full border border-dashed border-accent-500/40 animate-spin-slow"
-      >
-        <span className="absolute left-1/2 top-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent-400 shadow-glow" />
-        <span className="absolute right-0 top-1/2 h-1.5 w-1.5 -translate-y-1/2 translate-x-1/2 rounded-full bg-accent-300" />
-      </span>
-      {/* inner ring */}
-      <span
-        aria-hidden
-        className="absolute inset-3 rounded-full border border-accent-400/30 animate-spin-reverse"
-      >
-        <span className="absolute left-0 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent-500" />
-      </span>
-      {/* glow pulse */}
-      <span
-        aria-hidden
-        className="absolute inset-6 rounded-full bg-accent-500/25 blur-xl animate-pulse-ring"
-      />
-      {/* logo */}
-      <span className="absolute inset-5 overflow-hidden rounded-2xl shadow-glow ring-1 ring-white/10 animate-float">
-        <img src={dotzieLogo} alt="Dotzie logo" className="h-full w-full object-cover" />
-      </span>
-    </div>
-  );
-}
+
+
 
 function PhoneCarousel() {
 
@@ -958,22 +929,31 @@ function Footer() {
           <p className="text-sm font-semibold">Contact</p>
           <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
             <li>
-              <a href="mailto:hello@dotzie.app" className="hover:text-foreground">hello@dotzie.app</a>{" "}
-              <span className="text-xs">[PLACEHOLDER]</span>
+              <a href="mailto:hello@dotzie.app" className="hover:text-foreground">hello@dotzie.app</a>
             </li>
           </ul>
-          <div className="mt-4 flex gap-2" aria-label="Social links">
-            {["X", "GH", "IG"].map((s) => (
+          <p className="mt-6 text-sm font-semibold">Follow</p>
+          <div className="mt-3 flex gap-2" aria-label="Social links">
+            {[
+              { label: "Twitter / X", handle: "@dotzieapp", href: "https://twitter.com/dotzieapp", Icon: Twitter },
+              { label: "Instagram", handle: "@dotzie.app", href: "https://instagram.com/dotzie.app", Icon: Instagram },
+              { label: "GitHub", handle: "dotzie", href: "https://github.com/dotzie", Icon: Github },
+              { label: "LinkedIn", handle: "dotzie", href: "https://linkedin.com/company/dotzie", Icon: Linkedin },
+            ].map(({ label, handle, href, Icon }) => (
               <a
-                key={s}
-                href="#"
-                aria-label={`${s} (placeholder)`}
-                className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border text-xs text-muted-foreground transition-colors hover:border-accent-500/50 hover:text-foreground"
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noreferrer noopener"
+                aria-label={`${label} — ${handle}`}
+                title={`${label} · ${handle}`}
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-all hover:-translate-y-0.5 hover:border-accent-500/60 hover:text-foreground"
               >
-                {s}
+                <Icon className="h-4 w-4" />
               </a>
             ))}
           </div>
+          <p className="mt-3 text-xs text-muted-foreground">@dotzieapp · [PLACEHOLDER]</p>
         </div>
       </div>
       <div className="border-t border-border">
