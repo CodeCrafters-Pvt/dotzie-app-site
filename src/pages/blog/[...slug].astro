@@ -1,0 +1,142 @@
+---
+import Base from "@/layouts/Base.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import { getCollection, render } from "astro:content";
+import type { GetStaticPaths } from "astro";
+
+export const getStaticPaths = (async () => {
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}) satisfies GetStaticPaths;
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const dateFmt = new Intl.DateTimeFormat("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+
+const blogPostingJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.pubDate.toISOString(),
+  ...(post.data.updatedDate && {
+    dateModified: post.data.updatedDate.toISOString(),
+  }),
+  author: { "@type": "Organization", name: post.data.author },
+};
+---
+
+<Base
+  title={`${post.data.title} — Dotzie`}
+  description={post.data.description}
+  path={`/blog/${post.id}`}
+  ogType="article"
+  jsonLd={[blogPostingJsonLd]}
+>
+  <div class="min-h-screen bg-background text-foreground">
+    <Header />
+    <main class="mx-auto max-w-2xl px-6 pt-20 pb-24">
+      <a href="/blog" class="text-sm text-accent-500 hover:text-accent-400"
+        >← All posts</a
+      >
+
+      <header class="mt-6">
+        <div class="flex items-center gap-3 text-xs text-muted-foreground">
+          <time datetime={post.data.pubDate.toISOString()}>
+            {dateFmt.format(post.data.pubDate)}
+          </time>
+          <span class="opacity-40">·</span>
+          <span>{post.data.author}</span>
+        </div>
+        <h1 class="mt-4 font-display text-4xl leading-tight tracking-tight sm:text-5xl">
+          {post.data.title}
+        </h1>
+        <p class="mt-4 text-lg text-muted-foreground">{post.data.description}</p>
+      </header>
+
+      <article class="post-body mt-10">
+        <Content />
+      </article>
+    </main>
+    <Footer />
+  </div>
+</Base>
+
+<style is:global>
+  .post-body {
+    line-height: 1.75;
+    color: var(--muted-foreground);
+  }
+  .post-body > * + * {
+    margin-top: 1.25rem;
+  }
+  .post-body h2 {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    letter-spacing: -0.02em;
+    color: var(--foreground);
+    margin-top: 2.5rem;
+  }
+  .post-body h3 {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    color: var(--foreground);
+    margin-top: 2rem;
+  }
+  .post-body strong {
+    color: var(--foreground);
+    font-weight: 600;
+  }
+  .post-body a {
+    color: var(--accent-500);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .post-body a:hover {
+    color: var(--accent-400);
+  }
+  .post-body ul {
+    list-style: disc;
+    padding-left: 1.5rem;
+  }
+  .post-body ol {
+    list-style: decimal;
+    padding-left: 1.5rem;
+  }
+  .post-body li + li {
+    margin-top: 0.5rem;
+  }
+  .post-body blockquote {
+    border-left: 3px solid var(--accent-500);
+    padding-left: 1.25rem;
+    font-style: italic;
+    color: var(--foreground);
+  }
+  .post-body code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.9em;
+    background: var(--elevated);
+    padding: 0.15em 0.4em;
+    border-radius: 0.35rem;
+  }
+  .post-body pre {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    padding: 1rem 1.25rem;
+    overflow-x: auto;
+  }
+  .post-body pre code {
+    background: none;
+    padding: 0;
+  }
+</style>

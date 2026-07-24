@@ -1,0 +1,99 @@
+---
+import Wordmark from "@/components/Wordmark.astro";
+import { Twitter, Instagram, Github, Linkedin } from "lucide-react";
+
+const year = new Date().getFullYear();
+
+const columns = [
+  {
+    title: "Company",
+    links: [
+      ["Features", "/#features"],
+      ["Guide", "/guide"],
+      ["Blog", "/blog"],
+      ["Privacy", "/#privacy"],
+      ["FAQ", "/#faq"],
+    ],
+  },
+  {
+    title: "Legal",
+    links: [
+      ["Privacy Policy", "/privacy"],
+      ["Terms", "/terms"],
+    ],
+  },
+];
+
+const socials = [
+  { label: "Twitter / X", handle: "@dotzieapp", href: "https://twitter.com/dotzieapp", Icon: Twitter },
+  { label: "Instagram", handle: "@dotzie.app", href: "https://instagram.com/dotzie.app", Icon: Instagram },
+  { label: "GitHub", handle: "dotzie", href: "https://github.com/dotzie", Icon: Github },
+  { label: "LinkedIn", handle: "dotzie", href: "https://linkedin.com/company/dotzie", Icon: Linkedin },
+];
+---
+
+<footer class="border-t border-border bg-background">
+  <div class="mx-auto grid max-w-6xl gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-4">
+    <div>
+      <Wordmark />
+      <p class="mt-3 max-w-xs text-sm text-muted-foreground">
+        An offline expense tracker for people who like their money — and their
+        data — kept close.
+      </p>
+    </div>
+
+    {
+      columns.map((col) => (
+        <div>
+          <p class="text-sm font-semibold">{col.title}</p>
+          <ul class="mt-4 space-y-2 text-sm text-muted-foreground">
+            {col.links.map(([label, href]) => (
+              <li>
+                <a href={href} class="transition-colors hover:text-foreground">
+                  {label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+
+    <div>
+      <p class="text-sm font-semibold">Contact</p>
+      <ul class="mt-4 space-y-2 text-sm text-muted-foreground">
+        <li>
+          <a href="mailto:hello@dotzie.app" class="hover:text-foreground"
+            >hello@dotzie.app</a
+          >
+        </li>
+      </ul>
+      <p class="mt-6 text-sm font-semibold">Follow</p>
+      <div class="mt-3 flex gap-2" aria-label="Social links">
+        {
+          socials.map(({ label, handle, href, Icon }) => (
+            <a
+              href={href}
+              target="_blank"
+              rel="noreferrer noopener"
+              aria-label={`${label} — ${handle}`}
+              title={`${label} · ${handle}`}
+              class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-all hover:-translate-y-0.5 hover:border-accent-500/60 hover:text-foreground"
+            >
+              <Icon className="h-4 w-4" />
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="border-t border-border">
+    <div
+      class="mx-auto flex max-w-6xl flex-col items-start justify-between gap-2 px-6 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center"
+    >
+      <p>© {year} Dotzie. All rights reserved.</p>
+      <p>Made offline, on purpose.</p>
+    </div>
+  </div>
+</footer>

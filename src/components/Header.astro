@@ -1,0 +1,47 @@
+---
+import Wordmark from "@/components/Wordmark.astro";
+import { AccentSwitcher } from "@/components/islands/AccentSwitcher";
+import { ThemeToggle } from "@/components/islands/ThemeToggle";
+
+const navLinks = [
+  { label: "Features", href: "/#features" },
+  { label: "Privacy", href: "/#privacy" },
+  { label: "Guide", href: "/guide" },
+  { label: "Blog", href: "/blog" },
+  { label: "FAQ", href: "/#faq" },
+];
+---
+
+<header
+  class="sticky top-0 z-40 border-b border-border/60 bg-background/70 backdrop-blur-xl"
+>
+  <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+    <Wordmark />
+    <nav
+      aria-label="Primary"
+      class="hidden items-center gap-8 text-sm text-muted-foreground md:flex"
+    >
+      {
+        navLinks.map((l) => (
+          <a href={l.href} class="transition-colors hover:text-foreground">
+            {l.label}
+          </a>
+        ))
+      }
+    </nav>
+    <div class="flex items-center gap-2">
+      <AccentSwitcher client:load />
+      <ThemeToggle client:load />
+      <a
+        href="/#download"
+        class="relative inline-flex h-9 items-center overflow-hidden rounded-full bg-gradient-brand px-4 text-sm font-medium text-white shadow-glow transition-transform hover:scale-[1.03]"
+      >
+        <span class="relative z-10">Get the app</span>
+        <span
+          aria-hidden
+          class="absolute inset-0 -translate-x-full animate-shimmer-text bg-[linear-gradient(110deg,transparent,rgba(255,255,255,0.35),transparent)]"
+        ></span>
+      </a>
+    </div>
+  </div>
+</header>

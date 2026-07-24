@@ -1,0 +1,18 @@
+---
+interface Props {
+  class?: string;
+  href?: string;
+}
+const { class: className = "", href = "/" } = Astro.props;
+---
+
+<a href={href} class={`group inline-flex items-center gap-2.5 ${className}`}>
+  <span
+    class="relative inline-flex h-8 w-8 items-center justify-center overflow-hidden rounded-[9px] bg-gradient-brand shadow-sm ring-1 ring-white/10 transition-transform duration-300 group-hover:scale-105"
+  >
+    <span class="font-display text-lg italic leading-none text-white">d</span>
+  </span>
+  <span class="font-display text-xl tracking-tight">
+    Dotzie<span class="text-accent-500">.</span>
+  </span>
+</a>

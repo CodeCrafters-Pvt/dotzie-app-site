@@ -1,0 +1,118 @@
+---
+import "../styles.css";
+import { CustomCursor } from "@/components/islands/CustomCursor";
+
+const SITE_NAME = "Dotzie";
+const SITE_TAGLINE = "Offline-first, privacy-first expense tracker";
+const SITE_DESC =
+  "Dotzie is an offline-first expense tracker. All your financial data stays encrypted on your device — no cloud, no server, no accounts.";
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Canonical path, e.g. "/guide". Defaults to the current page path. */
+  path?: string;
+  image?: string;
+  /** Extra JSON-LD blocks for this page (Organization is always included). */
+  jsonLd?: Record<string, unknown>[];
+  ogType?: string;
+}
+
+const {
+  title = `${SITE_NAME} — ${SITE_TAGLINE}`,
+  description = SITE_DESC,
+  path = Astro.url.pathname,
+  image = "/og.png",
+  jsonLd = [],
+  ogType = "website",
+} = Astro.props;
+
+const canonical = new URL(path, Astro.site).href;
+const imageUrl = new URL(image, Astro.site).href;
+
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: SITE_NAME,
+  url: Astro.site?.href,
+  description: SITE_DESC,
+};
+
+const blocks = [organizationJsonLd, ...jsonLd];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="canonical" href={canonical} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={SITE_NAME} />
+    <meta name="theme-color" content="#07070A" />
+
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={imageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Manrope:wght@400;500;600;700;800&display=swap"
+    />
+
+    <!-- No-flash: apply theme + accent before first paint -->
+    <script is:inline>
+      (function () {
+        try {
+          var s = localStorage.getItem("dotzee-theme");
+          var m = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          var d = s ? s === "dark" : m;
+          if (d) document.documentElement.classList.add("dark");
+          var a = localStorage.getItem("dotzie-accent");
+          if (a) document.documentElement.setAttribute("data-accent", a);
+        } catch (e) {}
+      })();
+    </script>
+
+    {
+      blocks.map((block) => (
+        <script
+          type="application/ld+json"
+          set:html={JSON.stringify(block)}
+        />
+      ))
+    }
+  </head>
+  <body>
+    <CustomCursor client:idle />
+    <slot />
+
+    <script>
+      // Reveal-on-scroll for any element with the `.reveal` class.
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) {
+              e.target.classList.add("in");
+              io.unobserve(e.target);
+            }
+          }
+        },
+        { threshold: 0.15 },
+      );
+      document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+    </script>
+  </body>
+</html>

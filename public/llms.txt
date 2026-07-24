@@ -1,0 +1,14 @@
+# Dotzie
+
+> Dotzie is an offline-first, privacy-first expense tracker for iOS and Android. All financial data stays encrypted on the device using AES-256-GCM — no cloud, no server, no accounts, no trackers.
+
+## Pages
+- [Home](https://dotzie.app/): Product overview, features, privacy model, and FAQ.
+- [User Guide](https://dotzie.app/guide): Step-by-step setup, from install to encrypted backup and restore.
+- [Blog](https://dotzie.app/blog): Product updates and privacy deep-dives.
+- [Privacy Policy](https://dotzie.app/privacy)
+- [Terms of Service](https://dotzie.app/terms)
+
+## Notes
+- The app has no backend. There are no user accounts and no network calls after install.
+- Backups are passphrase-encrypted files the user controls and moves manually.
