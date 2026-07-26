@@ -11,18 +11,18 @@ export const faqs: Faq[] = [
   },
   {
     q: "Where is my data stored?",
-    a: "All entries live in an encrypted database on your device. Nothing is transmitted to a server, and there are no accounts to create.",
+    a: "Everything you add stays private on your own phone. Nothing is sent to a server, and there are no accounts to create.",
   },
   {
     q: "Is Dotzie free?",
-    a: "The core tracker is free. A one-time in-app purchase unlocks advanced reports and custom categories. There is no subscription.",
+    a: "Yes — the tracker is free to use. Whenever you want extras like richer reports and custom categories, you can switch to Pro right inside the app. No subscription.",
   },
   {
     q: "Which platforms are supported?",
-    a: "Dotzie is available on iOS and Android. It is built with React Native so the experience is consistent across both.",
+    a: "Dotzie is available on iOS and Android, with the same calm experience on both.",
   },
   {
     q: "Is my data backed up?",
-    a: "You can export an encrypted backup file at any time and restore it on a new device using your passphrase. Backups never leave your device unless you share the file yourself.",
+    a: "You can save a backup file whenever you like and restore it on a new phone. Backups only leave your device if you choose to share the file yourself.",
   },
 ];

@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 
-export type AccentKey = "purple" | "red" | "jungle" | "blue" | "teal";
+export type AccentKey = "purple" | "warm" | "red" | "jungle" | "blue" | "teal" | "mono";
 
 const ACCENTS: { key: AccentKey; label: string; swatch: string }[] = [
   { key: "purple", label: "Purple", swatch: "#6B5CFF" },
+  { key: "warm", label: "Warm red", swatch: "#C0392B" },
   { key: "red", label: "Red", swatch: "#EF4444" },
   { key: "jungle", label: "Jungle", swatch: "#22C55E" },
   { key: "blue", label: "Blue", swatch: "#3B82F6" },
   { key: "teal", label: "Teal", swatch: "#14B8A6" },
+  { key: "mono", label: "Black & white", swatch: "linear-gradient(135deg, #111 50%, #f5f5f5 50%)" },
 ];
 
 const STORAGE_KEY = "dotzie-accent";
@@ -51,11 +53,7 @@ export function AccentSwitcher() {
       </button>
       {open ? (
         <>
-          <div
-            className="fixed inset-0 z-40"
-            onClick={() => setOpen(false)}
-            aria-hidden
-          />
+          <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} aria-hidden />
           <div className="absolute right-0 z-50 mt-2 flex gap-1.5 rounded-full border border-border bg-popover p-1.5 shadow-xl animate-fade-up">
             {ACCENTS.map((a) => (
               <button

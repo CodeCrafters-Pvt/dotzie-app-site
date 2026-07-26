@@ -1,0 +1,27 @@
+---
+import { featureGuideHref, type Feature } from "@/data/features";
+import { ArrowRight } from "lucide-react";
+
+interface Props {
+  feature: Feature;
+}
+
+const { feature } = Astro.props;
+const href = featureGuideHref(feature);
+---
+
+{/* Renders nothing until the feature has a guide page. */}
+{
+  href && (
+    <a
+      href={href}
+      class="group mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-accent-500 transition-colors hover:text-accent-400"
+    >
+      How to use it
+      <ArrowRight
+        className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1"
+        aria-hidden
+      />
+    </a>
+  )
+}

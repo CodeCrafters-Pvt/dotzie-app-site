@@ -30,8 +30,8 @@ export function PhoneCarousel() {
   const go = (dir: number) => setActive((a) => (a + dir + n) % n);
 
   return (
-    <div className="relative mx-auto mt-6 max-w-6xl px-4 pb-24 sm:px-6 lg:pb-32">
-      <div className="reveal relative mx-auto h-[560px] w-full max-w-5xl sm:h-[640px]">
+    <div className="relative mx-auto mt-2 max-w-6xl px-4 pb-6 sm:px-6 lg:pb-8">
+      <div className="reveal relative mx-auto h-[440px] w-full max-w-5xl sm:h-[500px]">
         {/* stage */}
         <div className="relative h-full w-full [perspective:1400px]">
           {screens.map((s, i) => {
@@ -89,7 +89,7 @@ export function PhoneCarousel() {
       </div>
 
       {/* label + dots */}
-      <div className="mt-6 flex flex-col items-center gap-4">
+      <div className="mt-3 flex flex-col items-center gap-3">
         <p className="font-display text-lg italic text-muted-foreground">
           <span className="text-foreground">{screens[active].label}</span>
           <span className="mx-2 opacity-40">·</span>
@@ -132,7 +132,7 @@ function PhoneFrame({ children, glow = false }: { children: React.ReactNode; glo
           className="pointer-events-none absolute -inset-8 -z-10 rounded-[3.5rem] bg-accent-500/20 blur-3xl"
         />
       ) : null}
-      <div className="relative h-[440px] w-[210px] rounded-[2.2rem] border border-border bg-[#0B0B0F] p-2 shadow-2xl ring-1 ring-white/5 sm:h-[520px] sm:w-[248px] sm:rounded-[2.6rem] sm:p-2.5">
+      <div className="relative h-[400px] w-[192px] rounded-[2.2rem] border border-border bg-[#0B0B0F] p-2 shadow-2xl ring-1 ring-white/5 sm:h-[460px] sm:w-[220px] sm:rounded-[2.6rem] sm:p-2.5">
         <div className="absolute left-1/2 top-2 z-10 h-5 w-20 -translate-x-1/2 rounded-full bg-black/90 sm:h-6 sm:w-24" />
         <div className="relative h-full w-full overflow-hidden rounded-[1.75rem] bg-[#07070A] text-[#F4F3FA] sm:rounded-[2.1rem]">
           <div
@@ -256,9 +256,35 @@ function ScreenInsights() {
       <div className="relative mx-auto mt-6 h-40 w-40">
         <svg viewBox="0 0 42 42" className="h-full w-full -rotate-90">
           <circle cx="21" cy="21" r="15.9155" fill="transparent" stroke="#16121F" strokeWidth="6" />
-          <circle cx="21" cy="21" r="15.9155" fill="transparent" stroke="#8A7EFF" strokeWidth="6" strokeDasharray="52 100" />
-          <circle cx="21" cy="21" r="15.9155" fill="transparent" stroke="#5D50EC" strokeWidth="6" strokeDasharray="26 100" strokeDashoffset="-52" />
-          <circle cx="21" cy="21" r="15.9155" fill="transparent" stroke="#B3ABFF" strokeWidth="6" strokeDasharray="22 100" strokeDashoffset="-78" />
+          <circle
+            cx="21"
+            cy="21"
+            r="15.9155"
+            fill="transparent"
+            stroke="#8A7EFF"
+            strokeWidth="6"
+            strokeDasharray="52 100"
+          />
+          <circle
+            cx="21"
+            cy="21"
+            r="15.9155"
+            fill="transparent"
+            stroke="#5D50EC"
+            strokeWidth="6"
+            strokeDasharray="26 100"
+            strokeDashoffset="-52"
+          />
+          <circle
+            cx="21"
+            cy="21"
+            r="15.9155"
+            fill="transparent"
+            stroke="#B3ABFF"
+            strokeWidth="6"
+            strokeDasharray="22 100"
+            strokeDashoffset="-78"
+          />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
           <p className="text-[9px] uppercase tracking-widest text-white/40">Total</p>
@@ -274,9 +300,30 @@ function ScreenInsights() {
 
       <div className="mt-6 space-y-2 px-5">
         {[
-          { icon: Utensils, label: "Dining out", pct: "40% of expenses", amt: "$514.00", w: "w-2/3", tone: "bg-accent-500" },
-          { icon: Car, label: "Transport", pct: "16% of expenses", amt: "$205.40", w: "w-1/3", tone: "bg-accent-300" },
-          { icon: Film, label: "Leisure", pct: "12% of expenses", amt: "$154.20", w: "w-1/4", tone: "bg-accent-400" },
+          {
+            icon: Utensils,
+            label: "Dining out",
+            pct: "40% of expenses",
+            amt: "$514.00",
+            w: "w-2/3",
+            tone: "bg-accent-500",
+          },
+          {
+            icon: Car,
+            label: "Transport",
+            pct: "16% of expenses",
+            amt: "$205.40",
+            w: "w-1/3",
+            tone: "bg-accent-300",
+          },
+          {
+            icon: Film,
+            label: "Leisure",
+            pct: "12% of expenses",
+            amt: "$154.20",
+            w: "w-1/4",
+            tone: "bg-accent-400",
+          },
         ].map((row) => (
           <div key={row.label} className="rounded-xl bg-[#16121F] p-3">
             <div className="flex items-center gap-2">
@@ -299,7 +346,14 @@ function ScreenInsights() {
 }
 
 function ScreenTimeline() {
-  const items: Array<{ icon: any; title: string; sub: string; amt: string; time: string; pos?: boolean }> = [
+  const items: Array<{
+    icon: any;
+    title: string;
+    sub: string;
+    amt: string;
+    time: string;
+    pos?: boolean;
+  }> = [
     { icon: Coffee, title: "Brew 1867", sub: "Cafés", amt: "-$4.20", time: "6:50 PM" },
     { icon: ShoppingBag, title: "Bookshop", sub: "Leisure", amt: "-$19.90", time: "3:00 PM" },
     { icon: Car, title: "Uber", sub: "Transit", amt: "-$26.50", time: "10:00 AM" },
@@ -341,7 +395,9 @@ function ScreenTimeline() {
               <p className="text-[10px] text-white/50">{it.sub}</p>
             </div>
             <div className="text-right">
-              <p className={`text-[12px] ${it.pos ? "text-emerald-400" : "text-rose-400"}`}>{it.amt}</p>
+              <p className={`text-[12px] ${it.pos ? "text-emerald-400" : "text-rose-400"}`}>
+                {it.amt}
+              </p>
               <p className="text-[9px] text-white/40">{it.time}</p>
             </div>
           </li>
