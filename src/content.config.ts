@@ -1,5 +1,6 @@
 import { defineCollection, z } from "astro:content";
 import { glob } from "astro/loaders";
+import { GUIDE_SECTIONS } from "@/types";
 
 const blog = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/blog" }),
@@ -25,13 +26,7 @@ const guide = defineCollection({
     /** Shown in the sidebar and hub cards — keep it short. */
     navLabel: z.string().optional(),
     description: z.string(),
-    section: z.enum([
-      "Start here",
-      "Everyday money",
-      "Planning ahead",
-      "Keeping track",
-      "Your data & settings",
-    ]),
+    section: z.enum(GUIDE_SECTIONS),
     order: z.number(),
     /** Key into `guideIcons` in src/lib/guide.ts. */
     icon: z.string().default("BookOpen"),

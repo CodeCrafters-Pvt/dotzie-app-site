@@ -1,8 +1,6 @@
 ---
-import Base from "@/layouts/Base.astro";
-import Header from "@/components/Header.astro";
-import Footer from "@/components/Footer.astro";
-import GuideNav from "@/components/GuideNav.astro";
+import Page from "@/layouts/Page.astro";
+import GuideNav from "@/components/guide/GuideNav.astro";
 import { getGuidePages, guideIcon, guideHref, navLabel } from "@/lib/guide";
 import { render } from "astro:content";
 import type { GetStaticPaths } from "astro";
@@ -44,90 +42,84 @@ const breadcrumbJsonLd = {
 };
 ---
 
-<Base
+<Page
   title={`${page.data.title} — Dotzie guide`}
   description={page.data.description}
   path={guideHref(page)}
   ogType="article"
   jsonLd={[breadcrumbJsonLd]}
+  mainClass="mx-auto max-w-6xl px-6 pt-12 pb-24 lg:pt-20"
 >
-  <div class="min-h-screen bg-background text-foreground">
-    <Header />
+  <div class="lg:grid lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-12">
+    <GuideNav current={page.id} />
 
-    <main class="mx-auto max-w-6xl px-6 pt-12 pb-24 lg:pt-20">
-      <div class="lg:grid lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-12">
-        <GuideNav current={page.id} />
+    <article class="mt-8 min-w-0 lg:mt-0">
+      <a
+        href="/guide"
+        class="inline-flex items-center gap-1.5 text-sm text-accent-500 hover:text-accent-400 lg:hidden"
+      >
+        <ArrowLeft className="h-3.5 w-3.5" aria-hidden />
+        All guide pages
+      </a>
 
-        <article class="mt-8 min-w-0 lg:mt-0">
-          <a
-            href="/guide"
-            class="inline-flex items-center gap-1.5 text-sm text-accent-500 hover:text-accent-400 lg:hidden"
-          >
-            <ArrowLeft className="h-3.5 w-3.5" aria-hidden />
-            All guide pages
-          </a>
+      <header class="mt-6 lg:mt-0">
+        <p
+          class="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground"
+        >
+          <Icon className="h-4 w-4 text-accent-500" aria-hidden />
+          {page.data.section}
+        </p>
+        <h1 class="mt-4 font-display text-4xl leading-tight tracking-tight sm:text-5xl">
+          {page.data.title}
+        </h1>
+        <p class="mt-4 text-lg leading-relaxed text-muted-foreground">
+          {page.data.description}
+        </p>
+      </header>
 
-          <header class="mt-6 lg:mt-0">
-            <p
-              class="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground"
-            >
-              <Icon className="h-4 w-4 text-accent-500" aria-hidden />
-              {page.data.section}
-            </p>
-            <h1 class="mt-4 font-display text-4xl leading-tight tracking-tight sm:text-5xl">
-              {page.data.title}
-            </h1>
-            <p class="mt-4 text-lg leading-relaxed text-muted-foreground">
-              {page.data.description}
-            </p>
-          </header>
-
-          <div class="prose-body mt-10">
-            <Content />
-          </div>
-
-          <nav
-            aria-label="Guide pagination"
-            class="mt-16 grid gap-4 border-t border-border pt-8 sm:grid-cols-2"
-          >
-            {
-              prev ? (
-                <a
-                  href={guideHref(prev)}
-                  class="group rounded-2xl border border-border bg-card p-5 transition-colors hover:border-accent-500/50"
-                >
-                  <span class="flex items-center gap-1.5 text-xs text-muted-foreground">
-                    <ArrowLeft className="h-3.5 w-3.5" aria-hidden />
-                    Previous
-                  </span>
-                  <span class="mt-1.5 block font-semibold group-hover:text-accent-500">
-                    {navLabel(prev)}
-                  </span>
-                </a>
-              ) : (
-                <span />
-              )
-            }
-            {
-              next && (
-                <a
-                  href={guideHref(next)}
-                  class="group rounded-2xl border border-border bg-card p-5 text-right transition-colors hover:border-accent-500/50 sm:col-start-2"
-                >
-                  <span class="flex items-center justify-end gap-1.5 text-xs text-muted-foreground">
-                    Next
-                    <ArrowRight className="h-3.5 w-3.5" aria-hidden />
-                  </span>
-                  <span class="mt-1.5 block font-semibold group-hover:text-accent-500">
-                    {navLabel(next)}
-                  </span>
-                </a>
-              )
-            }
-          </nav>
-        </article>
+      <div class="prose-body mt-10">
+        <Content />
       </div>
-    </main>
-    <Footer />
+
+      <nav
+        aria-label="Guide pagination"
+        class="mt-16 grid gap-4 border-t border-border pt-8 sm:grid-cols-2"
+      >
+        {
+          prev ? (
+            <a
+              href={guideHref(prev)}
+              class="group rounded-2xl border border-border bg-card p-5 transition-colors hover:border-accent-500/50"
+            >
+              <span class="flex items-center gap-1.5 text-xs text-muted-foreground">
+                <ArrowLeft className="h-3.5 w-3.5" aria-hidden />
+                Previous
+              </span>
+              <span class="mt-1.5 block font-semibold group-hover:text-accent-500">
+                {navLabel(prev)}
+              </span>
+            </a>
+          ) : (
+            <span />
+          )
+        }
+        {
+          next && (
+            <a
+              href={guideHref(next)}
+              class="group rounded-2xl border border-border bg-card p-5 text-right transition-colors hover:border-accent-500/50 sm:col-start-2"
+            >
+              <span class="flex items-center justify-end gap-1.5 text-xs text-muted-foreground">
+                Next
+                <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+              </span>
+              <span class="mt-1.5 block font-semibold group-hover:text-accent-500">
+                {navLabel(next)}
+              </span>
+            </a>
+          )
+        }
+      </nav>
+    </article>
   </div>
-</Base>
+</Page>

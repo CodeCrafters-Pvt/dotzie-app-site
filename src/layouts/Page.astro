@@ -1,0 +1,44 @@
+---
+/**
+ * Standard page shell: Base + header, a <main>, and the footer.
+ *
+ * Every page except the home deck uses this. The home page keeps its own shell
+ * because it also renders the SectionNav island and a full-bleed <main>.
+ */
+import Base from "@/layouts/Base.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  /** Canonical path, e.g. "/guide". */
+  path: string;
+  ogType?: string;
+  jsonLd?: Record<string, unknown>[];
+  /** Classes for the <main> element — controls width and padding per page. */
+  mainClass?: string;
+  /** Wrapper classes, for pages that need e.g. `relative overflow-hidden`. */
+  class?: string;
+}
+
+const {
+  title,
+  description,
+  path,
+  ogType,
+  jsonLd,
+  mainClass = "mx-auto max-w-3xl px-6 py-24",
+  class: className,
+} = Astro.props;
+---
+
+<Base {title} {description} {path} {ogType} {jsonLd}>
+  <div class="min-h-screen bg-background text-foreground">
+    <Header />
+    <main class:list={[mainClass, className]}>
+      <slot />
+    </main>
+    <Footer />
+  </div>
+</Base>

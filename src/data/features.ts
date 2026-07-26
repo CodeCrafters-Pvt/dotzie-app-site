@@ -1,19 +1,4 @@
-export type FeatureTier = "free" | "pro";
-
-export interface Feature {
-  id: string;
-  /** Short internal name. */
-  name: string;
-  tier: FeatureTier;
-  /** Guide page id under /guide, when one exists yet. */
-  guideSlug: string | null;
-  /** Copy for features that get their own home section. */
-  slide?: { eyebrow: string; headline: string; blurb: string };
-  /** Copy for the "Also included" strip on the home page. */
-  card?: { title: string; desc: string };
-  /** One line in the Free / Pro lists in the pricing section. */
-  perk?: string;
-}
+import type { Feature, FeatureTier } from "@/types";
 
 /**
  * Single source of truth for what the marketing site says Dotzie does.

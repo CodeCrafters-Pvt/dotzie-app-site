@@ -1,0 +1,50 @@
+---
+import GuideLink from "@/components/guide/GuideLink.astro";
+import { PlanMockup, EventMockup } from "@/components/islands/FeatureMockups";
+import { feature } from "@/data/features";
+
+const slides = { plan: feature("plan"), events: feature("events") };
+---
+
+<!-- Features slide 2: Plan + Events -->
+<section id="plan" class="mx-auto max-w-5xl px-6 py-10 lg:py-14">
+  <div class="reveal space-y-10 lg:space-y-12">
+    <!-- Plan (image left) -->
+    <div class="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
+      <div class="mx-auto w-full max-w-[19rem]">
+        <PlanMockup client:visible />
+      </div>
+      <div>
+        <p class="text-sm font-medium text-accent-500">
+          {slides.plan.slide!.eyebrow}
+        </p>
+        <h3 class="mt-2 font-display text-2xl leading-tight tracking-tight sm:text-3xl">
+          {slides.plan.slide!.headline}
+        </h3>
+        <p class="mt-3 max-w-md leading-relaxed text-muted-foreground">
+          {slides.plan.slide!.blurb}
+        </p>
+        <GuideLink feature={slides.plan} />
+      </div>
+    </div>
+
+    <!-- Events (image right) -->
+    <div class="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
+      <div class="mx-auto w-full max-w-[19rem] lg:order-2">
+        <EventMockup client:visible />
+      </div>
+      <div class="lg:order-1">
+        <p class="text-sm font-medium text-accent-500">
+          {slides.events.slide!.eyebrow}
+        </p>
+        <h3 class="mt-2 font-display text-2xl leading-tight tracking-tight sm:text-3xl">
+          {slides.events.slide!.headline}
+        </h3>
+        <p class="mt-3 max-w-md leading-relaxed text-muted-foreground">
+          {slides.events.slide!.blurb}
+        </p>
+        <GuideLink feature={slides.events} />
+      </div>
+    </div>
+  </div>
+</section>

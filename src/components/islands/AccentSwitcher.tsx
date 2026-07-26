@@ -1,26 +1,18 @@
 import { useEffect, useState } from "react";
-
-export type AccentKey = "purple" | "warm" | "red" | "jungle" | "blue" | "teal" | "mono";
-
-const ACCENTS: { key: AccentKey; label: string; swatch: string }[] = [
-  { key: "purple", label: "Purple", swatch: "#6B5CFF" },
-  { key: "warm", label: "Warm red", swatch: "#C0392B" },
-  { key: "red", label: "Red", swatch: "#EF4444" },
-  { key: "jungle", label: "Jungle", swatch: "#22C55E" },
-  { key: "blue", label: "Blue", swatch: "#3B82F6" },
-  { key: "teal", label: "Teal", swatch: "#14B8A6" },
-  { key: "mono", label: "Black & white", swatch: "linear-gradient(135deg, #111 50%, #f5f5f5 50%)" },
-];
-
-const STORAGE_KEY = "dotzie-accent";
+import {
+  ACCENTS,
+  ACCENT_STORAGE_KEY as STORAGE_KEY,
+  DEFAULT_ACCENT,
+  type AccentKey,
+} from "@/data/accents";
 
 export function AccentSwitcher() {
-  const [active, setActive] = useState<AccentKey>("purple");
+  const [active, setActive] = useState<AccentKey>(DEFAULT_ACCENT);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
     try {
-      const saved = (localStorage.getItem(STORAGE_KEY) as AccentKey) || "purple";
+      const saved = (localStorage.getItem(STORAGE_KEY) as AccentKey) || DEFAULT_ACCENT;
       setActive(saved);
       document.documentElement.setAttribute("data-accent", saved);
     } catch {}

@@ -1,4 +1,5 @@
 import { getCollection, type CollectionEntry } from "astro:content";
+import { GUIDE_SECTIONS } from "@/types";
 import {
   BookOpen,
   Rocket,
@@ -18,17 +19,6 @@ import {
 } from "lucide-react";
 
 export type GuidePage = CollectionEntry<"guide">;
-
-/** Sidebar order. Must match the enum in content.config.ts. */
-export const GUIDE_SECTIONS = [
-  "Start here",
-  "Everyday money",
-  "Planning ahead",
-  "Keeping track",
-  "Your data & settings",
-] as const;
-
-export type GuideSection = (typeof GUIDE_SECTIONS)[number];
 
 /** Frontmatter `icon` values resolve here; unknown names fall back to BookOpen. */
 const icons = {

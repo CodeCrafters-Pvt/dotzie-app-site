@@ -38,6 +38,18 @@
   --color-accent-600: var(--accent-600);
   --color-accent-700: var(--accent-700);
 
+  /* Phone mockups render a fixed dark UI in both themes — these deliberately
+     do not follow light/dark, so they are separate from the theme tokens. */
+  --color-device-frame: var(--device-frame);
+  --color-device-screen: var(--device-screen);
+  --color-device-surface: var(--device-surface);
+  --color-device-foreground: var(--device-foreground);
+
+  /* The dark Pro panel and the privacy panel, likewise fixed in both themes. */
+  --color-promo: var(--promo);
+  --color-promo-foreground: var(--promo-foreground);
+  --color-deep: var(--deep);
+
   --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Fraunces", "Times New Roman", serif;
 
@@ -73,6 +85,18 @@
   --border: #E6E6EE;
   --input: #E6E6EE;
   --ring: var(--accent-500);
+
+  /* Fixed in both themes — see the note in @theme inline above. */
+  --device-frame: #0B0B0F;
+  --device-screen: #07070A;
+  --device-surface: #16121F;
+  --device-foreground: #F4F3FA;
+  --promo: #211613;
+  --promo-foreground: #EADBC7;
+  --deep: #0B0908;
+  /* The QR sits on a permanently white card, so its ink must not follow the
+     theme — a themed foreground turns it white-on-white in dark mode. */
+  --qr-ink: #0B0B14;
 
   --gradient-brand: linear-gradient(135deg, var(--accent-400) 0%, var(--accent-600) 55%, var(--accent-700) 100%);
   --gradient-hero-glow: radial-gradient(60% 60% at 50% 0%, color-mix(in oklab, var(--accent-500) 30%, transparent), transparent 70%);

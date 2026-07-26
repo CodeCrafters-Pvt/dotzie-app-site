@@ -104,7 +104,7 @@ function Qr({ value, size = 88 }: { value: string; size?: number }) {
     >
       {cells.map((on, i) =>
         on ? (
-          <rect key={i} x={i % N} y={Math.floor(i / N)} width={1} height={1} fill="#0B0B14" />
+          <rect key={i} x={i % N} y={Math.floor(i / N)} width={1} height={1} fill="var(--qr-ink)" />
         ) : null,
       )}
     </svg>

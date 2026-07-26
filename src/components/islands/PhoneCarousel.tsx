@@ -132,9 +132,9 @@ function PhoneFrame({ children, glow = false }: { children: React.ReactNode; glo
           className="pointer-events-none absolute -inset-8 -z-10 rounded-[3.5rem] bg-accent-500/20 blur-3xl"
         />
       ) : null}
-      <div className="relative h-[400px] w-[192px] rounded-[2.2rem] border border-border bg-[#0B0B0F] p-2 shadow-2xl ring-1 ring-white/5 sm:h-[460px] sm:w-[220px] sm:rounded-[2.6rem] sm:p-2.5">
+      <div className="relative h-[400px] w-[192px] rounded-[2.2rem] border border-border bg-device-frame p-2 shadow-2xl ring-1 ring-white/5 sm:h-[460px] sm:w-[220px] sm:rounded-[2.6rem] sm:p-2.5">
         <div className="absolute left-1/2 top-2 z-10 h-5 w-20 -translate-x-1/2 rounded-full bg-black/90 sm:h-6 sm:w-24" />
-        <div className="relative h-full w-full overflow-hidden rounded-[1.75rem] bg-[#07070A] text-[#F4F3FA] sm:rounded-[2.1rem]">
+        <div className="relative h-full w-full overflow-hidden rounded-[1.75rem] bg-device-screen text-device-foreground sm:rounded-[2.1rem]">
           <div
             className={`h-full w-full transition-opacity duration-500 ${loading ? "opacity-0" : "opacity-100"}`}
           >
@@ -185,7 +185,7 @@ function ScreenSnapshot() {
       <StatusBar />
       <div className="mt-3 px-5">
         <p className="text-[10px] text-white/50">Last synced: never · offline</p>
-        <div className="mt-4 rounded-2xl bg-[#16121F] p-4">
+        <div className="mt-4 rounded-2xl bg-device-surface p-4">
           <p className="text-[11px] text-white/60">
             <span aria-hidden>👋</span> Hey Kavi,
           </p>
@@ -210,7 +210,7 @@ function ScreenSnapshot() {
           </div>
         </div>
 
-        <div className="mt-3 rounded-2xl bg-[#16121F] p-4">
+        <div className="mt-3 rounded-2xl bg-device-surface p-4">
           <div className="flex items-center gap-2">
             <Wallet className="h-4 w-4 text-accent-300" />
             <div>
@@ -230,7 +230,7 @@ function ScreenSnapshot() {
             { icon: Car, label: "Transport", val: "$48.20" },
             { icon: Utensils, label: "Dining", val: "$155.00" },
           ].map(({ icon: Icon, label, val }) => (
-            <div key={label} className="rounded-xl bg-[#16121F] p-3">
+            <div key={label} className="rounded-xl bg-device-surface p-3">
               <Icon className="h-4 w-4 text-accent-300" />
               <p className="mt-2 text-[11px] text-white/60">{label}</p>
               <p className="text-[12px] font-medium">{val}</p>
@@ -255,13 +255,20 @@ function ScreenInsights() {
 
       <div className="relative mx-auto mt-6 h-40 w-40">
         <svg viewBox="0 0 42 42" className="h-full w-full -rotate-90">
-          <circle cx="21" cy="21" r="15.9155" fill="transparent" stroke="#16121F" strokeWidth="6" />
           <circle
             cx="21"
             cy="21"
             r="15.9155"
             fill="transparent"
-            stroke="#8A7EFF"
+            stroke="var(--device-surface)"
+            strokeWidth="6"
+          />
+          <circle
+            cx="21"
+            cy="21"
+            r="15.9155"
+            fill="transparent"
+            stroke="var(--accent-400)"
             strokeWidth="6"
             strokeDasharray="52 100"
           />
@@ -270,7 +277,7 @@ function ScreenInsights() {
             cy="21"
             r="15.9155"
             fill="transparent"
-            stroke="#5D50EC"
+            stroke="var(--accent-600)"
             strokeWidth="6"
             strokeDasharray="26 100"
             strokeDashoffset="-52"
@@ -280,7 +287,7 @@ function ScreenInsights() {
             cy="21"
             r="15.9155"
             fill="transparent"
-            stroke="#B3ABFF"
+            stroke="var(--accent-300)"
             strokeWidth="6"
             strokeDasharray="22 100"
             strokeDashoffset="-78"
@@ -325,7 +332,7 @@ function ScreenInsights() {
             tone: "bg-accent-400",
           },
         ].map((row) => (
-          <div key={row.label} className="rounded-xl bg-[#16121F] p-3">
+          <div key={row.label} className="rounded-xl bg-device-surface p-3">
             <div className="flex items-center gap-2">
               <row.icon className="h-4 w-4 text-accent-300" />
               <div className="flex-1">
@@ -369,11 +376,11 @@ function ScreenTimeline() {
       </div>
 
       <div className="mt-4 grid grid-cols-2 gap-2 px-5">
-        <div className="rounded-xl bg-[#16121F] p-3">
+        <div className="rounded-xl bg-device-surface p-3">
           <p className="text-[10px] text-white/50">Income</p>
           <p className="text-[13px] font-semibold text-emerald-400">$1,094.00</p>
         </div>
-        <div className="rounded-xl bg-[#16121F] p-3">
+        <div className="rounded-xl bg-device-surface p-3">
           <p className="text-[10px] text-white/50">Expenses</p>
           <p className="text-[13px] font-semibold text-rose-400">$250.24</p>
         </div>
@@ -386,7 +393,7 @@ function ScreenTimeline() {
 
       <ul className="mt-2 flex-1 space-y-2 overflow-hidden px-5">
         {items.map((it, i) => (
-          <li key={i} className="flex items-center gap-3 rounded-xl bg-[#16121F] p-2.5">
+          <li key={i} className="flex items-center gap-3 rounded-xl bg-device-surface p-2.5">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5">
               <it.icon className="h-4 w-4 text-accent-300" />
             </span>
@@ -427,7 +434,7 @@ function ScreenBudgets() {
           const pct = Math.min(100, Math.round((b.used / b.cap) * 100));
           const over = b.used > b.cap;
           return (
-            <div key={b.label} className="rounded-xl bg-[#16121F] p-3">
+            <div key={b.label} className="rounded-xl bg-device-surface p-3">
               <div className="flex items-center gap-2">
                 <b.icon className="h-4 w-4 text-accent-300" />
                 <p className="flex-1 text-[12px] font-medium">{b.label}</p>
@@ -464,7 +471,7 @@ function ScreenGoals() {
         {goals.map((g) => {
           const pct = Math.round((g.cur / g.tgt) * 100);
           return (
-            <div key={g.label} className="rounded-2xl bg-[#16121F] p-4">
+            <div key={g.label} className="rounded-2xl bg-device-surface p-4">
               <div className="flex items-center gap-2">
                 <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent-500/20">
                   <g.icon className="h-4 w-4 text-accent-300" />
@@ -519,7 +526,7 @@ function ScreenAdd() {
         </p>
       </div>
       <div className="mt-5 px-5">
-        <div className="rounded-xl bg-[#16121F] p-3">
+        <div className="rounded-xl bg-device-surface p-3">
           <p className="text-[10px] text-white/40">Note</p>
           <p className="mt-1 text-[12px]">Lunch with Sam</p>
         </div>
@@ -530,7 +537,7 @@ function ScreenAdd() {
           <div
             key={c.label}
             className={`flex flex-col items-center gap-1 rounded-xl p-3 ${
-              i === 0 ? "bg-accent-500/25 ring-1 ring-accent-400" : "bg-[#16121F]"
+              i === 0 ? "bg-accent-500/25 ring-1 ring-accent-400" : "bg-device-surface"
             }`}
           >
             <c.icon className="h-4 w-4 text-accent-300" />

@@ -1,7 +1,5 @@
 ---
-import Base from "@/layouts/Base.astro";
-import Header from "@/components/Header.astro";
-import Footer from "@/components/Footer.astro";
+import Page from "@/layouts/Page.astro";
 import { getCollection } from "astro:content";
 import { ArrowRight } from "lucide-react";
 
@@ -20,56 +18,50 @@ const dateFmt = new Intl.DateTimeFormat("en-US", {
 });
 ---
 
-<Base title={TITLE} description={DESC} path="/blog">
-  <div class="min-h-screen bg-background text-foreground">
-    <Header />
-    <main class="mx-auto max-w-3xl px-6 pt-20 pb-24">
-      <p class="text-sm font-medium text-accent-500">The Dotzie blog</p>
-      <h1 class="mt-3 font-display text-5xl tracking-tight sm:text-6xl">Notes on quiet money.</h1>
-      <p class="mt-5 max-w-xl text-muted-foreground">
-        Product updates, privacy deep-dives, and the occasional opinion on why your financial data
-        should stay yours.
-      </p>
+<Page title={TITLE} description={DESC} path="/blog" mainClass="mx-auto max-w-3xl px-6 pt-20 pb-24">
+  <p class="text-sm font-medium text-accent-500">The Dotzie blog</p>
+  <h1 class="mt-3 font-display text-5xl tracking-tight sm:text-6xl">Notes on quiet money.</h1>
+  <p class="mt-5 max-w-xl text-muted-foreground">
+    Product updates, privacy deep-dives, and the occasional opinion on why your financial data
+    should stay yours.
+  </p>
 
-      {
-        posts.length === 0 ? (
-          <p class="mt-16 text-muted-foreground">No posts yet — check back soon.</p>
-        ) : (
-          <ul class="mt-14 space-y-4">
-            {posts.map((post) => (
-              <li>
-                <a
-                  href={`/blog/${post.id}`}
-                  class="group block rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-0.5 hover:border-accent-500/50 hover:bg-elevated"
-                >
-                  <div class="flex items-center gap-3 text-xs text-muted-foreground">
-                    <time datetime={post.data.pubDate.toISOString()}>
-                      {dateFmt.format(post.data.pubDate)}
-                    </time>
-                    {post.data.tags.length > 0 && (
-                      <>
-                        <span class="opacity-40">·</span>
-                        <span>{post.data.tags.join(", ")}</span>
-                      </>
-                    )}
-                  </div>
-                  <h2 class="mt-3 font-display text-2xl tracking-tight group-hover:text-accent-500">
-                    {post.data.title}
-                  </h2>
-                  <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
-                    {post.data.description}
-                  </p>
-                  <span class="mt-4 inline-flex items-center gap-2 text-sm font-medium text-accent-500">
-                    Read post
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        )
-      }
-    </main>
-    <Footer />
-  </div>
-</Base>
+  {
+    posts.length === 0 ? (
+      <p class="mt-16 text-muted-foreground">No posts yet — check back soon.</p>
+    ) : (
+      <ul class="mt-14 space-y-4">
+        {posts.map((post) => (
+          <li>
+            <a
+              href={`/blog/${post.id}`}
+              class="group block rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-0.5 hover:border-accent-500/50 hover:bg-elevated"
+            >
+              <div class="flex items-center gap-3 text-xs text-muted-foreground">
+                <time datetime={post.data.pubDate.toISOString()}>
+                  {dateFmt.format(post.data.pubDate)}
+                </time>
+                {post.data.tags.length > 0 && (
+                  <>
+                    <span class="opacity-40">·</span>
+                    <span>{post.data.tags.join(", ")}</span>
+                  </>
+                )}
+              </div>
+              <h2 class="mt-3 font-display text-2xl tracking-tight group-hover:text-accent-500">
+                {post.data.title}
+              </h2>
+              <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
+                {post.data.description}
+              </p>
+              <span class="mt-4 inline-flex items-center gap-2 text-sm font-medium text-accent-500">
+                Read post
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</Page>

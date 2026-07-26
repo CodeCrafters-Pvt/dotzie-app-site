@@ -1,7 +1,4 @@
-export interface Faq {
-  q: string;
-  a: string;
-}
+import type { Faq } from "@/types";
 
 /** Single source of truth for the FAQ section and the FAQPage JSON-LD. */
 export const faqs: Faq[] = [

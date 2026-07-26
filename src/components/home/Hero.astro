@@ -1,0 +1,234 @@
+---
+import { DownloadQR } from "@/components/islands/DownloadQR";
+import { Receipt, Split, Banknote, Repeat, CalendarDays, Target } from "lucide-react";
+
+const heroTxns = [
+  { emoji: "🛒", label: "Groceries", sub: "Today · Market Co-op", amt: "-$42.00" },
+  { emoji: "🚌", label: "Transport", sub: "Today · Metro", amt: "-$3.00" },
+  { emoji: "☕", label: "Coffee", sub: "Yesterday · Ritual", amt: "-$4.50" },
+];
+
+// Feature chips that float beside the hero phone.
+const heroChips = [
+  {
+    icon: Receipt,
+    label: "Track expenses",
+    pos: "left-0 top-8",
+    anim: "animate-float",
+    delay: "-0.4s",
+  },
+  {
+    icon: Split,
+    label: "Split a budget",
+    pos: "left-4 top-[42%]",
+    anim: "animate-float-slow",
+    delay: "-2.6s",
+  },
+  {
+    icon: Banknote,
+    label: "Track salary",
+    pos: "left-0 bottom-24",
+    anim: "animate-float",
+    delay: "-1.3s",
+  },
+  {
+    icon: Repeat,
+    label: "Recurring bills",
+    pos: "right-0 top-20",
+    anim: "animate-float-slow",
+    delay: "-3.1s",
+  },
+  {
+    icon: CalendarDays,
+    label: "Event budgets",
+    pos: "right-2 top-[52%]",
+    anim: "animate-float",
+    delay: "-1.9s",
+  },
+  {
+    icon: Target,
+    label: "Savings goals",
+    pos: "right-0 bottom-14",
+    anim: "animate-float-slow",
+    delay: "-2.2s",
+  },
+];
+---
+
+<!-- Hero -->
+<section id="top" class="relative overflow-hidden">
+  <div aria-hidden class="pointer-events-none absolute inset-0 -z-10">
+    <div class="absolute -top-24 right-0 h-[700px] w-[900px] translate-x-1/4 hero-glow"></div>
+    <div
+      class="absolute right-[6%] top-32 h-72 w-72 rounded-full bg-accent-400/40 opacity-60 blur-[80px] animate-blob"
+    >
+    </div>
+    <div
+      class="absolute right-[24%] top-72 h-72 w-72 rounded-full bg-accent-500/30 opacity-50 blur-[80px] animate-blob [animation-delay:-6s]"
+    >
+    </div>
+  </div>
+
+  <div
+    class="relative mx-auto grid max-w-6xl items-center gap-14 px-6 pt-8 pb-12 lg:grid-cols-2 lg:gap-8 lg:pt-10 lg:pb-14"
+  >
+    <!-- Left column -->
+    <div class="text-left">
+      <div class="flex animate-fade-up items-center gap-3">
+        <span class="h-px w-10 bg-accent-500"></span>
+        <span class="text-xs font-semibold uppercase tracking-[0.2em] text-accent-500">
+          Now in private beta
+        </span>
+      </div>
+
+      <h1
+        class="mt-6 max-w-xl animate-fade-up font-display text-5xl leading-[1.02] tracking-tight [animation-delay:120ms] sm:text-6xl lg:text-[4.75rem]"
+      >
+        Track every expense.
+        <br />
+        <span class="italic text-accent-500">Trust</span> no server.
+      </h1>
+
+      <p
+        class="mt-6 max-w-md animate-fade-up text-lg leading-relaxed text-muted-foreground [animation-delay:240ms]"
+      >
+        A beautifully quiet expense tracker for iOS and Android. Your money story stays sealed on
+        your phone — encrypted, offline, and entirely yours.
+      </p>
+
+      <div
+        id="download"
+        class="mt-9 flex animate-fade-up flex-wrap items-center gap-3 [animation-delay:360ms]"
+      >
+        <a
+          href="#"
+          aria-label="Download Dotzie on the App Store"
+          class="group inline-flex items-center gap-3 rounded-2xl bg-foreground px-5 py-3 text-background transition-all hover:-translate-y-0.5 hover:shadow-xl"
+        >
+          <svg aria-hidden viewBox="0 0 24 24" class="h-6 w-6 fill-current">
+            <path
+              d="M16.365 1.43c0 1.14-.47 2.24-1.24 3.03-.82.85-2.13 1.5-3.22 1.42-.13-1.09.42-2.24 1.16-3 .82-.85 2.22-1.5 3.3-1.45zM20.5 17.02c-.55 1.27-.81 1.84-1.52 2.96-.99 1.55-2.38 3.48-4.1 3.5-1.54.01-1.94-1-4.03-1-2.09.01-2.53 1.02-4.08 1.01-1.72-.02-3.04-1.76-4.03-3.3C.06 16.4-.02 11.1 2.24 8.3c1.47-1.82 3.55-2.88 5.51-2.88 2.02 0 3.28 1.11 4.95 1.11 1.62 0 2.61-1.11 4.94-1.11 1.76 0 3.62.96 4.95 2.62-4.35 2.38-3.64 8.58-2.09 9.98z"
+            ></path>
+          </svg>
+          <span class="text-left leading-tight">
+            <span class="block text-[10px] uppercase tracking-widest opacity-70"
+              >Download on the</span
+            >
+            <span class="block text-base font-semibold">App Store</span>
+          </span>
+        </a>
+        <a
+          href="#"
+          aria-label="Get Dotzie on Google Play"
+          class="group inline-flex items-center gap-3 rounded-2xl border border-border bg-card px-5 py-3 transition-all hover:-translate-y-0.5 hover:bg-elevated hover:shadow-xl"
+        >
+          <svg aria-hidden viewBox="0 0 24 24" class="h-6 w-6">
+            <path
+              d="M3.6 2.2C3.2 2.5 3 3 3 3.6v16.8c0 .6.2 1.1.6 1.4l9.8-9.8L3.6 2.2z"
+              fill="var(--accent-500)"></path>
+            <path
+              d="M17.6 8.4L14.4 6.6 4 1c-.2-.1-.4-.1-.6-.1l10 10L17.6 8.4z"
+              fill="var(--accent-400)"></path>
+            <path
+              d="M21 10.7l-3.4-1.9-3.2 3.2 3.2 3.2 3.4-1.9c1-.5 1-2.1 0-2.6z"
+              fill="var(--accent-700)"></path>
+            <path
+              d="M3.4 22.9c.2 0 .4 0 .6-.1l10.4-5.7 3.2-1.8-3.8-3.8L3.4 22.9z"
+              fill="var(--accent-600)"></path>
+          </svg>
+          <span class="text-left leading-tight">
+            <span class="block text-[10px] uppercase tracking-widest text-muted-foreground"
+              >Get it on</span
+            >
+            <span class="block text-base font-semibold">Google Play</span>
+          </span>
+        </a>
+      </div>
+
+      <DownloadQR client:visible />
+
+      <p class="mt-6 animate-fade-up text-xs text-muted-foreground [animation-delay:520ms]">
+        Free to download. No account. No trackers. No ads.
+      </p>
+    </div>
+
+    <!-- Right column: featured phone -->
+    <div class="relative animate-fade-up [animation-delay:300ms]">
+      <div
+        aria-hidden
+        class="pointer-events-none absolute -inset-6 -z-10 rounded-[3rem] bg-accent-500/20 blur-3xl"
+      >
+      </div>
+
+      <!-- floating feature chips beside the phone -->
+      {
+        heroChips.map((c) => {
+          const Icon = c.icon;
+          return (
+            <div
+              class={`absolute z-20 hidden items-center gap-2 rounded-2xl border border-border bg-card/90 px-3 py-2 shadow-lg backdrop-blur lg:flex ${c.pos} ${c.anim}`}
+              style={`animation-delay:${c.delay}`}
+            >
+              <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-accent-500/10">
+                <Icon className="h-4 w-4 text-accent-500" aria-hidden />
+              </span>
+              <span class="whitespace-nowrap text-xs font-medium text-foreground">{c.label}</span>
+            </div>
+          );
+        })
+      }
+
+      <!-- phone -->
+      <div
+        class="animate-float relative z-10 mx-auto h-[500px] w-[250px] rounded-[2.6rem] border border-border bg-device-frame p-2.5 shadow-2xl ring-1 ring-white/5"
+      >
+        <div
+          class="absolute left-1/2 top-2.5 z-10 h-6 w-24 -translate-x-1/2 rounded-full bg-black/90"
+        >
+        </div>
+        <div
+          class="relative h-full w-full overflow-hidden rounded-[2.1rem] bg-device-screen text-device-foreground"
+        >
+          <div
+            class="flex items-center justify-between px-5 pt-3 text-[10px] font-medium text-white/80"
+          >
+            <span>9:41</span>
+            <span class="flex items-center gap-1">
+              <span class="inline-block h-2 w-3 rounded-sm bg-white/70"></span>
+              <span class="inline-block h-2 w-3 rounded-sm bg-white/70"></span>
+            </span>
+          </div>
+
+          <div class="px-5">
+            <p class="mt-7 text-[10px] uppercase tracking-widest text-white/40">
+              Balance this month
+            </p>
+            <p class="mt-1 font-display text-[2.75rem] leading-none">
+              $1,240<span class="text-accent-400">.50</span>
+            </p>
+            <p class="mt-2 flex items-center gap-1 text-[11px] font-medium text-accent-300">
+              <span aria-hidden>▼</span> 12% vs last month
+            </p>
+
+            <div class="mt-7 space-y-2">
+              {
+                heroTxns.map((t) => (
+                  <div class="flex items-center gap-3 rounded-xl bg-device-surface p-2.5">
+                    <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 text-[15px]">
+                      {t.emoji}
+                    </span>
+                    <div class="flex-1">
+                      <p class="text-[12px] font-medium">{t.label}</p>
+                      <p class="text-[10px] text-white/50">{t.sub}</p>
+                    </div>
+                    <p class="text-[12px] text-rose-300">{t.amt}</p>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

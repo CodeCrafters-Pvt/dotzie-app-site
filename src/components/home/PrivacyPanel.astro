@@ -1,0 +1,58 @@
+---
+const privacyCards = [
+  ["Stays on your phone", "Every expense you add is saved on your device, not on our servers."],
+  [
+    "Nothing to sign up for",
+    "No account, no email, no password — you just open the app and start.",
+  ],
+  ["Only you can see it", "There's no cloud copy for anyone to peek at, leak, or hand over."],
+];
+---
+
+<!-- Privacy (dark panel) -->
+<section
+  id="privacy"
+  class="relative overflow-hidden text-white"
+  style="background: color-mix(in oklab, var(--accent-700) 22%, var(--deep));"
+>
+  <div aria-hidden class="pointer-events-none absolute inset-0">
+    <div
+      class="absolute inset-x-0 bottom-0 h-2/3"
+      style="background: radial-gradient(65% 80% at 50% 100%, color-mix(in oklab, var(--accent-500) 45%, transparent), transparent 72%);"
+    >
+    </div>
+  </div>
+  <div class="relative mx-auto max-w-4xl px-6 py-16 text-center lg:py-20">
+    <p class="reveal text-xs font-semibold uppercase tracking-[0.2em] text-accent-400">
+      Privacy by design
+    </p>
+    <h2
+      class="reveal mt-4 font-display text-4xl leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl"
+    >
+      Your data never leaves your device.{" "}
+      <span
+        class="animate-shimmer-text bg-clip-text italic text-transparent"
+        style="background-image: linear-gradient(110deg, var(--accent-300), var(--accent-400), var(--accent-300), var(--accent-400), var(--accent-300));"
+      >
+        Not by policy — by design.
+      </span>
+    </h2>
+    <p class="reveal mx-auto mt-6 max-w-2xl text-lg text-white/65">
+      Every expense is stored and{" "}
+      <strong class="font-semibold text-white">kept private right on your phone</strong>. There's no
+      account to sign up for and nothing syncing to the cloud, so there's nothing to leak, sell, or
+      hand over. The only person who can ever see your spending is you.
+    </p>
+
+    <dl class="reveal mx-auto mt-14 grid max-w-3xl gap-6 text-left sm:grid-cols-3">
+      {
+        privacyCards.map(([k, v]) => (
+          <div class="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:border-accent-400/50 hover:bg-white/[0.07]">
+            <dt class="font-display text-xl text-white">{k}</dt>
+            <dd class="mt-2 text-sm text-white/60">{v}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>

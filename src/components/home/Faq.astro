@@ -1,0 +1,50 @@
+---
+import { faqs } from "@/data/faq";
+import { ArrowRight } from "lucide-react";
+---
+
+<!-- FAQ -->
+<section id="faq" class="mx-auto max-w-3xl px-6 py-12 lg:py-16">
+  <p class="reveal text-sm font-medium text-accent-500">Frequently asked</p>
+  <h2 class="reveal mt-3 font-display text-4xl tracking-tight sm:text-5xl">Questions, answered.</h2>
+
+  <div class="reveal mt-10 divide-y divide-border border-t border-b border-border">
+    {
+      faqs.map((f) => (
+        <details class="group">
+          <summary class="flex cursor-pointer list-none items-center justify-between py-4 text-left text-base font-medium transition-colors hover:text-accent-500 [&::-webkit-details-marker]:hidden">
+            {f.q}
+            <svg
+              class="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 group-open:rotate-180"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </summary>
+          <p class="pb-4 text-muted-foreground">{f.a}</p>
+        </details>
+      ))
+    }
+  </div>
+
+  <div
+    class="reveal mt-14 flex items-center justify-between rounded-2xl border border-border bg-card p-6 transition-colors hover:border-accent-500/40"
+  >
+    <div>
+      <p class="font-semibold">Still curious?</p>
+      <p class="text-sm text-muted-foreground">Read the user guide.</p>
+    </div>
+    <a
+      href="/guide"
+      class="group inline-flex items-center gap-2 text-sm font-medium text-accent-500 hover:text-accent-400"
+    >
+      Open the guide
+      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+    </a>
+  </div>
+</section>
