@@ -5,12 +5,12 @@ deploys to any host (Cloudflare Pages, Netlify, Vercel, S3, nginx…).
 
 ## Commands
 
-| Command           | What it does                                  |
-| ----------------- | --------------------------------------------- |
-| `npm install`     | Install dependencies                          |
-| `npm run dev`     | Start the dev server at `localhost:4321`      |
-| `npm run build`   | Build the production site to `dist/`          |
-| `npm run preview` | Preview the built `dist/` locally             |
+| Command           | What it does                             |
+| ----------------- | ---------------------------------------- |
+| `npm install`     | Install dependencies                     |
+| `npm run dev`     | Start the dev server at `localhost:4321` |
+| `npm run build`   | Build the production site to `dist/`     |
+| `npm run preview` | Preview the built `dist/` locally        |
 
 ## Where do I edit things?
 

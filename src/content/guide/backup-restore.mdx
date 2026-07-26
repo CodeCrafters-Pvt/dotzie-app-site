@@ -1,0 +1,101 @@
+---
+title: Backup and restore
+navLabel: Backup & restore
+description: Moving Dotzie to a new phone, setting a backup password, choosing where backups are saved, and restoring your encrypted data.
+section: "Your data & settings"
+order: 11
+icon: DatabaseBackup
+---
+
+## Moving to a new phone
+
+If that's why you're here, the short version:
+
+1. **On the old phone** — Settings → Backup & restore → tap the status card to
+   back up now. Then **Manage backups → share a copy** and send the file
+   somewhere you can reach from the new phone.
+2. **On the new phone** — on the very first screen of the app, choose
+   **Restore my data**, pick the file, enter your backup password.
+
+That's it. Your name and starting balance come back pre-filled, and the app
+reports how many records were restored.
+
+> **This is the only copy of your data.** Dotzie has no servers and no account,
+> so nothing is waiting in a cloud to be re-downloaded. If the phone is already
+> gone and you have no backup file and password, the data cannot be recovered —
+> by anyone, including us. That's the trade-off that makes it private.
+
+---
+
+## First-time setup — "Protect your backups"
+
+**Settings → Backup & restore.** Two steps the first time:
+
+### 1. Set a password
+
+Backups are encrypted with it, and you can add an optional **hint**. In the
+app's own words: _you can save and share backup files, so only you can open them
+with this password._
+
+### 2. Choose where backups go
+
+- **Android** — pick a folder. Backups can't be saved until you do.
+- **iOS** — fixed, at _Files › On My iPhone › Expense Tracker_.
+
+When you finish, Dotzie writes your first backup immediately: _Backup is on.
+Your first backup is saved, locked with your password._ (If there's nothing to
+back up yet, it tells you that honestly instead of pretending.)
+
+## Backing up
+
+- The **status card** on the Backup & restore screen _is_ the back-up-now
+  button. It shows backup health and when the last one ran, and fills as it
+  works.
+- **Backup frequency** — off, daily, weekly or monthly. Automatic backups **run
+  when you open the app** — Dotzie isn't running in the background waiting, so
+  if you don't open it for a week, it doesn't back up for a week.
+- On Android, if you haven't picked a folder, the frequency row warns that it
+  _won't run until you pick a backup folder below_.
+- **Change backup password** — note carefully: **files saved before the change
+  still need the old password.** Changing it doesn't re-encrypt old backups.
+  Keep the old password until you've replaced those files.
+- Backup and restore can't overlap. Rows disable themselves while one is
+  running.
+
+## Restoring
+
+Reachable from the status card's **Restore** action, from Settings search
+("restore"), or from the first screen of a fresh install.
+
+1. **Pick a file** with the system file picker — or expand **choose from your
+   saved backups** to pick one Dotzie already wrote. Saved backups show their
+   date and password hint.
+2. **Enter the backup's password.** It's verified _before_ anything is written,
+   so a wrong password can't damage what you already have.
+3. The restore runs full-screen with a progress indicator and reports how many
+   records came back.
+
+> The navigation bar hides during a restore. That's deliberate — a restore
+> rewrites your data, and wandering off mid-write is exactly how data gets
+> mangled. Let it finish.
+
+## Managing saved backups
+
+**Settings → Backup & restore → Manage backups** ("Your backups").
+
+- Every saved copy, newest first, labelled by date and showing its hint. The
+  newest is tagged **Most recent backup**.
+- Tap a file for its actions: **restore it**, **share a copy**, or **remove
+  it**.
+- **Only the most recent few backups are kept** — older ones are replaced
+  automatically. Copies you've saved elsewhere aren't in this list and aren't
+  touched.
+- **Share a fresh copy** exports everything up to _right now_ and sends it
+  wherever you like. That's different from sharing one of the older saved files
+  — use it when you're about to switch phones.
+
+## A routine worth keeping
+
+Set frequency to **weekly**, and once a month share a fresh copy somewhere off
+the phone — your own cloud drive, a laptop, a USB stick. Backups sitting only on
+the device they're backing up don't survive the thing you're protecting against.

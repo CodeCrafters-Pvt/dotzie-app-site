@@ -1,0 +1,118 @@
+---
+import { getGuidePages, groupBySection, navLabel, guideHref } from "@/lib/guide";
+
+interface Props {
+  /** Collection id of the page being viewed, if any. */
+  current?: string;
+}
+
+const { current } = Astro.props;
+const groups = groupBySection(await getGuidePages());
+---
+
+{/* Desktop: sticky sidebar. Mobile: a collapsed dropdown above the content. */}
+<nav aria-label="Guide contents" class="guide-nav">
+  <details class="rounded-2xl border border-border bg-card lg:hidden">
+    <summary
+      class="flex cursor-pointer list-none items-center justify-between px-5 py-4 text-sm font-semibold"
+    >
+      <span>All guide pages</span>
+      <svg
+        class="h-4 w-4 text-muted-foreground transition-transform"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        aria-hidden="true"
+      >
+        <path d="m6 9 6 6 6-6"></path>
+      </svg>
+    </summary>
+    <div class="border-t border-border px-5 py-4">
+      {
+        groups.map((g) => (
+          <div class="mb-5 last:mb-0">
+            <p class="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+              {g.section}
+            </p>
+            <ul class="mt-2 space-y-1">
+              {g.pages.map((p) => (
+                <li>
+                  <a
+                    href={guideHref(p)}
+                    aria-current={p.id === current ? "page" : undefined}
+                    class:list={[
+                      "block rounded-lg px-2 py-1.5 text-sm transition-colors",
+                      p.id === current
+                        ? "bg-accent-500/10 font-medium text-accent-500"
+                        : "text-muted-foreground hover:text-foreground",
+                    ]}
+                  >
+                    {navLabel(p)}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </details>
+
+  <div class="hidden lg:sticky lg:top-24 lg:block">
+    <a
+      href="/guide"
+      aria-current={current ? undefined : "page"}
+      class:list={[
+        "block text-sm font-semibold transition-colors",
+        current ? "text-foreground hover:text-accent-500" : "text-accent-500",
+      ]}
+    >
+      User guide
+    </a>
+    <div class="mt-5 space-y-6 border-l border-border pl-4">
+      {
+        groups.map((g) => (
+          <div>
+            <p class="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+              {g.section}
+            </p>
+            <ul class="mt-2 space-y-1">
+              {g.pages.map((p) => (
+                <li class="relative">
+                  {p.id === current && (
+                    <span
+                      aria-hidden
+                      class="absolute -left-[17px] top-1.5 h-4 w-0.5 rounded-full bg-accent-500"
+                    />
+                  )}
+                  <a
+                    href={guideHref(p)}
+                    aria-current={p.id === current ? "page" : undefined}
+                    class:list={[
+                      "block py-1 text-sm leading-snug transition-colors",
+                      p.id === current
+                        ? "font-medium text-accent-500"
+                        : "text-muted-foreground hover:text-foreground",
+                    ]}
+                  >
+                    {navLabel(p)}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</nav>
+
+<style>
+  .guide-nav details[open] summary svg {
+    transform: rotate(180deg);
+  }
+  .guide-nav summary::-webkit-details-marker {
+    display: none;
+  }
+</style>

@@ -1,6 +1,5 @@
 ---
 import "../styles.css";
-import { CustomCursor } from "@/components/islands/CustomCursor";
 
 const SITE_NAME = "Dotzie";
 const SITE_TAGLINE = "Offline-first, privacy-first expense tracker";
@@ -16,6 +15,8 @@ interface Props {
   /** Extra JSON-LD blocks for this page (Organization is always included). */
   jsonLd?: Record<string, unknown>[];
   ogType?: string;
+  /** Presentation mode: full-screen scroll-snap slides (desktop only). */
+  deck?: boolean;
 }
 
 const {
@@ -25,6 +26,7 @@ const {
   image = "/og.png",
   jsonLd = [],
   ogType = "website",
+  deck = false,
 } = Astro.props;
 
 const canonical = new URL(path, Astro.site).href;
@@ -39,15 +41,20 @@ const organizationJsonLd = {
 };
 
 const blocks = [organizationJsonLd, ...jsonLd];
+
+// Private until launch: keep every page out of search results unless
+// PUBLIC_SITE_LIVE is explicitly "true" in the deploy environment.
+const isLive = import.meta.env.PUBLIC_SITE_LIVE === "true";
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class={deck ? "deck" : undefined}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="canonical" href={canonical} />
+    {!isLive && <meta name="robots" content="noindex, nofollow" />}
 
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -86,17 +93,9 @@ const blocks = [organizationJsonLd, ...jsonLd];
       })();
     </script>
 
-    {
-      blocks.map((block) => (
-        <script
-          type="application/ld+json"
-          set:html={JSON.stringify(block)}
-        />
-      ))
-    }
+    {blocks.map((block) => <script type="application/ld+json" set:html={JSON.stringify(block)} />)}
   </head>
   <body>
-    <CustomCursor client:idle />
     <slot />
 
     <script>
