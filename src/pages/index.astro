@@ -1,61 +1,21 @@
 ---
-import Base from "@/layouts/Base.astro";
-import Header from "@/components/Header.astro";
-import Footer from "@/components/Footer.astro";
-import { SectionNav } from "@/components/islands/SectionNav";
-import Hero from "@/components/home/Hero.astro";
-import Screens from "@/components/home/Screens.astro";
-import FeaturesTrack from "@/components/home/FeaturesTrack.astro";
-import FeaturesPlan from "@/components/home/FeaturesPlan.astro";
-import AlsoIncluded from "@/components/home/AlsoIncluded.astro";
-import Pricing from "@/components/home/Pricing.astro";
-import PrivacyPanel from "@/components/home/PrivacyPanel.astro";
-import Faq from "@/components/home/Faq.astro";
-import { faqs } from "@/data/faq";
-import { SITE_NAME, SITE_TAGLINE, SITE_DESC } from "@/data/site";
-
-const softwareAppJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  name: SITE_NAME,
-  description: SITE_DESC,
-  applicationCategory: "FinanceApplication",
-  operatingSystem: "iOS, Android",
-  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-};
-
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faqs.map((f) => ({
-    "@type": "Question",
-    name: f.q,
-    acceptedAnswer: { "@type": "Answer", text: f.a },
-  })),
-};
+// Placeholder production page.
+//
+// This branch (`launch`) exists only to occupy the Production environment while
+// the real site is kept private. Vercel's Hobby plan cannot protect a production
+// domain, and it refuses to track a branch that doesn't exist -- so production
+// serves this blank page instead of the marketing site.
+//
+// The real site lives on `dev` and deploys as a protected preview.
+// Do NOT merge this branch into `dev`. See LAUNCH-CHECKLIST.md.
 ---
 
-{/* Section order here is the slide order of the deck — see `deck` on Base. */}
-<Base
-  title={`${SITE_NAME} — ${SITE_TAGLINE}`}
-  description={SITE_DESC}
-  path="/"
-  jsonLd={[softwareAppJsonLd, faqJsonLd]}
-  deck
->
-  <div class="min-h-screen overflow-x-hidden bg-background text-foreground">
-    <Header />
-    <SectionNav client:load />
-    <main>
-      <Hero />
-      <Screens />
-      <FeaturesTrack />
-      <FeaturesPlan />
-      <AlsoIncluded />
-      <Pricing />
-      <PrivacyPanel />
-      <Faq />
-    </main>
-    <Footer />
-  </div>
-</Base>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>&nbsp;</title>
+  </head>
+  <body></body>
+</html>
