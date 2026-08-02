@@ -1,6 +1,7 @@
 ---
 import "../styles.css";
 import { SITE_NAME, SITE_TAGLINE, SITE_DESC } from "@/data/site";
+import { DEFAULT_ACCENT } from "@/data/accents";
 
 interface Props {
   title?: string;
@@ -44,7 +45,7 @@ const isLive = import.meta.env.PUBLIC_SITE_LIVE === "true";
 ---
 
 <!doctype html>
-<html lang="en" class={deck ? "deck" : undefined}>
+<html lang="en" class={deck ? "deck" : undefined} data-accent={DEFAULT_ACCENT}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

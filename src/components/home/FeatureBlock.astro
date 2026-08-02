@@ -15,8 +15,6 @@ const { id, flip = false, note } = Astro.props;
 const f = feature(id);
 ---
 
-{/* One feature: mockup beside copy. Two of these stack inside a TabbedSlide
-    from `md` up; below that the slide's switcher shows one at a time. */}
 <div class="grid items-center gap-5 md:grid-cols-2 md:gap-10 lg:gap-12">
   <div
     class:list={[
@@ -32,7 +30,7 @@ const f = feature(id);
       {f.slide!.headline}
     </h3>
     <p class="mt-3 max-w-md text-sm leading-relaxed text-muted-foreground lg:text-base">
-      {f.slide!.blurb}{note && <span class="text-foreground/70">{" "}{note}</span>}
+      {f.slide!.blurb}{note && <span class="text-foreground/70"> {note}</span>}
     </p>
     <GuideLink feature={f} />
   </div>

@@ -41,9 +41,7 @@ function Cursor({ leftPct, top, pressed }: { leftPct: number; top: number; press
   );
 }
 
-/* ------------------------------------------------------------------ */
-/* 1. Track — type an amount, tap Add, a new expense drops in.        */
-/* ------------------------------------------------------------------ */
+// 1. Track — type an amount, tap Add, a new expense drops in.
 export function TrackMockup() {
   const step = useStep(4, 1500);
   const typed = step >= 1;
@@ -111,9 +109,7 @@ export function TrackMockup() {
   );
 }
 
-/* ------------------------------------------------------------------ */
-/* 2. Split — tap "Settle up", balances clear to settled.            */
-/* ------------------------------------------------------------------ */
+// 2. Split — tap "Settle up", balances clear to settled.
 export function SplitMockup() {
   const step = useStep(4, 1600);
   const atBtn = step === 1 || step === 2;
@@ -180,9 +176,7 @@ export function SplitMockup() {
   );
 }
 
-/* ------------------------------------------------------------------ */
-/* 3. Plan — flip on auto-repeat, recurring items + total light up.  */
-/* ------------------------------------------------------------------ */
+// 3. Plan — flip on auto-repeat, recurring items + total light up.
 export function PlanMockup() {
   const step = useStep(4, 1500);
   const atToggle = step === 1 || step === 2;
@@ -255,9 +249,7 @@ export function PlanMockup() {
   );
 }
 
-/* ------------------------------------------------------------------ */
-/* 4. Events — tap + to raise a category, event total climbs.        */
-/* ------------------------------------------------------------------ */
+// 4. Events — tap + to raise a category, event total climbs.
 export function EventMockup() {
   const step = useStep(6, 1100);
   const inc = (step >= 2 ? 1 : 0) + (step >= 4 ? 1 : 0);
@@ -317,9 +309,7 @@ export function EventMockup() {
   );
 }
 
-/* ------------------------------------------------------------------ */
-/* 5. SMS — a bank text is read and drafted into an expense.         */
-/* ------------------------------------------------------------------ */
+// 5. SMS — a bank text is read and drafted into an expense.
 export function SmsMockup() {
   const step = useStep(3, 1700);
   const reading = step === 0;

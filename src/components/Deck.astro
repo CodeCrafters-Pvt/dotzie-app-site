@@ -1,14 +1,9 @@
 ---
 /**
- * Presentation-deck engine for the homepage.
- *
  * Turns `main.deck-stage > section` (plus the footer) into one-at-a-time
- * slides. The page itself never scrolls — an index drives which slide is
- * visible, moved by keys, wheel, swipe, or the nav rail (SectionNav).
- *
- * Each slide is scaled down to fit one screen; slides that would need to
- * shrink past MIN_SCALE keep their own inner scroll instead of becoming
- * unreadable. Styles live in `styles.css` under `html.deck`.
+ * slides driven by an index, moved by keys, wheel, swipe or SectionNav.
+ * Slides scale to fit; past MIN_SCALE they scroll instead. Styles live in
+ * `styles.css` under `html.deck`.
  */
 ---
 
@@ -29,10 +24,8 @@
     );
     if (all.length < 2) return;
 
-    // Everything inside a slide moves into a `.deck-fit` wrapper, and that is
-    // what scale-to-fit shrinks. Scaling the <section> itself would shrink its
-    // background too, so full-bleed panels (the footer, the privacy panel)
-    // would stop reaching the edges of the screen.
+    // Scale-to-fit shrinks this wrapper, not the <section> — scaling the
+    // section would shrink its background off the edges of the screen too.
     all.forEach((s, i) => {
       if (!s.id) s.id = `slide-${i}`;
       s.classList.add("deck-slide");
@@ -44,8 +37,7 @@
 
     const fitBox = (s: HTMLElement) => s.firstElementChild as HTMLElement;
 
-    // Slides can be per-breakpoint (`lg:hidden` and friends), so the running
-    // set is whatever is currently displayed — recollected on every resize.
+    // Slides can be per-breakpoint, so recollect the visible set on resize.
     let slides: HTMLElement[] = [];
     let ids: string[] = [];
     let index = 0;
@@ -59,24 +51,18 @@
       index = found >= 0 ? found : Math.min(index, slides.length - 1);
     }
 
-    /* ---- scale-to-fit ------------------------------------------------- */
-
-    // Desktop only. On phones, shrinking a stacked layout just makes it
-    // unreadable — those slides are authored to fit instead, and anything
-    // still too tall gets its own scroll (see `.deck-overflow`).
+    // Desktop only — shrinking a stacked phone layout just makes it
+    // unreadable, so those slides scroll instead (see `.deck-overflow`).
     const wide = window.matchMedia("(min-width: 1024px)");
 
-    // `.deck-fit` sits in a centred flex column, so its height is its natural
-    // content height even when that overflows — and `offsetHeight` ignores the
-    // transform, so it can be measured while scaled. All reads happen before
-    // any write so the browser only reflows once.
+    // `offsetHeight` ignores the transform, so a scaled slide still measures
+    // its natural height. Reads all happen before writes to reflow once.
     function fit() {
       if (!stage.clientHeight) return;
 
       const readings = slides.map((s) => {
         const cs = getComputedStyle(s);
-        const avail =
-          s.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+        const avail = s.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
         return { s, avail, natural: fitBox(s).offsetHeight };
       });
 
@@ -84,8 +70,8 @@
         const raw = natural > 0 && avail > 0 ? avail / natural : 1;
         const scale = wide.matches ? Math.min(1, Math.max(MIN_SCALE, raw)) : 1;
         s.style.setProperty("--deck-scale", scale.toFixed(4));
-        // Overflowing means "give this slide its own scroll" — on desktop only
-        // once scaling has given up, on mobile as soon as it doesn't fit.
+        // Desktop scrolls only once scaling gives up; mobile as soon as it
+        // doesn't fit.
         s.classList.toggle("deck-overflow", raw < (wide.matches ? MIN_SCALE : 1));
       });
     }
@@ -112,15 +98,12 @@
       queueFit();
     });
     wide.addEventListener("change", refresh);
-    // Islands hydrate and webfonts land after first paint — both change how
-    // tall a slide is, so re-fit whenever slide content resizes.
+    // Islands and webfonts land after first paint and change slide height.
     if ("ResizeObserver" in window) {
       const ro = new ResizeObserver(queueFit);
       all.forEach((s) => Array.from(s.children).forEach((c) => ro.observe(c)));
     }
     document.fonts?.ready.then(queueFit);
-
-    /* ---- slide state -------------------------------------------------- */
 
     function render(initial = false) {
       slides.forEach((s, i) => {
@@ -130,8 +113,8 @@
         s.inert = !active;
         if (active) {
           s.scrollTop = 0;
-          // Base.astro's scroll-triggered reveals can't work here — every
-          // slide overlaps the viewport — so play them on arrival instead.
+          // Every slide overlaps the viewport, so scroll-triggered reveals
+          // can't work — play them on arrival instead.
           s.querySelectorAll(".reveal").forEach((el) => el.classList.add("in"));
         }
       });
@@ -164,8 +147,6 @@
       }, TRANSITION_MS);
       render();
     }
-
-    /* ---- input -------------------------------------------------------- */
 
     // Typing, or activating a control, must never also flip the slide.
     function isTyping(target: EventTarget | null) {
@@ -254,8 +235,6 @@
       },
       { passive: true },
     );
-
-    /* ---- hash links --------------------------------------------------- */
 
     /** Slide index owning `#id` — the target may be nested inside a slide. */
     function indexForHash(hash: string) {

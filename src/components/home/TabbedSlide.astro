@@ -10,13 +10,20 @@ const { id, tabs } = Astro.props;
 const group = `${id}-tab`;
 ---
 
-{/* Two panes on one slide. From `md` (iPad Mini) up they stack and are both
+{
+  /* Two panes on one slide. From `md` (iPad Mini) up they stack and are both
     visible, as on desktop. Below that they'd be three screens tall, so a
     segmented switcher shows one at a time — pure CSS via `:has()`, see
-    `.tab-panes` in styles.css. */}
+    `.tab-panes` in styles.css. */
+}
 <section id={id} class="mx-auto max-w-5xl px-6 py-6 md:py-10 lg:py-14">
   <div class="tabbed reveal">
-    <div role="radiogroup" aria-label={`${tabs[0]} or ${tabs[1]}`} class="seg-switch" data-hide="md">
+    <div
+      role="radiogroup"
+      aria-label={`${tabs[0]} or ${tabs[1]}`}
+      class="seg-switch"
+      data-hide="md"
+    >
       {
         tabs.map((label, i) => (
           <Fragment>

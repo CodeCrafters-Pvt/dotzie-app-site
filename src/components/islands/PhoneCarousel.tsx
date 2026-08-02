@@ -32,7 +32,6 @@ export function PhoneCarousel() {
   return (
     <div className="relative mx-auto mt-2 max-w-6xl px-4 pb-6 sm:px-6 lg:pb-8">
       <div className="reveal relative mx-auto h-[440px] w-full max-w-5xl sm:h-[500px]">
-        {/* stage */}
         <div className="relative h-full w-full [perspective:1400px]">
           {screens.map((s, i) => {
             let pos = i - active;
@@ -69,7 +68,6 @@ export function PhoneCarousel() {
           })}
         </div>
 
-        {/* arrows */}
         <button
           type="button"
           onClick={() => go(-1)}
@@ -88,7 +86,6 @@ export function PhoneCarousel() {
         </button>
       </div>
 
-      {/* label + dots */}
       <div className="mt-3 flex flex-col items-center gap-3">
         <p className="font-display text-lg italic text-muted-foreground">
           <span className="text-foreground">{screens[active].label}</span>

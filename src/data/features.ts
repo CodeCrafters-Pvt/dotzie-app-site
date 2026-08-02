@@ -1,13 +1,11 @@
 import type { Feature, FeatureTier } from "@/types";
 
 /**
- * Single source of truth for what the marketing site says Dotzie does.
- * The home slides, the "Also included" cards and both pricing columns all
- * render from this list, so a feature is edited in one place.
+ * Single source of truth for the home slides, "Also included" cards and
+ * both pricing columns.
  *
  * NOTE: `tier` is placeholder until the Free/Pro split is finalised before
- * launch. Changing a tier here moves the feature between the pricing columns
- * and re-tags its card automatically — no markup to touch.
+ * launch.
  */
 export const features: Feature[] = [
   {

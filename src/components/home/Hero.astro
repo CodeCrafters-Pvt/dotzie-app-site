@@ -55,7 +55,6 @@ const heroChips = [
 ];
 ---
 
-<!-- Hero -->
 <section id="top" class="relative overflow-hidden">
   <div aria-hidden class="pointer-events-none absolute inset-0 -z-10">
     <div class="absolute -top-24 right-0 h-[700px] w-[900px] translate-x-1/4 hero-glow"></div>
@@ -72,7 +71,6 @@ const heroChips = [
   <div
     class="relative mx-auto grid max-w-6xl items-center gap-8 px-6 pt-4 pb-6 lg:grid-cols-2 lg:gap-8 lg:pt-10 lg:pb-14"
   >
-    <!-- Left column -->
     <div class="text-left">
       <div class="flex animate-fade-up items-center gap-3">
         <span class="h-px w-10 bg-accent-500"></span>
@@ -155,7 +153,6 @@ const heroChips = [
       </p>
     </div>
 
-    <!-- Right column: featured phone -->
     <div class="relative animate-fade-up [animation-delay:300ms]">
       <div
         aria-hidden
@@ -163,7 +160,6 @@ const heroChips = [
       >
       </div>
 
-      <!-- floating feature chips beside the phone -->
       {
         heroChips.map((c) => {
           const Icon = c.icon;
@@ -181,7 +177,6 @@ const heroChips = [
         })
       }
 
-      <!-- phone -->
       <div
         class="animate-float relative z-10 mx-auto h-[500px] w-[250px] rounded-[2.6rem] border border-border bg-device-frame p-2.5 shadow-2xl ring-1 ring-white/5"
       >

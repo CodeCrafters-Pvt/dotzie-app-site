@@ -5,15 +5,10 @@ export type AccentKey = "purple" | "warm" | "red" | "jungle" | "blue" | "teal" |
 /** localStorage key; also read by the no-flash script in Base.astro. */
 export const ACCENT_STORAGE_KEY = "dotzie-accent";
 
-export const DEFAULT_ACCENT: AccentKey = "purple";
+export const DEFAULT_ACCENT: AccentKey = "warm";
 
-/**
- * The accent palettes offered by the switcher.
- *
- * Each `swatch` must match the `--accent-500` of the matching
- * `[data-accent="…"]` block in styles.css — that block is the real palette,
- * this is only the preview dot. Change one, change the other.
- */
+/** `swatch` is only the preview dot — the real palette is the matching
+    `[data-accent="…"]` block in styles.css. Change one, change the other. */
 export const ACCENTS: (Accent & { key: AccentKey })[] = [
   { key: "purple", label: "Purple", swatch: "#6B5CFF" },
   { key: "warm", label: "Warm red", swatch: "#C8402F" },

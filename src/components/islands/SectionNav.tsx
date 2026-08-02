@@ -19,8 +19,8 @@ type DeckState = { index: number; ids: string[] };
 export function SectionNav() {
   const [{ index, ids }, setState] = useState<DeckState>({ index: 0, ids: [] });
 
-  // The deck engine (Deck.astro) owns the slide index; this nav only reads it
-  // and calls back in. It may hydrate before or after the engine boots.
+  // Deck.astro owns the index; this only reads it and calls back in, and may
+  // hydrate either side of the engine booting.
   useEffect(() => {
     const sync = () => {
       const deck = window.dotzieDeck;

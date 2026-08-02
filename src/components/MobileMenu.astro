@@ -1,12 +1,4 @@
 ---
-/**
- * Small-screen navigation. The desktop nav is `hidden md:flex`, so below
- * 768px this is the only way to reach Features / Pricing / Guide / Blog.
- *
- * Deliberately not an island: the panel is static markup, so it renders in
- * the HTML and works the moment the (tiny) inline script runs — no React
- * bundle for what is a show/hide.
- */
 interface Props {
   links: { label: string; href: string }[];
 }
@@ -123,8 +115,6 @@ const { links } = Astro.props;
       lastFocused = document.activeElement as HTMLElement | null;
       panel.hidden = false;
       trigger.setAttribute("aria-expanded", "true");
-      // Deck pages already lock the document, but content pages scroll —
-      // stop the page behind the sheet from moving under the finger.
       document.documentElement.style.overflow = "hidden";
       focusables()[0]?.focus();
     }
@@ -141,9 +131,8 @@ const { links } = Astro.props;
     panel.querySelector("[data-menu-close]")?.addEventListener("click", close);
     panel.querySelector("[data-menu-backdrop]")?.addEventListener("click", close);
 
-    // Any navigation closes the sheet — including in-page anchors, which on
-    // the home deck are turned into slide jumps by Deck.astro rather than
-    // real navigations, so nothing else would close it.
+    // On the home deck, anchors become slide jumps rather than navigations,
+    // so nothing else would close the sheet.
     panel.addEventListener("click", (e) => {
       if ((e.target as HTMLElement | null)?.closest("a")) close();
     });
@@ -155,8 +144,7 @@ const { links } = Astro.props;
         close();
         return;
       }
-      // The deck engine steers slides with arrows/space at the window level;
-      // while the sheet is up those keys belong to the sheet.
+      // Keep arrows/space from reaching the deck's window-level handler.
       if (e.key !== "Tab") {
         e.stopPropagation();
         return;
@@ -174,8 +162,6 @@ const { links } = Astro.props;
       }
     });
 
-    // Rotating to a tablet width reveals the desktop nav — drop the sheet so
-    // it can't sit invisibly over the page.
     wide.addEventListener("change", (e) => {
       if (e.matches) close();
     });
