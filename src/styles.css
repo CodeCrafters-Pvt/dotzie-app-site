@@ -423,39 +423,183 @@
   white-space: nowrap;
 }
 
-/* Presentation mode: one full-screen section at a time (desktop only).
-   Opt-in per page via <Base deck /> — long-form pages like /guide scroll
-   normally so the content can be read end to end. */
-@media (min-width: 1024px) {
-  html.deck {
-    scroll-snap-type: y mandatory;
-    scrollbar-width: none;
-  }
-  html.deck::-webkit-scrollbar {
+/* Segmented switch — a pill of radio buttons used wherever a slide carries
+   more content than a small screen can show at once. `data-hide` names the
+   breakpoint at or above which everything fits, so the switch disappears
+   and every pane is shown at once. */
+.seg-switch {
+  display: flex;
+  width: fit-content;
+  margin-inline: auto;
+  margin-bottom: 1.25rem;
+  padding: 0.25rem;
+  gap: 0.25rem;
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  background: var(--card);
+}
+.seg-switch label {
+  cursor: pointer;
+  border-radius: 9999px;
+  padding: 0.4rem 1.35rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--muted-foreground);
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+.seg-switch input:checked + label {
+  background: var(--accent-500);
+  color: #fff;
+}
+.seg-switch input:focus-visible + label {
+  outline: 2px solid var(--accent-500);
+  outline-offset: 2px;
+}
+@media (min-width: 768px) {
+  .seg-switch[data-hide="md"] {
     display: none;
   }
-  html.deck main > section,
-  html.deck #site-footer {
-    min-height: 100vh;
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-    scroll-margin-top: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+}
+@media (min-width: 1024px) {
+  .seg-switch[data-hide="lg"] {
+    display: none;
   }
-  /* Keep centered slide content full-width — margin:auto flex items
-     would otherwise collapse to their content width. */
-  html.deck main > section > *,
-  html.deck #site-footer > * {
-    width: 100%;
+}
+
+/* Two features per slide reads well from iPad Mini up, but stacks into
+   ~3 screens on a phone — so below `md` the switcher picks one pane. */
+@media (max-width: 767px) {
+  .tabbed:has([data-tab="0"]:checked) [data-pane="1"],
+  .tabbed:has([data-tab="1"]:checked) [data-pane="0"] {
+    display: none;
   }
-  /* Astro wraps islands in <astro-island> (display:contents by default),
-     which lets the carousel's mx-auto container collapse. Make the island
-     a real full-width flex item so the phone stage keeps its width. */
-  html.deck main > section > astro-island {
-    display: block;
-    width: 100%;
+}
+
+/* Same idea for pricing, but two tall tier cards only stop fitting below `lg`. */
+@media (max-width: 1023px) {
+  .tier-deck:has(#tier-free:checked) .tier-pro,
+  .tier-deck:has(#tier-pro:checked) .tier-free {
+    display: none;
+  }
+}
+
+/* Presentation mode: a true slide deck, one slide on screen at a time and
+   no page scrolling at all. Opt in per page via <Base deck /> plus the
+   <Deck /> engine — long-form pages like /guide scroll normally so their
+   content can be read end to end. */
+html.deck,
+html.deck body {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+html.deck::-webkit-scrollbar {
+  display: none;
+}
+
+/* Header stays put above the slides; the stage takes the rest of the screen. */
+html.deck .deck-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100svh;
+  min-height: 0;
+}
+html.deck .deck-shell > header {
+  flex: none;
+}
+html.deck .deck-stage {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Slides stack on top of each other; only `.is-active` is visible. The
+   inactive ones wait one slide-length away in the travel direction, which
+   `data-dir` on the stage flips so back always moves back.
+   Keyed off element selectors, not the JS-added `.deck-slide` class, so the
+   deck already looks right on the first paint before the engine boots. */
+html.deck .deck-stage > section,
+html.deck .deck-stage > footer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: 1.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(var(--deck-shift, 2.5rem));
+  transition:
+    opacity 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 420ms;
+}
+
+/* Scale-to-fit applies here, not to the slide, so a slide's background still
+   covers the whole screen while its contents shrink to fit. */
+.deck-fit {
+  width: 100%;
+  transform: scale(var(--deck-scale, 1));
+}
+html.deck .deck-stage[data-dir="back"] > section,
+html.deck .deck-stage[data-dir="back"] > footer {
+  --deck-shift: -2.5rem;
+}
+/* Before the engine boots, the first slide stands in as the active one. */
+html.deck .deck-slide.is-active,
+html.deck:not(.deck-ready) .deck-stage > :first-child {
+  --deck-shift: 0px;
+  z-index: 1;
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+html.deck .deck-slide:focus-visible {
+  outline: none;
+}
+
+/* Leave room for the mobile slide bar pinned to the bottom of the screen. */
+@media (max-width: 1023px) {
+  html.deck .deck-stage > section,
+  html.deck .deck-stage > footer {
+    padding-bottom: 4.25rem;
+  }
+}
+
+/* A slide too tall to scale down readably keeps its own scroll instead. */
+html.deck .deck-slide.deck-overflow.is-active {
+  justify-content: flex-start;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+/* Keep centered slide content full-width — margin:auto flex items would
+   otherwise collapse to their content width. */
+html.deck .deck-stage > section > *,
+html.deck .deck-stage > footer > * {
+  width: 100%;
+}
+/* Astro wraps islands in <astro-island> (display:contents by default),
+   which lets the carousel's mx-auto container collapse. Make the island
+   a real full-width flex item so the phone stage keeps its width. */
+html.deck .deck-stage > section > astro-island,
+html.deck .deck-stage > footer > astro-island,
+html.deck .deck-fit > astro-island {
+  display: block;
+  width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.deck .deck-stage > section,
+  html.deck .deck-stage > footer {
+    --deck-shift: 0px;
+    transition:
+      opacity 120ms linear,
+      visibility 0s linear 120ms;
   }
 }
 

@@ -95,7 +95,9 @@ const isLive = import.meta.env.PUBLIC_SITE_LIVE === "true";
     <slot />
 
     <script>
-      // Reveal-on-scroll for any element with the `.reveal` class.
+      // Reveal-on-scroll for any element with the `.reveal` class. Deck pages
+      // opt out: every slide overlaps the viewport, so they'd all reveal at
+      // once — Deck.astro reveals each slide as it becomes active instead.
       const io = new IntersectionObserver(
         (entries) => {
           for (const e of entries) {
@@ -107,7 +109,9 @@ const isLive = import.meta.env.PUBLIC_SITE_LIVE === "true";
         },
         { threshold: 0.15 },
       );
-      document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+      if (!document.documentElement.classList.contains("deck")) {
+        document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+      }
     </script>
   </body>
 </html>

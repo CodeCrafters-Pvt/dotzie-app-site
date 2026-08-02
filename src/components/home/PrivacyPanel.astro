@@ -22,12 +22,12 @@ const privacyCards = [
     >
     </div>
   </div>
-  <div class="relative mx-auto max-w-4xl px-6 py-16 text-center lg:py-20">
+  <div class="relative mx-auto max-w-4xl px-6 py-8 text-center lg:py-20">
     <p class="reveal text-xs font-semibold uppercase tracking-[0.2em] text-accent-400">
       Privacy by design
     </p>
     <h2
-      class="reveal mt-4 font-display text-4xl leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl"
+      class="reveal mt-3 font-display text-[1.75rem] leading-tight tracking-tight text-white sm:text-5xl lg:mt-4 lg:text-6xl"
     >
       Your data never leaves your device.{" "}
       <span
@@ -37,19 +37,19 @@ const privacyCards = [
         Not by policy — by design.
       </span>
     </h2>
-    <p class="reveal mx-auto mt-6 max-w-2xl text-lg text-white/65">
+    <p class="reveal mx-auto mt-4 max-w-2xl text-sm text-white/65 lg:mt-6 lg:text-lg">
       Every expense is stored and{" "}
       <strong class="font-semibold text-white">kept private right on your phone</strong>. There's no
       account to sign up for and nothing syncing to the cloud, so there's nothing to leak, sell, or
       hand over. The only person who can ever see your spending is you.
     </p>
 
-    <dl class="reveal mx-auto mt-14 grid max-w-3xl gap-6 text-left sm:grid-cols-3">
+    <dl class="reveal mx-auto mt-6 grid max-w-3xl gap-3 text-left sm:grid-cols-3 lg:mt-14 lg:gap-6">
       {
         privacyCards.map(([k, v]) => (
-          <div class="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:border-accent-400/50 hover:bg-white/[0.07]">
-            <dt class="font-display text-xl text-white">{k}</dt>
-            <dd class="mt-2 text-sm text-white/60">{v}</dd>
+          <div class="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:border-accent-400/50 hover:bg-white/[0.07] lg:p-5">
+            <dt class="font-display text-lg text-white lg:text-xl">{k}</dt>
+            <dd class="mt-1 text-sm text-white/60 lg:mt-2">{v}</dd>
           </div>
         ))
       }

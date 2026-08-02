@@ -1,0 +1,183 @@
+---
+/**
+ * Small-screen navigation. The desktop nav is `hidden md:flex`, so below
+ * 768px this is the only way to reach Features / Pricing / Guide / Blog.
+ *
+ * Deliberately not an island: the panel is static markup, so it renders in
+ * the HTML and works the moment the (tiny) inline script runs — no React
+ * bundle for what is a show/hide.
+ */
+interface Props {
+  links: { label: string; href: string }[];
+}
+const { links } = Astro.props;
+---
+
+<button
+  type="button"
+  data-menu-open
+  aria-label="Open menu"
+  aria-expanded="false"
+  aria-controls="mobile-menu"
+  class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border bg-card text-foreground/80 transition-colors hover:bg-elevated hover:text-foreground md:hidden"
+>
+  <svg
+    viewBox="0 0 24 24"
+    class="h-5 w-5"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    aria-hidden
+  >
+    <path d="M4 7h16M4 12h16M4 17h16"></path>
+  </svg>
+</button>
+
+<div id="mobile-menu" hidden class="fixed inset-0 z-50 md:hidden">
+  <div data-menu-backdrop class="absolute inset-0 bg-background/80 backdrop-blur-sm"></div>
+
+  <div
+    role="dialog"
+    aria-modal="true"
+    aria-label="Site menu"
+    class="animate-fade-up relative flex h-[100svh] max-h-[100svh] flex-col overflow-y-auto border-b border-border bg-card shadow-2xl"
+  >
+    <div class="flex h-16 shrink-0 items-center justify-between border-b border-border/60 px-6">
+      <span class="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground"
+        >Menu</span
+      >
+      <button
+        type="button"
+        data-menu-close
+        aria-label="Close menu"
+        class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-background text-foreground/80 transition-colors hover:bg-elevated hover:text-foreground"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          class="h-5 w-5"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          aria-hidden
+        >
+          <path d="M6 6l12 12M18 6L6 18"></path>
+        </svg>
+      </button>
+    </div>
+
+    <nav aria-label="Primary (mobile)" class="flex-1 px-6 py-4">
+      <ul class="flex flex-col">
+        {
+          links.map((l) => (
+            <li class="border-b border-border/50 last:border-0">
+              <a
+                href={l.href}
+                class="flex min-h-[3.25rem] items-center justify-between py-1 text-lg font-medium transition-colors hover:text-accent-500"
+              >
+                {l.label}
+                <svg
+                  viewBox="0 0 24 24"
+                  class="h-4 w-4 text-muted-foreground"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  aria-hidden
+                >
+                  <path d="M9 6l6 6-6 6" />
+                </svg>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="shrink-0 border-t border-border/60 px-6 py-5">
+      <a
+        href="/#download"
+        class="flex min-h-[3rem] w-full items-center justify-center rounded-full bg-gradient-brand px-6 text-base font-medium text-white shadow-glow"
+      >
+        Get the app
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  const panel = document.getElementById("mobile-menu");
+  const trigger = document.querySelector<HTMLButtonElement>("[data-menu-open]");
+
+  if (panel && trigger) {
+    const wide = window.matchMedia("(min-width: 768px)");
+    let lastFocused: HTMLElement | null = null;
+
+    const focusables = () =>
+      Array.from(panel.querySelectorAll<HTMLElement>("a[href], button:not([disabled])")).filter(
+        (el) => el.offsetParent !== null,
+      );
+
+    function open() {
+      lastFocused = document.activeElement as HTMLElement | null;
+      panel.hidden = false;
+      trigger.setAttribute("aria-expanded", "true");
+      // Deck pages already lock the document, but content pages scroll —
+      // stop the page behind the sheet from moving under the finger.
+      document.documentElement.style.overflow = "hidden";
+      focusables()[0]?.focus();
+    }
+
+    function close() {
+      if (panel.hidden) return;
+      panel.hidden = true;
+      trigger.setAttribute("aria-expanded", "false");
+      document.documentElement.style.overflow = "";
+      lastFocused?.focus();
+    }
+
+    trigger.addEventListener("click", open);
+    panel.querySelector("[data-menu-close]")?.addEventListener("click", close);
+    panel.querySelector("[data-menu-backdrop]")?.addEventListener("click", close);
+
+    // Any navigation closes the sheet — including in-page anchors, which on
+    // the home deck are turned into slide jumps by Deck.astro rather than
+    // real navigations, so nothing else would close it.
+    panel.addEventListener("click", (e) => {
+      if ((e.target as HTMLElement | null)?.closest("a")) close();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (panel.hidden) return;
+      if (e.key === "Escape") {
+        e.stopPropagation();
+        close();
+        return;
+      }
+      // The deck engine steers slides with arrows/space at the window level;
+      // while the sheet is up those keys belong to the sheet.
+      if (e.key !== "Tab") {
+        e.stopPropagation();
+        return;
+      }
+      const items = focusables();
+      if (!items.length) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    });
+
+    // Rotating to a tablet width reveals the desktop nav — drop the sheet so
+    // it can't sit invisibly over the page.
+    wide.addEventListener("change", (e) => {
+      if (e.matches) close();
+    });
+  }
+</script>

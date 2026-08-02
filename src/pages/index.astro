@@ -2,11 +2,19 @@
 import Base from "@/layouts/Base.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
+import Deck from "@/components/Deck.astro";
 import { SectionNav } from "@/components/islands/SectionNav";
 import Hero from "@/components/home/Hero.astro";
 import Screens from "@/components/home/Screens.astro";
-import FeaturesTrack from "@/components/home/FeaturesTrack.astro";
-import FeaturesPlan from "@/components/home/FeaturesPlan.astro";
+import TabbedSlide from "@/components/home/TabbedSlide.astro";
+import FeatureBlock from "@/components/home/FeatureBlock.astro";
+import {
+  TrackMockup,
+  SplitMockup,
+  PlanMockup,
+  EventMockup,
+  SmsMockup,
+} from "@/components/islands/FeatureMockups";
 import AlsoIncluded from "@/components/home/AlsoIncluded.astro";
 import Pricing from "@/components/home/Pricing.astro";
 import PrivacyPanel from "@/components/home/PrivacyPanel.astro";
@@ -35,7 +43,8 @@ const faqJsonLd = {
 };
 ---
 
-{/* Section order here is the slide order of the deck — see `deck` on Base. */}
+{/* Each direct child of `.deck-stage` is one slide, in this order — the
+    footer included. See Deck.astro for how they're driven. */}
 <Base
   title={`${SITE_NAME} — ${SITE_TAGLINE}`}
   description={SITE_DESC}
@@ -43,19 +52,33 @@ const faqJsonLd = {
   jsonLd={[softwareAppJsonLd, faqJsonLd]}
   deck
 >
-  <div class="min-h-screen overflow-x-hidden bg-background text-foreground">
+  <div class="deck-shell min-h-screen overflow-x-hidden bg-background text-foreground">
     <Header />
     <SectionNav client:load />
-    <main>
+    <main class="deck-stage">
       <Hero />
       <Screens />
-      <FeaturesTrack />
-      <FeaturesPlan />
-      <AlsoIncluded />
+      <TabbedSlide id="track" tabs={["Tracking", "Splitting"]}>
+        <FeatureBlock slot="one" id="track"><TrackMockup client:visible /></FeatureBlock>
+        <FeatureBlock slot="two" id="split" flip><SplitMockup client:visible /></FeatureBlock>
+      </TabbedSlide>
+
+      <TabbedSlide id="plan" tabs={["Planning", "Events"]}>
+        <FeatureBlock slot="one" id="plan"><PlanMockup client:visible /></FeatureBlock>
+        <FeatureBlock slot="two" id="events" flip><EventMockup client:visible /></FeatureBlock>
+      </TabbedSlide>
+
+      <TabbedSlide id="included" tabs={["Auto-capture", "Extras"]}>
+        <FeatureBlock slot="one" id="sms" note="(Android)">
+          <SmsMockup client:visible />
+        </FeatureBlock>
+        <AlsoIncluded slot="two" />
+      </TabbedSlide>
       <Pricing />
       <PrivacyPanel />
       <Faq />
+      <Footer />
     </main>
-    <Footer />
   </div>
+  <Deck />
 </Base>

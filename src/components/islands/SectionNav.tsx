@@ -1,160 +1,113 @@
-import { useEffect, useRef, useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
-const SECTIONS = [
-  { id: "top", label: "Home" },
-  { id: "screens", label: "Screens" },
-  { id: "track", label: "Everyday" },
-  { id: "plan", label: "Planning" },
-  { id: "included", label: "Extras" },
-  { id: "pricing", label: "Pricing" },
-  { id: "privacy", label: "Privacy" },
-  { id: "faq", label: "FAQ" },
-  { id: "site-footer", label: "Contact" },
-];
+/** Labels for the deck's slides, keyed by the section id in the DOM. */
+const LABELS: Record<string, string> = {
+  top: "Home",
+  screens: "Screens",
+  track: "Everyday",
+  plan: "Planning",
+  included: "Extras",
+  pricing: "Pricing",
+  privacy: "Privacy",
+  faq: "FAQ",
+  "site-footer": "Contact",
+};
+
+type DeckState = { index: number; ids: string[] };
 
 export function SectionNav() {
-  const [active, setActive] = useState(0);
-  const activeRef = useRef(0);
-  activeRef.current = active;
+  const [{ index, ids }, setState] = useState<DeckState>({ index: 0, ids: [] });
 
-  const scrollToIndex = (i: number) => {
-    const clamped = Math.max(0, Math.min(SECTIONS.length - 1, i));
-    document
-      .getElementById(SECTIONS[clamped].id)
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
-  // Chevron wraps around; keyboard/dots clamp.
-  const goToWrapped = (i: number) => {
-    const wrapped = (i + SECTIONS.length) % SECTIONS.length;
-    scrollToIndex(wrapped);
-  };
-
-  // Track the active slide.
+  // The deck engine (Deck.astro) owns the slide index; this nav only reads it
+  // and calls back in. It may hydrate before or after the engine boots.
   useEffect(() => {
-    const els = SECTIONS.map((s) => document.getElementById(s.id)).filter(Boolean) as HTMLElement[];
-
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            const idx = SECTIONS.findIndex((s) => s.id === e.target.id);
-            if (idx >= 0) setActive(idx);
-          }
-        });
-      },
-      { rootMargin: "-45% 0px -45% 0px", threshold: 0 },
-    );
-
-    els.forEach((el) => obs.observe(el));
-    return () => obs.disconnect();
+    const sync = () => {
+      const deck = window.dotzieDeck;
+      if (deck) setState({ index: deck.index, ids: deck.ids });
+    };
+    sync();
+    window.addEventListener("deck:ready", sync);
+    window.addEventListener("deck:change", sync);
+    return () => {
+      window.removeEventListener("deck:ready", sync);
+      window.removeEventListener("deck:change", sync);
+    };
   }, []);
 
-  // Deck keyboard control: one whole slide per key, never resting between
-  // (desktop only — mobile keeps native scrolling).
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 1024px)");
-    let cooling = false;
-    const cool = () => {
-      cooling = true;
-      window.setTimeout(() => {
-        cooling = false;
-      }, 550);
-    };
+  if (ids.length < 2) return null;
 
-    const onKey = (e: KeyboardEvent) => {
-      if (!mq.matches) return;
-      const el = e.target as HTMLElement | null;
-      const tag = el?.tagName;
-      // Don't hijack typing or activating controls.
-      if (
-        tag === "INPUT" ||
-        tag === "TEXTAREA" ||
-        tag === "SELECT" ||
-        tag === "BUTTON" ||
-        tag === "A" ||
-        tag === "SUMMARY" ||
-        el?.isContentEditable
-      ) {
-        return;
-      }
+  const go = (i: number, wrap = false) => window.dotzieDeck?.go(i, { wrap });
+  const label = (id: string, i: number) => LABELS[id] ?? `Slide ${i + 1}`;
+  const isFirst = index === 0;
+  const isLast = index === ids.length - 1;
 
-      switch (e.key) {
-        case "ArrowDown":
-        case "PageDown":
-        case " ":
-          e.preventDefault();
-          if (!cooling) {
-            cool();
-            scrollToIndex(activeRef.current + 1);
-          }
-          break;
-        case "ArrowUp":
-        case "PageUp":
-          e.preventDefault();
-          if (!cooling) {
-            cool();
-            scrollToIndex(activeRef.current - 1);
-          }
-          break;
-        case "Home":
-          e.preventDefault();
-          scrollToIndex(0);
-          break;
-        case "End":
-          e.preventDefault();
-          scrollToIndex(SECTIONS.length - 1);
-          break;
-      }
-    };
+  const dots = (
+    <ul className="flex items-center gap-2 lg:flex-col lg:gap-3">
+      {ids.map((id, i) => (
+        <li key={id}>
+          <button
+            type="button"
+            onClick={() => go(i)}
+            aria-label={`Go to ${label(id, i)}`}
+            aria-current={i === index ? "true" : undefined}
+            className="group relative flex items-center justify-center p-0.5 lg:p-1"
+          >
+            <span
+              className={`block rounded-full transition-all duration-300 ${
+                i === index
+                  ? "h-1.5 w-6 bg-accent-500 lg:h-6 lg:w-1.5"
+                  : "h-1.5 w-1.5 bg-border group-hover:bg-accent-400"
+              }`}
+            />
+            <span className="pointer-events-none absolute bottom-7 whitespace-nowrap rounded-md border border-border bg-card px-2 py-1 text-xs text-foreground opacity-0 shadow-sm transition-opacity duration-200 group-hover:opacity-100 max-lg:hidden lg:bottom-auto lg:right-6">
+              {label(id, i)}
+            </span>
+          </button>
+        </li>
+      ))}
+    </ul>
+  );
 
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
-
-  const isLast = active === SECTIONS.length - 1;
+  const stepButton = (dir: -1 | 1, disabled: boolean) => (
+    <button
+      type="button"
+      onClick={() => go(index + dir, isLast && dir === 1)}
+      disabled={disabled}
+      aria-label={dir === 1 ? (isLast ? "Back to start" : "Next slide") : "Previous slide"}
+      className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border bg-card text-muted-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:border-accent-500/60 hover:text-accent-500 disabled:pointer-events-none disabled:opacity-30"
+    >
+      {dir === 1 ? (
+        <ChevronDown className={`h-4 w-4 transition-transform ${isLast ? "rotate-180" : ""}`} />
+      ) : (
+        <ChevronUp className="h-4 w-4" />
+      )}
+    </button>
+  );
 
   return (
-    <nav
-      aria-label="Page sections"
-      className="fixed right-5 top-1/2 z-40 hidden -translate-y-1/2 lg:flex lg:flex-col lg:items-center lg:gap-4"
-    >
-      <ul className="flex flex-col items-center gap-3">
-        {SECTIONS.map((s, i) => (
-          <li key={s.id}>
-            <button
-              type="button"
-              onClick={() => scrollToIndex(i)}
-              aria-label={`Go to ${s.label}`}
-              aria-current={i === active ? "true" : undefined}
-              className="group relative flex items-center justify-center py-1"
-            >
-              <span
-                className={`block rounded-full transition-all duration-300 ${
-                  i === active
-                    ? "h-6 w-1.5 bg-accent-500"
-                    : "h-1.5 w-1.5 bg-border group-hover:bg-accent-400"
-                }`}
-              />
-              <span className="pointer-events-none absolute right-6 whitespace-nowrap rounded-md border border-border bg-card px-2 py-1 text-xs text-foreground opacity-0 shadow-sm transition-opacity duration-200 group-hover:opacity-100">
-                {s.label}
-              </span>
-            </button>
-          </li>
-        ))}
-      </ul>
-
-      <button
-        type="button"
-        onClick={() => goToWrapped(isLast ? 0 : active + 1)}
-        aria-label={isLast ? "Back to top" : "Next section"}
-        className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card text-muted-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:border-accent-500/60 hover:text-accent-500"
+    <>
+      {/* Desktop: rail on the right edge. */}
+      <nav
+        aria-label="Slides"
+        className="fixed right-5 top-1/2 z-40 hidden -translate-y-1/2 lg:flex lg:flex-col lg:items-center lg:gap-4"
       >
-        <ChevronDown
-          className={`h-4 w-4 transition-transform duration-300 ${isLast ? "rotate-180" : ""}`}
-        />
-      </button>
-    </nav>
+        {dots}
+        <div className="flex flex-col gap-2">
+          {stepButton(-1, isFirst)}
+          {stepButton(1, false)}
+        </div>
+      </nav>
+
+      {/* Mobile: bar along the bottom, where a thumb can reach it. */}
+      <nav
+        aria-label="Slides"
+        className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-between gap-3 border-t border-border/60 bg-background/80 px-4 py-2 backdrop-blur-xl lg:hidden"
+      >
+        {stepButton(-1, isFirst)}
+        <div className="min-w-0 overflow-x-auto">{dots}</div>
+        {stepButton(1, false)}
+      </nav>
+    </>
   );
 }

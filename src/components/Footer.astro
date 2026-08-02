@@ -64,20 +64,26 @@ const socials = [
 ---
 
 <footer id="site-footer" class="border-t border-border bg-card">
-  <div class="mx-auto max-w-6xl px-6 py-14 lg:py-20">
+  <div class="mx-auto max-w-6xl px-6 py-6 lg:py-20">
     <!-- Download CTA -->
     <div class="text-center">
       <p class="text-sm font-medium text-accent-500">Get the app</p>
-      <h2 class="mt-3 font-display text-3xl leading-tight tracking-tight sm:text-4xl lg:text-5xl">
+      <h2
+        class="mt-2 font-display text-3xl leading-tight tracking-tight sm:text-4xl lg:mt-3 lg:text-5xl"
+      >
         Your money, kept close.
       </h2>
-      <p class="mt-4 text-muted-foreground">Free to download. No account. No trackers. No ads.</p>
+      <p class="mt-2 text-sm text-muted-foreground lg:mt-4 lg:text-base">
+        Free to download. No account. No trackers. No ads.
+      </p>
 
-      <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+      <div
+        class="mx-auto mt-5 flex max-w-sm flex-col items-stretch gap-3 sm:max-w-none sm:flex-row sm:flex-wrap sm:items-center sm:justify-center lg:mt-8"
+      >
         <a
           href="#"
           aria-label="Download Dotzie on the App Store"
-          class="group inline-flex items-center gap-3 rounded-2xl bg-foreground px-5 py-3 text-background transition-all hover:-translate-y-0.5 hover:shadow-xl"
+          class="group flex w-full items-center justify-center gap-3 rounded-2xl bg-foreground px-5 py-3 text-background transition-all hover:-translate-y-0.5 hover:shadow-xl sm:inline-flex sm:w-auto"
         >
           <svg aria-hidden viewBox="0 0 24 24" class="h-6 w-6 fill-current">
             <path
@@ -94,7 +100,7 @@ const socials = [
         <a
           href="#"
           aria-label="Get Dotzie on Google Play"
-          class="group inline-flex items-center gap-3 rounded-2xl border border-border bg-background px-5 py-3 transition-all hover:-translate-y-0.5 hover:bg-elevated hover:shadow-xl"
+          class="group flex w-full items-center justify-center gap-3 rounded-2xl border border-border bg-background px-5 py-3 transition-all hover:-translate-y-0.5 hover:bg-elevated hover:shadow-xl sm:inline-flex sm:w-auto"
         >
           <svg aria-hidden viewBox="0 0 24 24" class="h-6 w-6">
             <path
@@ -121,10 +127,13 @@ const socials = [
     </div>
 
     <!-- Links -->
-    <div class="mt-16 grid gap-10 border-t border-border pt-12 sm:grid-cols-2 lg:grid-cols-4">
-      <div>
+    <div
+      class="mt-6 grid grid-cols-2 gap-x-6 gap-y-6 border-t border-border pt-6 sm:grid-cols-2 lg:mt-16 lg:grid-cols-4 lg:gap-10 lg:pt-12"
+    >
+      <!-- The blurb is desktop-only; on a phone it repeats the hero one slide over. -->
+      <div class="col-span-2 lg:col-span-1">
         <Wordmark />
-        <p class="mt-3 max-w-xs text-sm text-muted-foreground">
+        <p class="mt-3 hidden max-w-xs text-sm text-muted-foreground lg:block">
           An offline expense tracker for people who like their money — and their data — kept close.
         </p>
       </div>
@@ -133,7 +142,7 @@ const socials = [
         columns.map((col) => (
           <div>
             <p class="text-sm font-semibold">{col.title}</p>
-            <ul class="mt-4 space-y-2 text-sm text-muted-foreground">
+            <ul class="mt-2 space-y-1.5 text-sm text-muted-foreground lg:mt-4 lg:space-y-2">
               {col.links.map(([label, href]) => (
                 <li>
                   <a href={href} class="transition-colors hover:text-foreground">
@@ -148,7 +157,7 @@ const socials = [
 
       <div>
         <p class="text-sm font-semibold">Contact</p>
-        <ul class="mt-4 space-y-2 text-sm text-muted-foreground">
+        <ul class="mt-2 space-y-1.5 text-sm text-muted-foreground lg:mt-4 lg:space-y-2">
           <li>
             <a href="mailto:hello@dotzie.app" class="hover:text-foreground">hello@dotzie.app</a>
           </li>
@@ -157,7 +166,7 @@ const socials = [
     </div>
 
     <!-- Socials -->
-    <div class="mt-12 flex flex-col items-center gap-4">
+    <div class="mt-6 flex flex-col items-center gap-3 lg:mt-12 lg:gap-4">
       <p class="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Follow</p>
       <div class="flex flex-wrap justify-center gap-2" aria-label="Social links">
         {
@@ -182,7 +191,7 @@ const socials = [
 
   <div class="border-t border-border">
     <div
-      class="mx-auto flex max-w-6xl flex-col items-start justify-between gap-2 px-6 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center"
+      class="mx-auto flex max-w-6xl flex-col items-start justify-between gap-1 px-6 py-4 text-xs text-muted-foreground sm:flex-row sm:items-center lg:gap-2 lg:py-6"
     >
       <p>© {year} Dotzie. All rights reserved.</p>
       <p>Made offline, on purpose.</p>

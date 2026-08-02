@@ -70,7 +70,7 @@ const heroChips = [
   </div>
 
   <div
-    class="relative mx-auto grid max-w-6xl items-center gap-14 px-6 pt-8 pb-12 lg:grid-cols-2 lg:gap-8 lg:pt-10 lg:pb-14"
+    class="relative mx-auto grid max-w-6xl items-center gap-8 px-6 pt-4 pb-6 lg:grid-cols-2 lg:gap-8 lg:pt-10 lg:pb-14"
   >
     <!-- Left column -->
     <div class="text-left">
@@ -82,7 +82,7 @@ const heroChips = [
       </div>
 
       <h1
-        class="mt-6 max-w-xl animate-fade-up font-display text-5xl leading-[1.02] tracking-tight [animation-delay:120ms] sm:text-6xl lg:text-[4.75rem]"
+        class="mt-4 max-w-xl animate-fade-up font-display text-[2.75rem] leading-[1.02] tracking-tight [animation-delay:120ms] sm:text-6xl lg:mt-6 lg:text-[4.75rem]"
       >
         Track every expense.
         <br />
@@ -90,7 +90,7 @@ const heroChips = [
       </h1>
 
       <p
-        class="mt-6 max-w-md animate-fade-up text-lg leading-relaxed text-muted-foreground [animation-delay:240ms]"
+        class="mt-4 max-w-md animate-fade-up leading-relaxed text-muted-foreground [animation-delay:240ms] lg:mt-6 lg:text-lg"
       >
         A beautifully quiet expense tracker for iOS and Android. Your money story stays sealed on
         your phone — encrypted, offline, and entirely yours.
@@ -98,12 +98,12 @@ const heroChips = [
 
       <div
         id="download"
-        class="mt-9 flex animate-fade-up flex-wrap items-center gap-3 [animation-delay:360ms]"
+        class="mt-6 flex animate-fade-up flex-col items-stretch gap-3 [animation-delay:360ms] sm:flex-row sm:flex-wrap sm:items-center lg:mt-9"
       >
         <a
           href="#"
           aria-label="Download Dotzie on the App Store"
-          class="group inline-flex items-center gap-3 rounded-2xl bg-foreground px-5 py-3 text-background transition-all hover:-translate-y-0.5 hover:shadow-xl"
+          class="group flex w-full items-center justify-center gap-3 rounded-2xl bg-foreground px-5 py-3 text-background transition-all hover:-translate-y-0.5 hover:shadow-xl sm:inline-flex sm:w-auto sm:justify-start"
         >
           <svg aria-hidden viewBox="0 0 24 24" class="h-6 w-6 fill-current">
             <path
@@ -120,7 +120,7 @@ const heroChips = [
         <a
           href="#"
           aria-label="Get Dotzie on Google Play"
-          class="group inline-flex items-center gap-3 rounded-2xl border border-border bg-card px-5 py-3 transition-all hover:-translate-y-0.5 hover:bg-elevated hover:shadow-xl"
+          class="group flex w-full items-center justify-center gap-3 rounded-2xl border border-border bg-card px-5 py-3 transition-all hover:-translate-y-0.5 hover:bg-elevated hover:shadow-xl sm:inline-flex sm:w-auto sm:justify-start"
         >
           <svg aria-hidden viewBox="0 0 24 24" class="h-6 w-6">
             <path
@@ -145,9 +145,12 @@ const heroChips = [
         </a>
       </div>
 
-      <DownloadQR client:visible />
+      {/* Pointless on a phone — you'd be scanning the screen you're holding. */}
+      <div class="hidden lg:block">
+        <DownloadQR client:visible />
+      </div>
 
-      <p class="mt-6 animate-fade-up text-xs text-muted-foreground [animation-delay:520ms]">
+      <p class="mt-4 animate-fade-up text-xs text-muted-foreground [animation-delay:520ms] lg:mt-6">
         Free to download. No account. No trackers. No ads.
       </p>
     </div>

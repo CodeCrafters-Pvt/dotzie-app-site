@@ -1,5 +1,6 @@
 ---
 import Wordmark from "@/components/Wordmark.astro";
+import MobileMenu from "@/components/MobileMenu.astro";
 import { AccentSwitcher } from "@/components/islands/AccentSwitcher";
 import { ThemeToggle } from "@/components/islands/ThemeToggle";
 
@@ -28,12 +29,17 @@ const navLinks = [
         ))
       }
     </nav>
+    {
+      /* The CTA is the only control that drops off on the narrowest phones —
+        that frees the room the menu button needs, and the sheet carries a
+        full-width "Get the app" of its own. */
+    }
     <div class="flex items-center gap-2">
       <AccentSwitcher client:load />
       <ThemeToggle client:load />
       <a
         href="/#download"
-        class="relative inline-flex h-9 items-center overflow-hidden rounded-full bg-gradient-brand px-4 text-sm font-medium text-white shadow-glow transition-transform hover:scale-[1.03]"
+        class="relative hidden h-9 items-center overflow-hidden rounded-full bg-gradient-brand px-4 text-sm font-medium text-white shadow-glow transition-transform hover:scale-[1.03] sm:inline-flex"
       >
         <span class="relative z-10">Get the app</span>
         <span
@@ -41,6 +47,7 @@ const navLinks = [
           class="absolute inset-0 -translate-x-full animate-shimmer-text bg-[linear-gradient(110deg,transparent,rgba(255,255,255,0.35),transparent)]"
         ></span>
       </a>
+      <MobileMenu links={navLinks} />
     </div>
   </div>
 </header>
