@@ -31,7 +31,7 @@ export function PhoneCarousel() {
 
   return (
     <div className="relative mx-auto mt-2 max-w-6xl px-4 pb-6 sm:px-6 lg:pb-8">
-      <div className="reveal relative mx-auto h-[440px] w-full max-w-5xl sm:h-[500px]">
+      <div className="phone-stage reveal relative mx-auto h-[450px] w-full max-w-5xl sm:h-[500px]">
         <div className="relative h-full w-full [perspective:1400px]">
           {screens.map((s, i) => {
             let pos = i - active;
@@ -53,7 +53,8 @@ export function PhoneCarousel() {
                 aria-label={`Show ${s.label} screen`}
                 aria-current={pos === 0}
                 tabIndex={visible ? 0 : -1}
-                className="absolute left-1/2 top-1/2 origin-center transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] focus:outline-none"
+                className="phone-slide absolute left-1/2 top-1/2 origin-center transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] focus:outline-none"
+                data-off={abs}
                 style={{
                   transform: `translate(-50%, -50%) translateX(${translateX}%) translateY(${translateY}px) scale(${scale}) rotateY(${rotateY}deg)`,
                   opacity,
@@ -72,7 +73,7 @@ export function PhoneCarousel() {
           type="button"
           onClick={() => go(-1)}
           aria-label="Previous screen"
-          className="group absolute left-2 top-1/2 z-[60] inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-card/80 text-foreground shadow-lg backdrop-blur-md transition-all hover:-translate-y-1/2 hover:scale-110 hover:border-accent-500/60 hover:text-accent-500 sm:left-4 sm:h-14 sm:w-14"
+          className="group absolute left-0 top-1/2 z-[60] inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-card/80 text-foreground shadow-lg backdrop-blur-md transition-all hover:-translate-y-1/2 hover:scale-110 hover:border-accent-500/60 hover:text-accent-500 sm:left-4 sm:h-14 sm:w-14"
         >
           <ArrowLeft className="h-5 w-5 transition-transform group-hover:-translate-x-0.5" />
         </button>
@@ -80,7 +81,7 @@ export function PhoneCarousel() {
           type="button"
           onClick={() => go(1)}
           aria-label="Next screen"
-          className="group absolute right-2 top-1/2 z-[60] inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-card/80 text-foreground shadow-lg backdrop-blur-md transition-all hover:-translate-y-1/2 hover:scale-110 hover:border-accent-500/60 hover:text-accent-500 sm:right-4 sm:h-14 sm:w-14"
+          className="group absolute right-0 top-1/2 z-[60] inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-card/80 text-foreground shadow-lg backdrop-blur-md transition-all hover:-translate-y-1/2 hover:scale-110 hover:border-accent-500/60 hover:text-accent-500 sm:right-4 sm:h-14 sm:w-14"
         >
           <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />
         </button>
@@ -129,7 +130,7 @@ function PhoneFrame({ children, glow = false }: { children: React.ReactNode; glo
           className="pointer-events-none absolute -inset-8 -z-10 rounded-[3.5rem] bg-accent-500/20 blur-3xl"
         />
       ) : null}
-      <div className="relative h-[400px] w-[192px] rounded-[2.2rem] border border-border bg-device-frame p-2 shadow-2xl ring-1 ring-white/5 sm:h-[460px] sm:w-[220px] sm:rounded-[2.6rem] sm:p-2.5">
+      <div className="phone-frame relative h-[430px] w-[206px] rounded-[2.2rem] border border-border bg-device-frame p-2 shadow-2xl ring-1 ring-white/5 sm:h-[460px] sm:w-[220px] sm:rounded-[2.6rem] sm:p-2.5">
         <div className="absolute left-1/2 top-2 z-10 h-5 w-20 -translate-x-1/2 rounded-full bg-black/90 sm:h-6 sm:w-24" />
         <div className="relative h-full w-full overflow-hidden rounded-[1.75rem] bg-device-screen text-device-foreground sm:rounded-[2.1rem]">
           <div
@@ -137,6 +138,13 @@ function PhoneFrame({ children, glow = false }: { children: React.ReactNode; glo
           >
             {children}
           </div>
+          {/* Every screen but Timeline carries more content than the frame
+              shows — as a real phone does. Fading the bottom edge reads as
+              "continues below" instead of a hard cut through a card. */}
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-device-screen via-device-screen/80 to-transparent"
+          />
           {loading ? <PhoneSkeleton /> : null}
         </div>
       </div>

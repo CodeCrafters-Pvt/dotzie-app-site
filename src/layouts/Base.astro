@@ -12,8 +12,8 @@ interface Props {
   /** Extra JSON-LD blocks for this page (Organization is always included). */
   jsonLd?: Record<string, unknown>[];
   ogType?: string;
-  /** Presentation mode: full-screen scroll-snap slides (desktop only). */
-  deck?: boolean;
+  /** One-section-per-screen scroll snapping. Long-form pages leave this off. */
+  snap?: boolean;
 }
 
 const {
@@ -23,7 +23,7 @@ const {
   image = "/og.png",
   jsonLd = [],
   ogType = "website",
-  deck = false,
+  snap = false,
 } = Astro.props;
 
 const canonical = new URL(path, Astro.site).href;
@@ -45,7 +45,7 @@ const isLive = import.meta.env.PUBLIC_SITE_LIVE === "true";
 ---
 
 <!doctype html>
-<html lang="en" class={deck ? "deck" : undefined} data-accent={DEFAULT_ACCENT}>
+<html lang="en" class={snap ? "snap" : undefined} data-accent={DEFAULT_ACCENT}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -73,7 +73,7 @@ const isLive = import.meta.env.PUBLIC_SITE_LIVE === "true";
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
     />
 
     <!-- No-flash: apply theme + accent before first paint -->
@@ -96,9 +96,7 @@ const isLive = import.meta.env.PUBLIC_SITE_LIVE === "true";
     <slot />
 
     <script>
-      // Reveal-on-scroll for any element with the `.reveal` class. Deck pages
-      // opt out: every slide overlaps the viewport, so they'd all reveal at
-      // once — Deck.astro reveals each slide as it becomes active instead.
+      // Reveal-on-scroll for any element with the `.reveal` class.
       const io = new IntersectionObserver(
         (entries) => {
           for (const e of entries) {
@@ -110,9 +108,7 @@ const isLive = import.meta.env.PUBLIC_SITE_LIVE === "true";
         },
         { threshold: 0.15 },
       );
-      if (!document.documentElement.classList.contains("deck")) {
-        document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
-      }
+      document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
     </script>
   </body>
 </html>

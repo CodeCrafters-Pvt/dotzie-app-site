@@ -131,8 +131,8 @@ const { links } = Astro.props;
     panel.querySelector("[data-menu-close]")?.addEventListener("click", close);
     panel.querySelector("[data-menu-backdrop]")?.addEventListener("click", close);
 
-    // On the home deck, anchors become slide jumps rather than navigations,
-    // so nothing else would close the sheet.
+    // Same-page anchors scroll rather than navigate, so nothing else would
+    // close the sheet.
     panel.addEventListener("click", (e) => {
       if ((e.target as HTMLElement | null)?.closest("a")) close();
     });
@@ -140,15 +140,10 @@ const { links } = Astro.props;
     document.addEventListener("keydown", (e) => {
       if (panel.hidden) return;
       if (e.key === "Escape") {
-        e.stopPropagation();
         close();
         return;
       }
-      // Keep arrows/space from reaching the deck's window-level handler.
-      if (e.key !== "Tab") {
-        e.stopPropagation();
-        return;
-      }
+      if (e.key !== "Tab") return;
       const items = focusables();
       if (!items.length) return;
       const first = items[0];

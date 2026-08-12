@@ -21,7 +21,7 @@ const privacyCards = [
     >
     </div>
   </div>
-  <div class="relative mx-auto max-w-4xl px-6 py-8 text-center lg:py-20">
+  <div class="relative mx-auto max-w-4xl px-6 py-6 text-center lg:py-12 xl:max-w-5xl xl:px-10">
     <p class="reveal text-xs font-semibold uppercase tracking-[0.2em] text-accent-400">
       Privacy by design
     </p>
@@ -36,14 +36,16 @@ const privacyCards = [
         Not by policy — by design.
       </span>
     </h2>
-    <p class="reveal mx-auto mt-4 max-w-2xl text-sm text-white/65 lg:mt-6 lg:text-lg">
+    <p class="reveal mx-auto mt-3 max-w-2xl text-sm text-white/65 lg:mt-5 lg:text-lg">
       Every expense is stored and{" "}
       <strong class="font-semibold text-white">kept private right on your phone</strong>. There's no
       account to sign up for and nothing syncing to the cloud, so there's nothing to leak, sell, or
       hand over. The only person who can ever see your spending is you.
     </p>
 
-    <dl class="reveal mx-auto mt-6 grid max-w-3xl gap-3 text-left sm:grid-cols-3 lg:mt-14 lg:gap-6">
+    <dl
+      class="reveal mx-auto mt-5 grid max-w-3xl gap-2.5 text-left sm:grid-cols-3 lg:mt-10 lg:gap-6"
+    >
       {
         privacyCards.map(([k, v]) => (
           <div class="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:border-accent-400/50 hover:bg-white/[0.07] lg:p-5">

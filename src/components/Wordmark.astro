@@ -6,13 +6,32 @@ interface Props {
 const { class: className = "", href = "/" } = Astro.props;
 ---
 
-<a href={href} class={`group inline-flex items-center gap-2.5 ${className}`}>
-  <span
-    class="relative inline-flex h-8 w-8 items-center justify-center overflow-hidden rounded-[9px] bg-gradient-brand shadow-sm ring-1 ring-white/10 transition-transform duration-300 group-hover:scale-105"
+{
+  /* Icon and word are split: the tile carries only the Z, scaled to fill it,
+    and the name sits beside it in the logo's own face rather than being set
+    twice. Inlined rather than linked so it scales crisply and costs no request.
+    `public/dotzie-logo-bw.svg` holds the same Z-only tile for favicon, app icon
+    and OG use. */
+}
+<a href={href} class={`group inline-flex items-center gap-3 ${className}`}>
+  <svg
+    viewBox="0 0 512 512"
+    class="h-11 w-11 shrink-0 rounded-[12px] shadow-sm ring-1 ring-white/10 transition-transform duration-300 group-hover:scale-105"
+    role="img"
+    aria-label="Dotzie"
   >
-    <span class="font-display text-lg italic leading-none text-white">d</span>
-  </span>
-  <span class="font-display text-xl tracking-tight">
+    <rect width="512" height="512" rx="115" fill="#0E0E11"></rect>
+    <g transform="translate(20,5) scale(3.7)" fill="none">
+      <circle cx="41" cy="41" r="13" fill="#FFFFFF"></circle>
+      <path
+        d="M40 44 H92 L36 100 H92"
+        stroke="#FFFFFF"
+        stroke-width="15"
+        stroke-linecap="round"
+        stroke-linejoin="round"></path>
+    </g>
+  </svg>
+  <span class="font-brand text-[1.05rem] font-semibold uppercase leading-none tracking-[0.28em]">
     Dotzie<span class="text-accent-500">.</span>
   </span>
 </a>

@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-/** Labels for the deck's slides, keyed by the section id in the DOM. */
+/** Labels for the page's sections, keyed by their id in the DOM. */
 const LABELS: Record<string, string> = {
   top: "Home",
   screens: "Screens",
@@ -14,33 +13,43 @@ const LABELS: Record<string, string> = {
   "site-footer": "Contact",
 };
 
-type DeckState = { index: number; ids: string[] };
-
 export function SectionNav() {
-  const [{ index, ids }, setState] = useState<DeckState>({ index: 0, ids: [] });
+  const [ids, setIds] = useState<string[]>([]);
+  const [index, setIndex] = useState(0);
+  const sections = useRef<HTMLElement[]>([]);
 
-  // Deck.astro owns the index; this only reads it and calls back in, and may
-  // hydrate either side of the engine booting.
+  const go = useCallback((i: number) => {
+    const els = sections.current;
+    els[Math.max(0, Math.min(els.length - 1, i))]?.scrollIntoView({ block: "start" });
+  }, []);
+
   useEffect(() => {
-    const sync = () => {
-      const deck = window.dotzieDeck;
-      if (deck) setState({ index: deck.index, ids: deck.ids });
-    };
-    sync();
-    window.addEventListener("deck:ready", sync);
-    window.addEventListener("deck:change", sync);
-    return () => {
-      window.removeEventListener("deck:ready", sync);
-      window.removeEventListener("deck:change", sync);
-    };
+    const main = document.querySelector("main");
+    if (!main) return;
+
+    const els = Array.from(main.children).filter(
+      (el): el is HTMLElement => el instanceof HTMLElement && el.matches("section[id], footer[id]"),
+    );
+    sections.current = els;
+    setIds(els.map((el) => el.id));
+
+    // Whichever section covers the middle band of the viewport is the current
+    // one — a plain threshold would flip early on tall sections.
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) setIndex(els.indexOf(e.target as HTMLElement));
+        }
+      },
+      { rootMargin: "-45% 0px -45% 0px" },
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
   }, []);
 
   if (ids.length < 2) return null;
 
-  const go = (i: number, wrap = false) => window.dotzieDeck?.go(i, { wrap });
-  const label = (id: string, i: number) => LABELS[id] ?? `Slide ${i + 1}`;
-  const isFirst = index === 0;
-  const isLast = index === ids.length - 1;
+  const label = (id: string, i: number) => LABELS[id] ?? `Section ${i + 1}`;
 
   const dots = (
     <ul className="flex items-center gap-2 lg:flex-col lg:gap-3">
@@ -69,44 +78,24 @@ export function SectionNav() {
     </ul>
   );
 
-  const stepButton = (dir: -1 | 1, disabled: boolean) => (
-    <button
-      type="button"
-      onClick={() => go(index + dir, isLast && dir === 1)}
-      disabled={disabled}
-      aria-label={dir === 1 ? (isLast ? "Back to start" : "Next slide") : "Previous slide"}
-      className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border bg-card text-muted-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:border-accent-500/60 hover:text-accent-500 disabled:pointer-events-none disabled:opacity-30"
-    >
-      {dir === 1 ? (
-        <ChevronDown className={`h-4 w-4 transition-transform ${isLast ? "rotate-180" : ""}`} />
-      ) : (
-        <ChevronUp className="h-4 w-4" />
-      )}
-    </button>
-  );
-
+  // Position only — moving between sections is the scrollbar's job, or the
+  // keyboard's. The dots stay clickable as a jump-to.
   return (
     <>
       {/* Desktop: rail on the right edge. */}
       <nav
-        aria-label="Slides"
-        className="fixed right-5 top-1/2 z-40 hidden -translate-y-1/2 lg:flex lg:flex-col lg:items-center lg:gap-4"
+        aria-label="Sections"
+        className="fixed right-5 top-1/2 z-40 hidden -translate-y-1/2 lg:flex lg:flex-col lg:items-center"
       >
         {dots}
-        <div className="flex flex-col gap-2">
-          {stepButton(-1, isFirst)}
-          {stepButton(1, false)}
-        </div>
       </nav>
 
       {/* Mobile: bar along the bottom, where a thumb can reach it. */}
       <nav
-        aria-label="Slides"
-        className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-between gap-3 border-t border-border/60 bg-background/80 px-4 py-2 backdrop-blur-xl lg:hidden"
+        aria-label="Sections"
+        className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-center border-t border-border/60 bg-background/80 px-4 py-2 backdrop-blur-xl lg:hidden"
       >
-        {stepButton(-1, isFirst)}
         <div className="min-w-0 overflow-x-auto">{dots}</div>
-        {stepButton(1, false)}
       </nav>
     </>
   );

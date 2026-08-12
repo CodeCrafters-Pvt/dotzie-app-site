@@ -52,6 +52,9 @@
 
   --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Fraunces", "Times New Roman", serif;
+  /* The logo's own typeface — used only by the wordmark, so the word beside the
+     icon is set in the same face as the artwork. */
+  --font-brand: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
 
   --shadow-glow: 0 30px 80px -20px color-mix(in oklab, var(--accent-600) 40%, transparent);
 }
@@ -224,10 +227,13 @@
   }
   html {
     scroll-behavior: smooth;
-  }
-  /* Keep scrolled-to sections clear of the sticky header. */
-  section[id] {
-    scroll-margin-top: 4rem;
+    /* Header height incl. its border. SectionScroll re-measures the real header
+       into this on load and resize, so the CSS below and the script that reads
+       it can never disagree. */
+    --header-h: 65px;
+    /* Keeps scrolled-to sections clear of the sticky header, and positions the
+       snap targets. */
+    scroll-padding-top: var(--header-h);
   }
   body {
     background-color: var(--color-background);
@@ -575,113 +581,138 @@
   }
 }
 
-/* Presentation mode: one slide on screen, no page scrolling. Opt in per page
-   via <Base deck /> plus the <Deck /> engine. */
-html.deck,
-html.deck body {
-  height: 100%;
-  overflow: hidden;
-  overscroll-behavior: none;
-}
-html.deck::-webkit-scrollbar {
-  display: none;
+/* One section per screen. The page scrolls normally — one browser scrollbar,
+   native momentum, no transition between sections. Snapping only stops the
+   scroll coming to rest halfway between two of them. Opt in via <Base snap />;
+   long-form pages (blog, guide) leave it off and scroll freely. */
+html.snap {
+  scroll-snap-type: y mandatory;
 }
 
-/* Header stays put above the slides; the stage takes the rest of the screen. */
-html.deck .deck-shell {
-  display: flex;
-  flex-direction: column;
-  height: 100svh;
-  min-height: 0;
-}
-html.deck .deck-shell > header {
-  flex: none;
-}
-html.deck .deck-stage {
-  position: relative;
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow: hidden;
-}
-
-/* Only `.is-active` is visible; the rest wait one slide-length away in the
-   travel direction, which `data-dir` flips so back always moves back. Keyed
-   off element selectors so the first paint is right before the engine boots. */
-html.deck .deck-stage > section,
-html.deck .deck-stage > footer {
-  position: absolute;
-  inset: 0;
+html.snap main > section,
+html.snap main > footer {
+  scroll-snap-align: start;
+  /* Without `always`, one fast flick can fly past several sections. */
+  scroll-snap-stop: always;
+  /* min-height, not height: a section that outgrows the screen scrolls through
+     instead of losing its bottom edge. Matches scroll-padding-top + header. */
+  min-height: calc(100svh - var(--header-h));
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-block: 1.5rem;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(var(--deck-shift, 2.5rem));
-  transition:
-    opacity 420ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0s linear 420ms;
-}
-
-/* Scale-to-fit applies here, not to the slide, so a slide's background still
-   covers the whole screen while its contents shrink to fit. */
-.deck-fit {
-  width: 100%;
-  transform: scale(var(--deck-scale, 1));
-}
-html.deck .deck-stage[data-dir="back"] > section,
-html.deck .deck-stage[data-dir="back"] > footer {
-  --deck-shift: -2.5rem;
-}
-/* Before the engine boots, the first slide stands in as the active one. */
-html.deck .deck-slide.is-active,
-html.deck:not(.deck-ready) .deck-stage > :first-child {
-  --deck-shift: 0px;
-  z-index: 1;
-  opacity: 1;
-  visibility: visible;
-  transition-delay: 0s;
-}
-html.deck .deck-slide:focus-visible {
-  outline: none;
-}
-
-/* Leave room for the mobile slide bar pinned to the bottom of the screen. */
-@media (max-width: 1023px) {
-  html.deck .deck-stage > section,
-  html.deck .deck-stage > footer {
-    padding-bottom: 4.25rem;
-  }
-}
-
-/* A slide too tall to scale down readably keeps its own scroll instead. */
-html.deck .deck-slide.deck-overflow.is-active {
-  justify-content: flex-start;
-  overflow-y: auto;
-  scrollbar-width: thin;
 }
 
 /* margin:auto flex items would otherwise collapse to their content width. */
-html.deck .deck-stage > section > *,
-html.deck .deck-stage > footer > * {
+html.snap main > section > *,
+html.snap main > footer > * {
   width: 100%;
 }
 /* <astro-island> is display:contents, which collapses the carousel's
    mx-auto container — make it a real full-width flex item. */
-html.deck .deck-stage > section > astro-island,
-html.deck .deck-stage > footer > astro-island,
-html.deck .deck-fit > astro-island {
+html.snap main > section > astro-island,
+html.snap main > footer > astro-island,
+html.snap .section-container > astro-island {
   display: block;
   width: 100%;
 }
 
+/* A section is full-bleed so its background reaches both screen edges. Width
+   caps belong on `.section-container` inside it. */
+html.snap main > section,
+html.snap main > footer {
+  max-width: none;
+  margin-inline: 0;
+}
+
+/* The carousel fans neighbouring screens out to either side. There is no room
+   for that on a handset — they run off both edges and collide with the arrows —
+   so below `sm` only the active screen is shown. */
+@media (max-width: 639px) {
+  .phone-slide:not([data-off="0"]) {
+    display: none;
+  }
+}
+
+/* Touch-screen stand-in for the browser scrollbar — see ScrollRail.astro. */
+.scroll-rail {
+  position: fixed;
+  right: 3px;
+  top: calc(var(--header-h) + 0.5rem);
+  bottom: 3.25rem;
+  z-index: 45;
+  width: 4px;
+  border-radius: 9999px;
+  background: color-mix(in oklab, var(--foreground) 9%, transparent);
+  pointer-events: none;
+}
+.scroll-rail-thumb {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  display: block;
+  border-radius: 9999px;
+  background: color-mix(in oklab, var(--foreground) 38%, transparent);
+}
+
+/* Leave room for the mobile section dots pinned to the bottom of the screen. */
+@media (max-width: 1023px) {
+  html.snap main > section,
+  html.snap main > footer {
+    padding-bottom: 2.5rem;
+  }
+}
+
+/* Browser zoom shrinks the viewport without shrinking the content, so a laptop
+   at 150% has a ~655px budget while still matching the `xl` width breakpoint —
+   width variants can't see that. Stepping the root size keys off height instead
+   and scales every rem-based size and gap together, which is why it is done
+   here rather than as padding on the sections: components hang their padding
+   off different elements, so a blunt override grows as often as it shrinks. */
+@media (min-width: 1024px) and (max-height: 760px) {
+  html.snap {
+    font-size: 15px;
+  }
+}
+@media (min-width: 1024px) and (max-height: 700px) {
+  html.snap {
+    font-size: 14px;
+  }
+}
+@media (min-width: 1024px) and (max-height: 620px) {
+  html.snap {
+    font-size: 13px;
+  }
+}
+
+/* The carousel's stage and device frame are sized in px, so the root-size steps
+   above can't reach them — they are what is left overflowing a short screen. */
+@media (min-width: 1024px) and (max-height: 760px) {
+  html.snap #screens .phone-stage {
+    height: 430px;
+  }
+  html.snap #screens .phone-frame {
+    height: 400px;
+  }
+}
+@media (min-width: 1024px) and (max-height: 700px) {
+  html.snap #screens .phone-stage {
+    height: 390px;
+  }
+  html.snap #screens .phone-frame {
+    height: 360px;
+  }
+}
+@media (min-width: 1024px) and (max-height: 620px) {
+  html.snap #screens .phone-stage {
+    height: 330px;
+  }
+  html.snap #screens .phone-frame {
+    height: 300px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  html.deck .deck-stage > section,
-  html.deck .deck-stage > footer {
-    --deck-shift: 0px;
-    transition:
-      opacity 120ms linear,
-      visibility 0s linear 120ms;
+  html {
+    scroll-behavior: auto;
   }
 }

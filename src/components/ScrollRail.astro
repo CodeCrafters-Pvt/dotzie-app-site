@@ -1,0 +1,54 @@
+---
+/**
+ * A always-visible scroll position indicator for touch screens. Mobile browsers
+ * use transient overlay scrollbars that vanish between gestures, so there is
+ * nothing telling you the page runs on past this screen — which on a page of
+ * full-height sections reads as the content ending here. Desktop keeps its real
+ * browser scrollbar and hides this.
+ */
+---
+
+<div aria-hidden class="scroll-rail lg:hidden">
+  <span class="scroll-rail-thumb"></span>
+</div>
+
+<script>
+  const rail = document.querySelector<HTMLElement>(".scroll-rail");
+  const thumb = rail?.querySelector<HTMLElement>(".scroll-rail-thumb");
+
+  if (rail && thumb) {
+    const MIN_THUMB = 28;
+    let queued = false;
+
+    function update() {
+      queued = false;
+      const doc = document.documentElement;
+      const track = rail!.clientHeight;
+      const scrollable = doc.scrollHeight - window.innerHeight;
+      if (track <= 0 || scrollable <= 0) {
+        rail!.style.opacity = "0";
+        return;
+      }
+      rail!.style.opacity = "1";
+      const height = Math.max(
+        MIN_THUMB,
+        Math.round(track * (window.innerHeight / doc.scrollHeight)),
+      );
+      const progress = Math.min(1, Math.max(0, window.scrollY / scrollable));
+      thumb!.style.height = `${height}px`;
+      thumb!.style.transform = `translateY(${Math.round((track - height) * progress)}px)`;
+    }
+
+    function queue() {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(update);
+    }
+
+    window.addEventListener("scroll", queue, { passive: true });
+    window.addEventListener("resize", queue);
+    // Islands and webfonts land after first paint and change the page length.
+    document.fonts?.ready.then(queue);
+    update();
+  }
+</script>

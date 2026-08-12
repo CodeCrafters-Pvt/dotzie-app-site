@@ -2,12 +2,18 @@
 import { PhoneCarousel } from "@/components/islands/PhoneCarousel";
 ---
 
-<section id="screens" class="relative mx-auto max-w-6xl px-6 pt-4 lg:pt-8">
-  <div class="reveal mx-auto max-w-2xl text-center">
-    <p class="text-sm font-medium text-accent-500">A look inside</p>
-    <h2 class="mt-2 font-display text-3xl tracking-tight sm:text-5xl lg:text-4xl">
-      Six calm screens. One private app.
-    </h2>
+{
+  /* The width cap lives on the inner container, never on the <section> — a
+     section is full-bleed so its background reaches both screen edges. */
+}
+<section id="screens" class="relative px-6 pt-4 lg:pt-8 xl:px-10">
+  <div class="section-container mx-auto max-w-6xl xl:max-w-7xl 2xl:max-w-[88rem]">
+    <div class="reveal mx-auto max-w-2xl text-center">
+      <p class="text-sm font-medium text-accent-500">A look inside</p>
+      <h2 class="mt-2 font-display text-3xl tracking-tight sm:text-5xl lg:text-4xl">
+        Six calm screens. One private app.
+      </h2>
+    </div>
+    <PhoneCarousel client:visible />
   </div>
-  <PhoneCarousel client:visible />
 </section>

@@ -2,7 +2,8 @@
 import Base from "@/layouts/Base.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
-import Deck from "@/components/Deck.astro";
+import SectionScroll from "@/components/SectionScroll.astro";
+import ScrollRail from "@/components/ScrollRail.astro";
 import { SectionNav } from "@/components/islands/SectionNav";
 import Hero from "@/components/home/Hero.astro";
 import Screens from "@/components/home/Screens.astro";
@@ -44,20 +45,27 @@ const faqJsonLd = {
 ---
 
 {
-  /* Each direct child of `.deck-stage` is one slide, in this order — the
-    footer included. See Deck.astro for how they're driven. */
+  /* Each direct child of <main> is one screenful, in this order — the footer
+    included. Sizing and snapping live under `html.snap` in styles.css. */
 }
 <Base
   title={`${SITE_NAME} — ${SITE_TAGLINE}`}
   description={SITE_DESC}
   path="/"
   jsonLd={[softwareAppJsonLd, faqJsonLd]}
-  deck
+  snap
 >
-  <div class="deck-shell min-h-screen overflow-x-hidden bg-background text-foreground">
+  {
+    /* overflow-x-clip, not -hidden: `hidden` forces the other axis to compute
+      as `auto`, making this a scroll container. The sections would then snap to
+      *it* — a box that never scrolls — and the scroll-snap-type on <html> would
+      have no targets at all. `clip` clips identically without that. */
+  }
+  <div class="min-h-screen overflow-x-clip bg-background text-foreground">
     <Header />
     <SectionNav client:load />
-    <main class="deck-stage">
+    <ScrollRail />
+    <main>
       <Hero />
       <Screens />
       <TabbedSlide id="track" tabs={["Tracking", "Splitting"]}>
@@ -82,5 +90,5 @@ const faqJsonLd = {
       <Footer />
     </main>
   </div>
-  <Deck />
+  <SectionScroll />
 </Base>
