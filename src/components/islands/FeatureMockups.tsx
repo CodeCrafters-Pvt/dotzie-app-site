@@ -241,7 +241,7 @@ export function PlanMockup() {
               on ? "text-accent-600" : "text-muted-foreground"
             }`}
           >
-            {on ? "$2,100" : "—"}
+            {on ? "$2,100" : "Not set"}
           </span>
         </div>
       </div>

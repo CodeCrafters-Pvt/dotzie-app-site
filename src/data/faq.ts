@@ -4,7 +4,7 @@ import type { Faq } from "@/types";
 export const faqs: Faq[] = [
   {
     q: "Do I need internet to use Dotzie?",
-    a: "No. Dotzie is fully offline-first. Every feature — adding expenses, viewing reports, exporting backups — works without a network connection.",
+    a: "No. Dotzie is fully offline-first. Every feature - adding expenses, viewing reports, exporting backups - works without a network connection.",
   },
   {
     q: "Where is my data stored?",
@@ -12,7 +12,7 @@ export const faqs: Faq[] = [
   },
   {
     q: "Is Dotzie free?",
-    a: "Yes — the tracker is free to use. Whenever you want extras like richer reports and custom categories, you can switch to Pro right inside the app. No subscription.",
+    a: "Yes - the tracker is free to use. Whenever you want extras like richer reports and custom categories, you can switch to Pro right inside the app. No subscription.",
   },
   {
     q: "Which platforms are supported?",

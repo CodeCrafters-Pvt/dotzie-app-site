@@ -51,7 +51,7 @@
   --color-deep: var(--deep);
 
   --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Fraunces", "Times New Roman", serif;
+  --font-display: "Manrope", ui-sans-serif, system-ui, sans-serif;
   /* The logo's own typeface — used only by the wordmark, so the word beside the
      icon is set in the same face as the artwork. */
   --font-brand: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
@@ -586,7 +586,7 @@
    scroll coming to rest halfway between two of them. Opt in via <Base snap />;
    long-form pages (blog, guide) leave it off and scroll freely. */
 html.snap {
-  scroll-snap-type: y mandatory;
+  scroll-snap-type: y proximity;
 }
 
 html.snap main > section,
@@ -659,28 +659,6 @@ html.snap main > footer {
   html.snap main > section,
   html.snap main > footer {
     padding-bottom: 2.5rem;
-  }
-}
-
-/* Browser zoom shrinks the viewport without shrinking the content, so a laptop
-   at 150% has a ~655px budget while still matching the `xl` width breakpoint —
-   width variants can't see that. Stepping the root size keys off height instead
-   and scales every rem-based size and gap together, which is why it is done
-   here rather than as padding on the sections: components hang their padding
-   off different elements, so a blunt override grows as often as it shrinks. */
-@media (min-width: 1024px) and (max-height: 760px) {
-  html.snap {
-    font-size: 15px;
-  }
-}
-@media (min-width: 1024px) and (max-height: 700px) {
-  html.snap {
-    font-size: 14px;
-  }
-}
-@media (min-width: 1024px) and (max-height: 620px) {
-  html.snap {
-    font-size: 13px;
   }
 }
 

@@ -3,7 +3,7 @@ import Page from "@/layouts/Page.astro";
 import { getCollection } from "astro:content";
 import { ArrowRight } from "lucide-react";
 
-const TITLE = "Blog — Dotzie";
+const TITLE = "Blog - Dotzie";
 const DESC =
   "Updates, guides, and thinking on privacy-first personal finance from the Dotzie team.";
 
@@ -28,7 +28,7 @@ const dateFmt = new Intl.DateTimeFormat("en-US", {
 
   {
     posts.length === 0 ? (
-      <p class="mt-16 text-muted-foreground">No posts yet — check back soon.</p>
+      <p class="mt-16 text-muted-foreground">No posts yet - check back soon.</p>
     ) : (
       <ul class="mt-14 space-y-4">
         {posts.map((post) => (

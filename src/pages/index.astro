@@ -1,12 +1,13 @@
 ---
 import Base from "@/layouts/Base.astro";
 import Header from "@/components/Header.astro";
-import Footer from "@/components/Footer.astro";
 import SectionScroll from "@/components/SectionScroll.astro";
 import ScrollRail from "@/components/ScrollRail.astro";
 import { SectionNav } from "@/components/islands/SectionNav";
-import Hero from "@/components/home/Hero.astro";
+import { MeetDotzie } from "@/components/islands/MeetDotzie";
 import Screens from "@/components/home/Screens.astro";
+import Footer from "@/components/Footer.astro";
+import Hero from "@/components/home/Hero.astro";
 import TabbedSlide from "@/components/home/TabbedSlide.astro";
 import FeatureBlock from "@/components/home/FeatureBlock.astro";
 import {
@@ -44,30 +45,23 @@ const faqJsonLd = {
 };
 ---
 
-{
-  /* Each direct child of <main> is one screenful, in this order — the footer
-    included. Sizing and snapping live under `html.snap` in styles.css. */
-}
 <Base
-  title={`${SITE_NAME} — ${SITE_TAGLINE}`}
+  title={`${SITE_NAME} - ${SITE_TAGLINE}`}
   description={SITE_DESC}
   path="/"
   jsonLd={[softwareAppJsonLd, faqJsonLd]}
   snap
 >
-  {
-    /* overflow-x-clip, not -hidden: `hidden` forces the other axis to compute
-      as `auto`, making this a scroll container. The sections would then snap to
-      *it* — a box that never scrolls — and the scroll-snap-type on <html> would
-      have no targets at all. `clip` clips identically without that. */
-  }
   <div class="min-h-screen overflow-x-clip bg-background text-foreground">
     <Header />
     <SectionNav client:load />
     <ScrollRail />
-    <main>
+    <MeetDotzie client:load />
+
+    <main class="quiet-home">
       <Hero />
       <Screens />
+
       <TabbedSlide id="track" tabs={["Tracking", "Splitting"]}>
         <FeatureBlock slot="one" id="track"><TrackMockup client:visible /></FeatureBlock>
         <FeatureBlock slot="two" id="split" flip><SplitMockup client:visible /></FeatureBlock>
@@ -84,8 +78,8 @@ const faqJsonLd = {
         </FeatureBlock>
         <AlsoIncluded slot="two" />
       </TabbedSlide>
-      <Pricing />
       <PrivacyPanel />
+      <Pricing />
       <Faq />
       <Footer />
     </main>

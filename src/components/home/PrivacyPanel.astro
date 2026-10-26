@@ -1,11 +1,8 @@
 ---
 const privacyCards = [
   ["Stays on your phone", "Every expense you add is saved on your device, not on our servers."],
-  [
-    "Nothing to sign up for",
-    "No account, no email, no password — you just open the app and start.",
-  ],
-  ["Only you can see it", "There's no cloud copy for anyone to peek at, leak, or hand over."],
+  ["Nothing to sign up for", "Open the app and start tracking. No account required."],
+  ["Only you can see it", "Dotzie does not upload your spending records to its servers."],
 ];
 ---
 
@@ -28,19 +25,17 @@ const privacyCards = [
     <h2
       class="reveal mt-3 font-display text-[1.75rem] leading-tight tracking-tight text-white sm:text-5xl lg:mt-4 lg:text-6xl"
     >
-      Your data never leaves your device.{" "}
+      Your records stay on your phone.{" "}
       <span
         class="animate-shimmer-text bg-clip-text italic text-transparent"
         style="background-image: linear-gradient(110deg, var(--accent-300), var(--accent-400), var(--accent-300), var(--accent-400), var(--accent-300));"
       >
-        Not by policy — by design.
+        No account required.
       </span>
     </h2>
     <p class="reveal mx-auto mt-3 max-w-2xl text-sm text-white/65 lg:mt-5 lg:text-lg">
-      Every expense is stored and{" "}
-      <strong class="font-semibold text-white">kept private right on your phone</strong>. There's no
-      account to sign up for and nothing syncing to the cloud, so there's nothing to leak, sell, or
-      hand over. The only person who can ever see your spending is you.
+      Your expenses are <strong class="font-semibold text-white">stored on your device</strong>.
+      Dotzie does not sync them to a server. You can export a backup when you need one.
     </p>
 
     <dl

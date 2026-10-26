@@ -1,0 +1,616 @@
+/* Approved Quiet companion refinements. Scroll rail/snap rules remain in styles.css. */
+.quiet-home {
+  --section-title-size: clamp(1.5rem, 2.5vw, 1.875rem);
+}
+html.snap .quiet-home .companion-section-heading,
+.quiet-home #screens .screens-heading h2 {
+  font-size: var(--section-title-size);
+  line-height: 1.25;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+  margin-bottom: clamp(12px, 2svh, 24px);
+}
+.quiet-home .feature-block h3 {
+  font-size: clamp(1.375rem, 2.2vw, 1.875rem);
+  line-height: 1.25;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+.quiet-home .feature-block p {
+  max-width: 42ch;
+  line-height: 1.65;
+}
+@media (min-width: 768px) and (max-height: 760px) {
+  .quiet-home .feature-block {
+    column-gap: 28px;
+    row-gap: 16px;
+  }
+  .quiet-home .tab-panes {
+    gap: 16px;
+  }
+  html.snap .quiet-home .companion-section-heading {
+    margin-bottom: 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html.snap {
+    scroll-behavior: auto;
+  }
+}
+.quiet-wordmark {
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-size: 30px;
+  letter-spacing: -1.8px;
+  line-height: 1;
+  white-space: nowrap;
+}
+.quiet-wordmark span {
+  color: var(--primary);
+}
+.mode-segments {
+  display: flex;
+  background: var(--background);
+  padding: 3px;
+  border-radius: 10px;
+  gap: 3px;
+  margin-bottom: 20px;
+}
+.mode-segments button {
+  flex: 1;
+  min-height: 40px;
+  font-size: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.mode-segments button[aria-pressed="true"] {
+  background: var(--card);
+  color: var(--primary);
+  box-shadow: 0 1px 5px #00000010;
+}
+.appearance-panel .palette-label {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted-foreground);
+  margin-bottom: 8px;
+}
+.theme-swatches {
+  display: flex;
+  justify-content: space-between;
+  gap: 2px;
+}
+.theme-swatches button {
+  width: 44px;
+  height: 44px;
+  padding: 7px;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.theme-swatches button[aria-pressed="true"] {
+  border-color: var(--primary);
+}
+.theme-swatches button span {
+  display: block;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px #80808040;
+}
+.palette-caption {
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+  margin-top: 12px;
+}
+.hero-store-codes {
+  display: flex;
+  gap: 22px;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  max-width: 410px;
+}
+.hero-store {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.hero-store img {
+  width: 70px;
+  height: 70px;
+  background: #fff;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+.hero-store strong {
+  display: block;
+  font-weight: 600;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+.hero-store small {
+  display: block;
+  font-size: 10px;
+  color: var(--muted-foreground);
+}
+.meet-dotzie {
+  position: fixed;
+  bottom: 22px;
+  right: 24px;
+  z-index: 46;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 12px 17px;
+  background: var(--card);
+  color: var(--foreground);
+  font-size: 12px;
+  box-shadow: 0 5px 24px #0000000a;
+  cursor: pointer;
+}
+.meet-dotzie span {
+  color: var(--primary);
+  margin-left: 7px;
+}
+html.snap .companion-layout {
+  padding-block: 24px;
+  gap: 40px;
+}
+html.snap .companion-copy h1 {
+  font-size: clamp(40px, 4.2vw, 60px);
+  margin-block: 18px;
+}
+html.snap .companion-actions {
+  margin-block: 22px 14px;
+  gap: 15px;
+}
+html.snap .companion-description {
+  font-size: 16px;
+}
+html.snap .companion-trust {
+  padding-block: 18px;
+}
+@media (min-width: 768px) and (max-height: 760px) {
+  html.snap .companion-scene {
+    min-height: 390px;
+  }
+  html.snap .companion-phone {
+    width: 225px;
+    padding: 16px 18px;
+  }
+  html.snap .companion-mascot {
+    width: 250px;
+    height: 250px;
+    left: -30px;
+    bottom: -8px;
+  }
+  html.snap .companion-bars {
+    height: 55px;
+    margin-block: 18px;
+  }
+  html.snap .companion-copy h1 {
+    font-size: clamp(36px, 4vw, 52px);
+  }
+  html.snap .companion-layout {
+    padding-block: 14px;
+  }
+}
+@media (max-width: 767px) {
+  .meet-dotzie {
+    bottom: 44px;
+    right: 14px;
+    padding: 10px 14px;
+  }
+  html.snap .companion-layout {
+    gap: 12px;
+    padding-block: 18px;
+  }
+  html.snap .companion-copy h1 {
+    font-size: clamp(31px, 7.6vw, 42px);
+    margin-block: 12px;
+  }
+  html.snap .companion-description {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  html.snap .companion-eyebrow {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+  }
+  html.snap .companion-actions {
+    margin-block: 14px 10px;
+    gap: 12px;
+  }
+  html.snap .companion-cta {
+    font-size: 12px;
+    padding: 12px 14px;
+  }
+  html.snap .companion-note {
+    font-size: 10px;
+  }
+  .hero-store-codes {
+    padding-top: 10px;
+    margin-top: 12px;
+    gap: 18px;
+  }
+  .hero-store {
+    gap: 7px;
+  }
+  .hero-store img {
+    width: 54px;
+    height: 54px;
+  }
+  .hero-store strong {
+    font-size: 11px;
+  }
+  .hero-store small {
+    font-size: 9px;
+  }
+  html.snap .companion-scene {
+    min-height: 245px;
+    max-width: 300px;
+    padding-right: 12px;
+  }
+  html.snap .companion-phone {
+    width: 165px;
+    padding: 10px 12px;
+    border-width: 4px;
+    border-radius: 25px;
+  }
+  html.snap .companion-speaker {
+    margin-bottom: 12px;
+    width: 45px;
+    height: 3px;
+  }
+  html.snap .phone-heading {
+    font-size: 10px;
+  }
+  html.snap .phone-total {
+    font-size: 23px;
+    margin-top: 10px;
+  }
+  html.snap .companion-bars {
+    height: 36px;
+    margin-block: 10px;
+    gap: 6px;
+  }
+  html.snap .phone-recent {
+    display: none;
+  }
+  html.snap .companion-transaction {
+    font-size: 9px;
+    padding-block: 7px;
+  }
+  html.snap .phone-bottom {
+    margin-top: 12px;
+    height: 3px;
+  }
+  html.snap .companion-mascot {
+    width: 200px;
+    height: 200px;
+    left: -8px;
+    bottom: -6px;
+  }
+  html.snap .companion-trust {
+    font-size: 10px;
+    padding-block: 13px;
+    gap: 8px;
+  }
+}
+@media (max-width: 767px) and (max-height: 720px) {
+  html.snap .companion-layout {
+    padding-block: 10px;
+    gap: 8px;
+  }
+  html.snap .companion-copy h1 {
+    font-size: 30px;
+    margin-block: 8px;
+  }
+  html.snap .companion-scene {
+    min-height: 205px;
+  }
+  html.snap .companion-bars {
+    display: none;
+  }
+  html.snap .companion-mascot {
+    width: 175px;
+    height: 175px;
+    left: 10px;
+  }
+  html.snap .companion-description {
+    font-size: 12px;
+  }
+  html.snap .companion-trust {
+    padding-block: 10px;
+  }
+}
+/* Floating companion stays separate from the page's scrolling layout. */
+.floating-dotzie {
+  position: fixed;
+  width: 160px;
+  height: 184px;
+  z-index: 46;
+}
+.floating-dotzie-drag {
+  display: block;
+  width: 160px;
+  height: 160px;
+  margin-top: 24px;
+  touch-action: none;
+  cursor: grab;
+  border-radius: 50%;
+  user-select: none;
+}
+.floating-dotzie-drag:active {
+  cursor: grabbing;
+}
+.floating-dotzie-close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--card);
+  color: var(--muted-foreground);
+  font-size: 22px;
+  cursor: pointer;
+}
+.floating-dotzie button:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+.floating-dotzie .dotzie-player {
+  pointer-events: none;
+}
+@media (min-width: 768px) {
+  html.snap .companion-layout,
+  html.snap .companion-trust {
+    max-width: 960px;
+  }
+  html.snap .companion-layout {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    padding-block: 16px;
+  }
+  html.snap .companion-scene {
+    max-width: 360px;
+    min-height: 400px;
+    padding-right: 0;
+  }
+  html.snap .companion-hero {
+    padding-bottom: 56px;
+  }
+  html.snap .companion-trust {
+    padding-block: 16px;
+  }
+}
+@media (min-width: 768px) {
+  .quiet-home .tabbed {
+    max-width: 960px;
+  }
+  .quiet-home .feature-block {
+    column-gap: 32px;
+  }
+  .quiet-home .feature-block > :first-child {
+    max-width: 300px;
+  }
+}
+@media (min-width: 768px) {
+  html.snap .companion-hero {
+    justify-content: flex-start;
+    padding-top: 32px;
+    padding-bottom: 24px;
+  }
+}
+.store-downloads {
+  container-type: inline-size;
+  width: 100%;
+  max-width: 420px;
+  margin-block: 20px 16px;
+}
+.store-codes {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+.store-code {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  text-align: left;
+  min-width: 0;
+}
+.store-code img {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+  background: white;
+  border-radius: 10px;
+}
+.store-code strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.store-code small {
+  display: block;
+  font-size: 10px;
+  color: var(--muted-foreground);
+  margin-top: 4px;
+}
+.store-switch {
+  display: none;
+}
+.footer-downloads .store-downloads {
+  margin-inline: auto;
+}
+.hero-explore {
+  display: inline-block;
+  margin-top: 12px;
+}
+@container (max-width:350px) {
+  .store-codes {
+    gap: 16px;
+  }
+  .store-code img {
+    width: 60px;
+    height: 60px;
+  }
+  .store-code {
+    gap: 8px;
+  }
+  .store-code strong {
+    font-size: 12px;
+  }
+}
+@container (max-width:280px) {
+  .store-switch {
+    display: flex;
+    gap: 4px;
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 3px;
+    margin-bottom: 12px;
+  }
+  .store-switch input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+  }
+  .store-switch label {
+    flex: 1;
+    text-align: center;
+    padding: 10px 8px;
+    font-size: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .store-switch input:checked + label {
+    color: var(--primary);
+    background: var(--card);
+    box-shadow: 0 1px 4px #00000012;
+  }
+  .store-switch input:focus-visible + label {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+  .store-codes {
+    justify-content: center;
+  }
+  .store-code img {
+    width: 72px;
+    height: 72px;
+  }
+  .store-downloads:has(input[value="apple"]:checked) .store-google,
+  .store-downloads:has(input[value="google"]:checked) .store-apple {
+    display: none;
+  }
+}
+/* Mid-width portrait screens use a compact two-column hero rather than a loose stack. */
+@media (min-width: 600px) and (max-width: 1023px) {
+  html.snap .companion-layout {
+    grid-template-columns: 1.1fr 1fr;
+    gap: 20px;
+    align-items: center;
+  }
+  html.snap .companion-hero {
+    padding-inline: 28px;
+    justify-content: center;
+    padding-top: 20px;
+    padding-bottom: 40px;
+  }
+  html.snap .companion-copy h1 {
+    font-size: clamp(32px, 4.5vw, 44px);
+  }
+  html.snap .companion-description {
+    font-size: 14px;
+  }
+  html.snap .companion-scene {
+    min-height: 340px;
+    max-width: 320px;
+  }
+  html.snap .companion-phone {
+    width: 190px;
+    padding: 14px;
+  }
+  html.snap .companion-mascot {
+    width: 190px;
+    height: 190px;
+    left: -12px;
+    bottom: 0;
+  }
+}
+@media (min-width: 1600px) {
+  html.snap .companion-layout,
+  html.snap .companion-trust {
+    max-width: 1120px;
+  }
+  html.snap .companion-hero {
+    padding-top: clamp(32px, 6vh, 80px);
+  }
+}
+@media (min-width: 600px) and (max-width: 1023px) {
+  html.snap .companion-hero {
+    justify-content: flex-start;
+    padding-top: 48px;
+  }
+  html.snap .companion-layout {
+    align-items: start;
+  }
+  html.snap .companion-copy {
+    padding-top: 28px;
+  }
+  html.snap .companion-phone .phone-total {
+    font-size: 32px;
+  }
+  html.snap .companion-phone .companion-bars {
+    height: 54px;
+    margin-block: 18px;
+  }
+}
+/* Keep reading order on phones: introduction, mascot, then store links. */
+@media (min-width: 600px) {
+  html.snap .companion-layout {
+    row-gap: 0;
+    grid-template-rows: auto auto;
+  }
+  .companion-copy {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: end;
+  }
+  .companion-downloads {
+    grid-column: 1;
+    grid-row: 2;
+    align-self: start;
+  }
+  .companion-scene {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+}
+@media (max-width: 599px) {
+  html.snap .companion-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  html.snap .companion-scene {
+    align-self: center;
+  }
+  .companion-downloads .store-downloads {
+    margin-top: 8px;
+  }
+}

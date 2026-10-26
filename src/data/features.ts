@@ -15,9 +15,8 @@ export const features: Feature[] = [
     guideSlug: "transactions",
     slide: {
       eyebrow: "Track",
-      headline: "Track every expense — even offline.",
-      blurb:
-        "Add and review spending anywhere — Dotzie never waits on a connection, so it's ready the moment you are.",
+      headline: "Track expenses, even offline.",
+      blurb: "Record expenses and check your spending without an internet connection.",
     },
     perk: "Add as many expenses as you like",
   },
@@ -30,7 +29,7 @@ export const features: Feature[] = [
       eyebrow: "Split & IOU",
       headline: "Split bills and settle up with friends.",
       blurb:
-        "Keep a running IOU of who owes what, so settling up is a tap away — no awkward math, no chasing.",
+        "See who owes what after a shared expense. Mark payments as settled when they are paid.",
     },
   },
   {
@@ -40,9 +39,9 @@ export const features: Feature[] = [
     guideSlug: "scheduled-transactions",
     slide: {
       eyebrow: "Plan ahead",
-      headline: "Recurring, scheduled, planned ahead.",
+      headline: "Set up regular payments.",
       blurb:
-        "Set salary, rent, and subscriptions once and let them repeat — so your month is organised before it starts.",
+        "Schedule your salary, rent and subscriptions so you do not need to enter them each month.",
     },
   },
   {
@@ -52,9 +51,8 @@ export const features: Feature[] = [
     guideSlug: "events",
     slide: {
       eyebrow: "Event budgets",
-      headline: "Budget a trip or party, down to the detail.",
-      blurb:
-        "Give any occasion its own budget, add categories as you plan, and watch the total update live.",
+      headline: "Keep a budget for each event.",
+      blurb: "Plan costs for a trip or event and track spending against your budget.",
     },
   },
   {
@@ -64,9 +62,9 @@ export const features: Feature[] = [
     guideSlug: null,
     slide: {
       eyebrow: "Auto-capture",
-      headline: "Turn bank texts into expenses, automatically.",
+      headline: "Add expenses from bank texts.",
       blurb:
-        "When your bank texts you a payment, Dotzie reads it right on your phone and drafts the expense — approve with a tap. Nothing typed, nothing missed.",
+        "Dotzie reads supported bank messages on your phone and prepares an expense for you to review.",
     },
   },
   {
@@ -97,7 +95,7 @@ export const features: Feature[] = [
     guideSlug: "privacy",
     card: {
       title: "No cloud, no account",
-      desc: "Nothing to sign up for and nothing syncing away — nothing to leak or hand over.",
+      desc: "Use Dotzie without creating an account. Your records are stored on your phone.",
     },
   },
   {
@@ -107,7 +105,7 @@ export const features: Feature[] = [
     guideSlug: null,
     card: {
       title: "Clean, calm interface",
-      desc: "An uncluttered design that makes checking in on your spending feel light.",
+      desc: "Find your balance, recent expenses and budgets in one place.",
     },
     perk: "Clean, calm interface",
   },
@@ -118,7 +116,7 @@ export const features: Feature[] = [
     guideSlug: "insights",
     card: {
       title: "Reports & trends",
-      desc: "Clear monthly breakdowns that show where your money really went.",
+      desc: "Compare your spending by month and category.",
     },
     perk: "Clear reports and spending trends",
   },

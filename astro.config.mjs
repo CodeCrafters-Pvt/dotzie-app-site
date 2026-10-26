@@ -16,6 +16,7 @@ const SITE =
 // https://astro.build/config
 export default defineConfig({
   site: SITE,
+  devToolbar: { enabled: false },
   integrations: [react(), mdx(), sitemap()],
   vite: {
     plugins: [tailwindcss()],

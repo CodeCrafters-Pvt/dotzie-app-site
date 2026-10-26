@@ -1,0 +1,35 @@
+---
+interface Props {
+  id: string;
+}
+const { id } = Astro.props;
+---
+
+<div class="store-downloads" aria-label="App download links">
+  <div class="store-switch" role="radiogroup" aria-label="Choose your store">
+    <input type="radio" name={`${id}-store`} id={`${id}-apple`} value="apple" checked />
+    <label for={`${id}-apple`}>App Store</label>
+    <input type="radio" name={`${id}-store`} id={`${id}-google`} value="google" />
+    <label for={`${id}-google`}>Google Play</label>
+  </div>
+  <div class="store-codes">
+    <a
+      class="store-code store-apple"
+      href="https://apps.apple.com/app/dotzie"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <img src="/qr/app-store.svg" width="80" height="80" alt="App Store placeholder QR code" />
+      <span><strong>App Store</strong><small>Placeholder link</small></span>
+    </a>
+    <a
+      class="store-code store-google"
+      href="https://play.google.com/store/apps/details?id=app.dotzie"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <img src="/qr/google-play.svg" width="80" height="80" alt="Google Play placeholder QR code" />
+      <span><strong>Google Play</strong><small>Placeholder link</small></span>
+    </a>
+  </div>
+</div>

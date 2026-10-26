@@ -1,0 +1,593 @@
+/* The phone budget includes the heading, caption, controls, sticky header and mobile rail. */
+html.snap .quiet-home > #screens {
+  padding-top: 12px;
+  padding-bottom: 40px;
+}
+#screens .screens-heading h2 {
+  font-size: clamp(22px, 2.5vw, 30px);
+  line-height: 1.25;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  margin: 0 0 10px;
+}
+.app-carousel {
+  --preview-height: clamp(280px, calc(100svh - var(--header-h, 65px) - 250px), 430px);
+  max-width: 900px;
+  margin: auto;
+  text-align: center;
+}
+.app-phone-stage {
+  position: relative;
+  height: calc(var(--preview-height) + 16px);
+  touch-action: pan-y;
+  isolation: isolate;
+}
+.app-phone-slide {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  width: calc(var(--preview-height) * 0.51);
+  height: var(--preview-height);
+  transform: translateX(-50%);
+  transition:
+    transform 0.45s ease,
+    opacity 0.35s ease;
+  z-index: 3;
+}
+.app-phone-slide[data-position="-1"] {
+  transform: translateX(-155%) scale(0.83);
+  opacity: 0.27;
+  z-index: 2;
+}
+.app-phone-slide[data-position="1"] {
+  transform: translateX(55%) scale(0.83);
+  opacity: 0.27;
+  z-index: 2;
+}
+.app-phone-slide[data-position="-2"] {
+  transform: translateX(-175%) scale(0.7);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+.app-phone-slide[data-position="2"] {
+  transform: translateX(75%) scale(0.7);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+.app-device {
+  height: 100%;
+  width: 100%;
+  container-type: size;
+  border: 4px solid var(--border);
+  border-radius: 30px;
+  background: var(--app-background, var(--background));
+  box-shadow: 0 18px 40px #00000010;
+  position: relative;
+  overflow: hidden;
+  text-align: left;
+}
+.app-device-camera {
+  position: absolute;
+  top: 7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 26%;
+  height: 9px;
+  background: var(--foreground);
+  border-radius: 12px;
+  z-index: 2;
+}
+.app-carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 4;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--card);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: var(--muted-foreground);
+}
+.app-carousel-arrow:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+.app-carousel-arrow.previous {
+  left: max(0px, calc(50% - var(--preview-height) * 0.9));
+}
+.app-carousel-arrow.next {
+  right: max(0px, calc(50% - var(--preview-height) * 0.9));
+}
+.app-carousel-caption {
+  margin-top: 8px;
+  min-height: 44px;
+  line-height: 1.5;
+}
+.app-carousel-caption strong {
+  font-size: 14px;
+  font-weight: 600;
+}
+.app-carousel-caption p {
+  font-size: 12px;
+  color: var(--muted-foreground);
+  margin: 2px 0 0;
+}
+.app-carousel-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  height: 36px;
+}
+.app-carousel-pagination button {
+  width: 32px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.app-carousel-pagination button .app-pagination-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 8px;
+  background: var(--border);
+  transition: width 0.2s;
+}
+.app-carousel-pagination button[aria-pressed="true"] .app-pagination-dot {
+  width: 20px;
+  background: var(--primary);
+}
+.app-pagination-label {
+  display: none;
+}
+@media (min-width: 640px) {
+  .app-carousel-pagination {
+    gap: 4px;
+    height: 44px;
+  }
+  .app-carousel-pagination button {
+    width: auto;
+    min-height: 40px;
+    padding: 0 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    color: var(--muted-foreground);
+  }
+  .app-carousel-pagination button .app-pagination-dot {
+    display: none;
+  }
+  .app-pagination-label {
+    display: inline;
+  }
+  .app-carousel-pagination button[aria-pressed="true"] {
+    background: var(--accent);
+    color: var(--primary);
+  }
+  .app-carousel-pagination button:hover {
+    color: var(--foreground);
+  }
+}
+.app-carousel button:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+.app-carousel-count {
+  font-size: 11px;
+  color: var(--muted-foreground);
+  margin-left: 10px;
+  font-variant-numeric: tabular-nums;
+}
+.app-preview-note {
+  font-size: 10px;
+  color: var(--muted-foreground);
+  margin: 0;
+}
+.mobile-app-preview {
+  font-family: var(--font-sans);
+  font-size: 4.3cqw;
+  line-height: 1.4;
+  color: var(--foreground);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0 5cqw;
+  background: var(--app-background, var(--background));
+}
+.mobile-app-preview svg {
+  width: 1.35em;
+  height: 1.35em;
+  flex-shrink: 0;
+  stroke-width: 1.8;
+}
+.mobile-app-preview small {
+  font-size: 0.82em;
+  color: var(--muted-foreground);
+}
+.mobile-app-preview strong {
+  font-weight: 600;
+}
+.mobile-app-preview b {
+  font-weight: 650;
+}
+.app-status {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 2px 12px;
+  font-size: 0.75em;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.app-preview-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1cqh;
+  flex: 1;
+  min-height: 0;
+}
+.app-home-header {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+}
+.app-home-header > div {
+  margin-right: auto;
+}
+.app-home-header b {
+  font-size: 1.3em;
+}
+.app-home-header b span {
+  color: var(--primary);
+}
+.app-home-header small {
+  display: block;
+}
+.app-avatar {
+  background: var(--accent);
+  color: var(--primary);
+  border-radius: 50%;
+  width: 2em;
+  height: 2em;
+  display: grid;
+  place-items: center;
+  font-size: 0.9em;
+}
+.app-card {
+  background: var(--app-card, var(--card));
+  border: 1px solid var(--border);
+  border-radius: 1.2em;
+  padding: 0.75em;
+}
+.app-balance {
+  padding: 0.9em;
+}
+.app-card h4 {
+  font-size: 2em;
+  line-height: 1.2;
+  letter-spacing: -0.04em;
+  font-weight: 600;
+  margin: 0.3em 0;
+}
+.app-card h4 span {
+  font-size: 0.7em;
+}
+.app-subtle {
+  display: block;
+  color: var(--muted-foreground);
+  font-size: 0.8em;
+  line-height: 1.5;
+}
+.app-money-pair {
+  display: flex;
+  gap: 0.8em;
+  padding: 0.4em 0;
+}
+.app-money-pair > div {
+  flex: 1;
+  min-width: 0;
+}
+.app-money-pair > div + div {
+  border-left: 1px solid var(--border);
+  padding-left: 0.8em;
+}
+.app-money-pair small {
+  display: flex;
+  align-items: center;
+  gap: 0.2em;
+}
+.app-money-pair strong {
+  display: block;
+  font-size: 1.03em;
+  margin-top: 0.3em;
+}
+.app-section-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.95em;
+  font-weight: 600;
+}
+.app-tile-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7em;
+}
+.app-tile-pair .app-card {
+  padding: 0.8em;
+}
+.app-tile-pair svg {
+  color: var(--primary);
+  margin-bottom: 0.6em;
+}
+.app-tile-pair strong,
+.app-tile-pair small,
+.app-tile-pair b {
+  display: block;
+}
+.app-tile-pair strong {
+  font-size: 0.87em;
+  margin-bottom: 0.4em;
+}
+.app-progress {
+  height: 0.4em;
+  border-radius: 6px;
+  background: var(--border);
+  margin-top: 0.65em;
+  overflow: hidden;
+}
+.app-progress span {
+  height: 100%;
+  display: block;
+  background: var(--primary);
+  border-radius: 6px;
+}
+.app-ledger-row {
+  display: flex;
+  gap: 0.65em;
+  align-items: center;
+  padding: 0.45em 0;
+}
+.app-ledger-row + .app-ledger-row {
+  border-top: 1px solid var(--border);
+}
+.app-ledger-row > div {
+  flex: 1;
+  min-width: 0;
+}
+.app-ledger-row strong {
+  display: block;
+  font-size: 0.9em;
+}
+.app-ledger-row small {
+  display: block;
+  font-size: 0.7em;
+}
+.app-ledger-row b {
+  font-size: 0.82em;
+  white-space: nowrap;
+}
+.app-glyph {
+  display: grid;
+  place-items: center;
+  width: 2.4em;
+  height: 2.4em;
+  border-radius: 0.8em;
+  color: var(--primary);
+  background: var(--accent);
+  flex-shrink: 0;
+}
+.app-page-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+}
+.app-page-header h3 {
+  font-size: 1.5em;
+  font-weight: 650;
+  flex: 1;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+.app-page-header > span {
+  color: var(--primary);
+}
+.app-search {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.85em;
+  background: var(--app-card, var(--card));
+  border-radius: 0.8em;
+  color: var(--muted-foreground);
+  font-size: 0.85em;
+}
+.app-search svg:last-child {
+  margin-left: auto;
+}
+.app-inline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5em;
+}
+.app-tag {
+  font-size: 0.72em;
+  color: var(--primary);
+  background: var(--accent);
+  padding: 0.3em 0.6em;
+  border-radius: 5em;
+  white-space: nowrap;
+}
+.app-plan-period {
+  text-align: center;
+  font-size: 1em;
+}
+.app-plan-period span {
+  display: block;
+  font-size: 0.8em;
+  color: var(--muted-foreground);
+}
+.app-budget-ring {
+  height: 24cqh;
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+.app-budget-ring svg {
+  height: 100%;
+  width: auto;
+  transform: rotate(-90deg);
+}
+.app-budget-ring circle {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 6;
+}
+.app-budget-ring circle + circle {
+  stroke: var(--primary);
+  stroke-linecap: round;
+}
+.app-budget-ring > div {
+  position: absolute;
+  text-align: center;
+}
+.app-budget-ring strong {
+  font-size: 2.7em;
+  display: block;
+}
+.app-budget-ring small {
+  display: block;
+}
+.app-plan-total {
+  text-align: center;
+}
+.app-plan-total strong {
+  font-size: 1.2em;
+  display: block;
+}
+.app-plan-total small {
+  display: block;
+}
+.app-category {
+  margin-top: 0.85em;
+}
+.app-category .app-inline {
+  font-size: 0.87em;
+}
+.app-mini-tabs {
+  display: flex;
+  gap: 0.8em;
+  font-size: 0.85em;
+}
+.app-mini-tabs span {
+  padding: 0.5em 1em;
+  border: 1px solid var(--border);
+  border-radius: 5em;
+}
+.app-mini-tabs .selected {
+  background: var(--accent);
+  color: var(--primary);
+  border-color: transparent;
+}
+.app-event-title {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  margin-bottom: 1em;
+}
+.app-event-title > div {
+  flex: 1;
+}
+.app-event-title small,
+.app-event-title strong {
+  display: block;
+}
+.app-event-title strong {
+  font-size: 0.95em;
+}
+.app-event-title small {
+  font-size: 0.72em;
+  margin-top: 0.2em;
+}
+.app-event-amount {
+  padding: 0.7em 0;
+  border-top: 1px solid var(--border);
+}
+.app-story {
+  font-size: 1.28em;
+  line-height: 1.5;
+  margin: 0.7em 0;
+}
+.app-story b {
+  color: var(--primary);
+}
+.app-bottom-nav {
+  display: flex;
+  justify-content: space-around;
+  border-top: 1px solid var(--border);
+  padding-top: 0.7em;
+  margin-top: auto;
+  flex-shrink: 0;
+  background: var(--app-background, var(--background));
+}
+.app-bottom-nav span {
+  display: grid;
+  justify-items: center;
+  gap: 0.2em;
+  color: var(--muted-foreground);
+  font-size: 0.7em;
+}
+.app-bottom-nav .selected {
+  color: var(--primary);
+}
+.app-bottom-nav svg {
+  width: 1.9em;
+  height: 1.9em;
+}
+.app-home-indicator {
+  height: 3px;
+  width: 30%;
+  background: var(--foreground);
+  opacity: 0.25;
+  border-radius: 5px;
+  margin: 7px auto;
+  flex-shrink: 0;
+}
+@media (max-width: 639px) {
+  .app-phone-slide:not([data-position="0"]) {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .app-carousel {
+    --preview-height: clamp(280px, calc(100svh - var(--header-h, 65px) - 215px), 430px);
+  }
+  .app-carousel-arrow.previous {
+    left: 0;
+  }
+  .app-carousel-arrow.next {
+    right: 0;
+  }
+  .app-carousel-pagination button {
+    width: 36px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .app-phone-slide,
+  .app-carousel-pagination button span {
+    transition: none;
+  }
+}
+
+@media (max-width: 639px) {
+  html.snap .quiet-home > #screens {
+    padding-bottom: 96px;
+  }
+  .app-carousel {
+    --preview-height: clamp(280px, calc(100svh - var(--header-h, 65px) - 271px), 430px);
+  }
+}

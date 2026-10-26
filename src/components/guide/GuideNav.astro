@@ -59,7 +59,7 @@ const groups = groupBySection(await getGuidePages());
     </div>
   </details>
 
-  <div class="hidden lg:sticky lg:top-24 lg:block">
+  <div class="hidden lg:sticky lg:top-24 lg:block lg:max-h-[calc(100dvh-7rem)] lg:overflow-y-auto lg:pb-4">
     <a
       href="/guide"
       aria-current={current ? undefined : "page"}

@@ -7,7 +7,7 @@ export const SITE_NAME = "Dotzie";
 export const SITE_TAGLINE = "Offline-first, privacy-first expense tracker";
 
 export const SITE_DESC =
-  "Dotzie is an offline-first expense tracker. All your financial data stays encrypted on your device — no cloud, no server, no accounts.";
+  "Dotzie is an offline-first expense tracker. All your financial data stays encrypted on your device - no cloud, no server, no accounts.";
 
 /** The address on the footer and in the app-store listings. */
 export const CONTACT_EMAIL = "dotzie.team@gmail.com";

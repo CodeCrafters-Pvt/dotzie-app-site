@@ -5,6 +5,7 @@ import { getGuidePages, guideIcon, guideHref, navLabel } from "@/lib/guide";
 import { render } from "astro:content";
 import type { GetStaticPaths } from "astro";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { MobileAppPreview } from "@/components/islands/MobileAppPreview";
 
 export const getStaticPaths = (async () => {
   const pages = await getGuidePages();
@@ -19,7 +20,15 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 const { page, prev, next } = Astro.props;
-const { Content } = await render(page);
+const { Content, headings } = await render(page);
+const contents = headings.filter((h) => h.depth === 2);
+const previews = {
+  dashboard: "dashboard",
+  "spending-plans": "plan",
+  events: "events",
+  insights: "insights",
+} as const;
+const preview = previews[page.id as keyof typeof previews];
 const Icon = guideIcon(page.data.icon);
 
 const breadcrumbJsonLd = {
@@ -43,7 +52,7 @@ const breadcrumbJsonLd = {
 ---
 
 <Page
-  title={`${page.data.title} — Dotzie guide`}
+  title={`${page.data.title} - Dotzie guide`}
   description={page.data.description}
   path={guideHref(page)}
   ogType="article"
@@ -77,6 +86,39 @@ const breadcrumbJsonLd = {
         </p>
       </header>
 
+      {
+        contents.length > 1 && (
+          <details class="guide-toc" open>
+            <summary>On this page</summary>
+            <nav aria-label="On this page">
+              <ul>
+                {contents.map((h) => (
+                  <li>
+                    <a href={`#${h.slug}`}>{h.text}</a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </details>
+        )
+      }
+      {
+        preview && (
+          <details class="guide-visual">
+            <summary>View an example screen</summary>
+            <figure>
+              <>
+                <div class="app-device">
+                  <MobileAppPreview screen={preview} />
+                </div>
+                <figcaption>
+                  Illustrative app preview with example data. Your app may look different.
+                </figcaption>
+              </>
+            </figure>
+          </details>
+        )
+      }
       <div class="prose-body mt-10">
         <Content />
       </div>

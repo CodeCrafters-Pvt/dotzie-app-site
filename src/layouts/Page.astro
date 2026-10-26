@@ -3,6 +3,8 @@
 import Base from "@/layouts/Base.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
+import { MeetDotzie } from "@/components/islands/MeetDotzie";
+import "../guide.css";
 
 interface Props {
   title: string;
@@ -31,6 +33,7 @@ const {
 <Base {title} {description} {path} {ogType} {jsonLd}>
   <div class="min-h-screen bg-background text-foreground">
     <Header />
+    {path.startsWith("/guide") && <MeetDotzie client:load />}
     <main class:list={[mainClass, className]}>
       <slot />
     </main>

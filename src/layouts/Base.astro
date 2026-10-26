@@ -1,5 +1,9 @@
 ---
 import "../styles.css";
+import "../mobile-palettes.css";
+import "../companion.css";
+import "../approved-design.css";
+import "../app-carousel.css";
 import { SITE_NAME, SITE_TAGLINE, SITE_DESC } from "@/data/site";
 import { DEFAULT_ACCENT } from "@/data/accents";
 
@@ -17,7 +21,7 @@ interface Props {
 }
 
 const {
-  title = `${SITE_NAME} — ${SITE_TAGLINE}`,
+  title = `${SITE_NAME} - ${SITE_TAGLINE}`,
   description = SITE_DESC,
   path = Astro.url.pathname,
   image = "/og.png",
@@ -82,11 +86,41 @@ const isLive = import.meta.env.PUBLIC_SITE_LIVE === "true";
         try {
           var s = localStorage.getItem("dotzee-theme");
           var m = window.matchMedia("(prefers-color-scheme: dark)").matches;
-          var d = s ? s === "dark" : m;
+          var d = s === "dark" || (s !== "light" && m);
           if (d) document.documentElement.classList.add("dark");
           var a = localStorage.getItem("dotzie-accent");
-          if (a) document.documentElement.setAttribute("data-accent", a);
+          var aliases = {
+            purple: "indigo",
+            warm: "terracotta",
+            red: "rose",
+            jungle: "emerald",
+            blue: "sapphire",
+            teal: "ocean",
+            mono: "monochrome",
+          };
+          a = aliases[a] || a;
+          if (["monochrome", "indigo", "sapphire", "plum", "slate"].includes(a)) {
+            document.documentElement.setAttribute("data-accent", a);
+            localStorage.setItem("dotzie-accent", a);
+          } else {
+            document.documentElement.dataset.accent = "indigo";
+            localStorage.setItem("dotzie-accent", "indigo");
+          }
         } catch (e) {}
+        var media = window.matchMedia("(prefers-color-scheme: dark)");
+        var sync = function () {
+          var choice;
+          try {
+            choice = localStorage.getItem("dotzee-theme");
+          } catch (e) {}
+          document.documentElement.classList.toggle(
+            "dark",
+            choice === "dark" || (choice !== "light" && media.matches),
+          );
+        };
+        media.addEventListener("change", sync);
+        window.addEventListener("storage", sync);
+        window.addEventListener("dotzie-theme", sync);
       })();
     </script>
 

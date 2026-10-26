@@ -2,8 +2,9 @@
 import Page from "@/layouts/Page.astro";
 import { getGuidePages, groupBySection, guideIcon, guideHref } from "@/lib/guide";
 import { ArrowRight } from "lucide-react";
+import { GuideSearch } from "@/components/islands/GuideSearch";
 
-const TITLE = "User Guide — Dotzie";
+const TITLE = "User Guide - Dotzie";
 const DESC =
   "Learn Dotzie feature by feature: adding transactions, scheduled payments, budgets, events, IOUs, insights and encrypted backups. Everything stays on your device.";
 
@@ -50,11 +51,20 @@ const howToJsonLd = {
       </span>
     </h1>
     <p class="mx-auto mt-5 max-w-xl text-muted-foreground">
-      Every screen in the app, explained. Start at the beginning or jump straight to the thing
-      you're stuck on — nothing here leaves your phone.
+      Learn how to track expenses, set budgets and back up your records. Start with the basics or
+      choose a topic below.
     </p>
   </section>
 
+  <GuideSearch
+    client:load
+    entries={pages.map((p) => ({
+      title: p.data.title,
+      description: p.data.description,
+      href: guideHref(p),
+      text: p.body ?? "",
+    }))}
+  />
   <section class="mx-auto max-w-5xl px-6 pb-16">
     <div class="grid gap-4 sm:grid-cols-2">
       {

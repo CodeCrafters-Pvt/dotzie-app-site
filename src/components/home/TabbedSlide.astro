@@ -13,10 +13,11 @@ const group = `${id}-tab`;
 {
   /* Two panes in one section. From `md` (iPad Mini) up they stack and are
     both visible, as on desktop. Below that they'd be three screens tall, so a
-    segmented switcher shows one at a time — pure CSS via `:has()`, see
+    segmented switcher shows one at a time - pure CSS via `:has()`, see
     `.tab-panes` in styles.css. */
 }
 <section id={id} class="px-6 py-5 md:py-6 xl:px-10">
+  {id === "track" && <h2 class="companion-section-heading">Track spending and split bills</h2>}
   <div class="section-container tabbed reveal mx-auto max-w-5xl xl:max-w-6xl 2xl:max-w-7xl">
     <div
       role="radiogroup"
